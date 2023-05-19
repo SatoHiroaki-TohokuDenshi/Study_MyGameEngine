@@ -69,6 +69,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 }
 
 //ウィンドウプロシージャ（何かあった時によばれる関数）
+//返り値　LRESULT（ここ以外では特に使わないから気にしなくてヨシ）
+//CALLBACK　特定の状況で呼ばれるよって宣言（通常は勝手に呼ばれたりしない）
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	// 自分で処理を定義したいメッセージ
