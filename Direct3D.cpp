@@ -8,9 +8,10 @@ namespace Direct3D {
 	IDXGISwapChain* pSwapChain;					//スワップチェイン
 	ID3D11RenderTargetView* pRenderTargetView;	//レンダーターゲットビュー
 
-	ID3D11VertexShader* pVertexShader = nullptr;	//頂点シェーダー
-	ID3D11PixelShader* pPixelShader = nullptr;		//ピクセルシェーダー
-	ID3D11InputLayout* pVertexLayout = nullptr;		//頂点インプットレイアウト
+	ID3D11VertexShader* pVertexShader = nullptr;		//頂点シェーダー
+	ID3D11PixelShader* pPixelShader = nullptr;			//ピクセルシェーダー
+	ID3D11RasterizerState* pRasterizerState = nullptr;	//ラスタライザー
+	ID3D11InputLayout* pVertexLayout = nullptr;			//頂点インプットレイアウト
 }
 
 //初期化
@@ -91,6 +92,7 @@ void Direct3D::InitShader() {
 	ID3DBlob* pCompileVS = nullptr;
 	D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
 	pDevice->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader);
+	pCompileVS->Release();
 
 	//頂点インプットレイアウト
 	D3D11_INPUT_ELEMENT_DESC layout[] = {
@@ -98,13 +100,24 @@ void Direct3D::InitShader() {
 	};
 	pDevice->CreateInputLayout(layout, 1, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);
 
-	pCompileVS->Release();
-
 	// ピクセルシェーダの作成（コンパイル）
 	ID3DBlob* pCompilePS = nullptr;
 	D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
 	pDevice->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &pPixelShader);
 	pCompilePS->Release();
+
+	//ラスタライザ作成
+	D3D11_RASTERIZER_DESC rdc = {};
+	rdc.CullMode = D3D11_CULL_BACK;
+	rdc.FillMode = D3D11_FILL_SOLID;
+	rdc.FrontCounterClockwise = FALSE;
+	pDevice->CreateRasterizerState(&rdc, &pRasterizerState);
+
+	//それぞれをデバイスコンテキストにセット
+	pContext->VSSetShader(pVertexShader, NULL, 0);	//頂点シェーダー
+	pContext->PSSetShader(pPixelShader, NULL, 0);	//ピクセルシェーダー
+	pContext->IASetInputLayout(pVertexLayout);		//頂点インプットレイアウト
+	pContext->RSSetState(pRasterizerState);			//ラスタライザー
 }
 
 //描画開始（下準備：画面を単色で初期化する）
@@ -124,7 +137,7 @@ void Direct3D::EndDraw() {
 
 //解放処理
 void Direct3D::Release() {
-
+	pRasterizerState->Release();
 	pVertexLayout->Release();
 	pPixelShader->Release();
 	pVertexShader->Release();
