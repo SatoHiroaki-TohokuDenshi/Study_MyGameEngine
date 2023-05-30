@@ -1,6 +1,7 @@
 //インクルード
 #include <Windows.h>
 #include "Direct3D.h"
+#include "Quad.h"
 
 
 //定数宣言
@@ -8,6 +9,9 @@ const char* WIN_CLASS_NAME = "SampleGame";			//ウィンドウクラス名
 const char* WIN_TITLE_NAME = "サンプルゲーム";		//タイトルバーの表示内容
 const int WINDOW_WIDTH = 800;		//ウィンドウの幅
 const int WINDOW_HEIGHT = 600;		//ウィンドウの高さ
+
+//ポリゴン表示（お試し）
+Quad* pQuad = nullptr;
 
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -60,6 +64,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//Direct3D初期化
 	Direct3D::Initialize(winW, winH, hWnd);
 
+	//ポリゴン表示（お試し）
+	pQuad = new Quad;
+	pQuad->Initialize();
+
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
@@ -82,7 +90,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Direct3D::BeginDraw();
 
 			//ここに描画させたいものを記述する
-
+			pQuad->Draw();
 
 			//バッファの入れ替え
 			Direct3D::EndDraw();
@@ -90,6 +98,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	}
 
 	//解放処理
+	pQuad->Release();
 	Direct3D::Release();
 
 	return 0;

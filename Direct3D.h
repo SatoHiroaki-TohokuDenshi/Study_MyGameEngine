@@ -6,8 +6,8 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 namespace Direct3D {
-	extern ID3D11Device* pDevice;
-	extern ID3D11DeviceContext* pContext;
+	extern ID3D11Device* pDevice;			//デバイス
+	extern ID3D11DeviceContext* pContext;	//デバイスコンテキスト
 
 	//初期化
 	void Initialize(int winW, int winH, HWND hWnd);
