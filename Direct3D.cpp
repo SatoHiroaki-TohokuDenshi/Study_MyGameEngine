@@ -65,7 +65,7 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd) {
 	pDevice->CreateRenderTargetView(pBackBuffer, NULL, &pRenderTargetView);
 
 	//一時的にバックバッファを取得しただけなので解放
-	pBackBuffer->Release();
+	SAFE_RELEASE(pBackBuffer);
 
 	///////////////////////////ビューポート（描画範囲）設定///////////////////////////////
 	//レンダリング結果を表示する範囲
@@ -137,13 +137,13 @@ void Direct3D::EndDraw() {
 
 //解放処理
 void Direct3D::Release() {
-	pRasterizerState->Release();
-	pVertexLayout->Release();
-	pPixelShader->Release();
-	pVertexShader->Release();
+	SAFE_RELEASE(pRasterizerState);
+	SAFE_RELEASE(pVertexLayout);
+	SAFE_RELEASE(pPixelShader);
+	SAFE_RELEASE(pVertexShader);
 
-	pRenderTargetView->Release();
-	pSwapChain->Release();
-	pContext->Release();
-	pDevice->Release();
+	SAFE_RELEASE(pRenderTargetView);
+	SAFE_RELEASE(pSwapChain);
+	SAFE_RELEASE(pContext);
+	SAFE_RELEASE(pDevice);
 }
