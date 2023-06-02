@@ -67,6 +67,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	hr = Direct3D::Initialize(winW, winH, hWnd);
 	if (FAILED(hr)) {
 		//エラー処理
+		MessageBox(nullptr, "Direct3Dの初期化に失敗しました", "エラー", MB_OK);
 		PostQuitMessage(0);  //プログラム終了
 		return 0;
 	}
@@ -76,6 +77,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	hr = pQuad->Initialize();
 	if (FAILED(hr)) {
 		//エラー処理
+		MessageBox(nullptr, "インスタンス\"Quad\"の初期化に失敗しました", "エラー", MB_OK);
 		PostQuitMessage(0);  //プログラム終了
 		return 0;
 	}

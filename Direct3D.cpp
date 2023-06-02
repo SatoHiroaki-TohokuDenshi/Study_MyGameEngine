@@ -59,6 +59,7 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd) {
 			&pContext);					// 無事完成したContextのアドレスが返ってくる
 	if (FAILED(hr)) {
 		//エラー処理
+		MessageBox(nullptr, "デバイス、コンテキスト、またはスワップチェインの作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
 
@@ -68,6 +69,7 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd) {
 	hr = pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
 	if (FAILED(hr)) {
 		//エラー処理
+		MessageBox(nullptr, "バックバッファの値の取得に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
 
@@ -75,6 +77,7 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd) {
 	hr = pDevice->CreateRenderTargetView(pBackBuffer, NULL, &pRenderTargetView);
 	if (FAILED(hr)) {
 		//エラー処理
+		MessageBox(nullptr, "レンダーターゲットビューの作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
 
@@ -100,6 +103,7 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd) {
 	hr = InitShader();
 	if (FAILED(hr)) {
 		//エラー処理
+		MessageBox(nullptr, "シェーダーの作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
 
@@ -117,6 +121,7 @@ HRESULT Direct3D::InitShader() {
 	hr = pDevice->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader);
 	if (FAILED(hr)) {
 		//エラー処理
+		MessageBox(nullptr, "頂点シェーダ―の作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
 
@@ -127,6 +132,7 @@ HRESULT Direct3D::InitShader() {
 	hr = pDevice->CreateInputLayout(layout, 1, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);
 	if (FAILED(hr)) {
 		//エラー処理
+		MessageBox(nullptr, "頂点インプットレイアウトの作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
 
@@ -139,6 +145,7 @@ HRESULT Direct3D::InitShader() {
 	hr = pDevice->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &pPixelShader);
 	if (FAILED(hr)) {
 		//エラー処理
+		MessageBox(nullptr, "ピクセルシェーダ―の作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
 	SAFE_RELEASE(pCompilePS);
@@ -151,6 +158,7 @@ HRESULT Direct3D::InitShader() {
 	hr = pDevice->CreateRasterizerState(&rdc, &pRasterizerState);
 	if (FAILED(hr)) {
 		//エラー処理
+		MessageBox(nullptr, "ラスタライザの作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
 
