@@ -1,6 +1,7 @@
 //インクルード
 #include <Windows.h>
 #include "Direct3D.h"
+#include "Camera.h"
 #include "Quad.h"
 
 
@@ -72,6 +73,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		return 0;
 	}
 
+	Camera::Initialize(winW, winH);
+
 	//ポリゴン表示（お試し）
 	pQuad = new Quad;
 	hr = pQuad->Initialize();
@@ -104,6 +107,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Direct3D::BeginDraw();
 
 			//ここに描画させたいものを記述する
+			Camera::Update();
 			pQuad->Draw();
 
 			//バッファの入れ替え
