@@ -73,7 +73,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		return 0;
 	}
 
-	Camera::Initialize(winW, winH);
+	//カメラの初期化
+	Camera::Initialize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	//ポリゴン表示（お試し）
 	pQuad = new Quad;
@@ -100,18 +101,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		//メッセージなし
 		else
 		{
+			Camera::Update();
 			//ゲームの処理
 
 			//描画処理
-			//バックバッファの初期化
-			Direct3D::BeginDraw();
+			Direct3D::BeginDraw();		//バックバッファの初期化
 
-			//ここに描画させたいものを記述する
-			Camera::Update();
-			pQuad->Draw();
+			static XMMATRIX mat = XMMatrixIdentity();
+			pQuad->Draw(mat);
 
-			//バッファの入れ替え
-			Direct3D::EndDraw();
+			Direct3D::EndDraw();		//バッファの入れ替え
 		}
 	}
 
