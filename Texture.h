@@ -16,4 +16,8 @@ public:
 	HRESULT Load(string fileName);
 	//解放
 	void Release();
+	//サンプラーのゲッター
+	ID3D11SamplerState* GetSampler() { return pSampler_; };
+	//シェーダーリソースビューのゲッター
+	ID3D11ShaderResourceView* GetSRV() { return pSRV_; };
 };
