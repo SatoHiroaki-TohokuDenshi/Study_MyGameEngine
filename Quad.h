@@ -23,10 +23,13 @@ class Quad {
 	ID3D11Buffer* pConstantBuffer_;	//コンスタントバッファ
 
 	Texture* pTexture_;				//テクスチャ情報
+	int indexNum_;					//頂点インデックスの要素数
 public:
 	Quad();
 	~Quad();
 	HRESULT Initialize();
 	void Draw(XMMATRIX& worldMatrix);
 	void Release();
+
+	void PassInfoConstantBuffer(XMMATRIX& worldMatrix);
 };
