@@ -2,7 +2,7 @@
 #include "Camera.h"
 
 Quad::Quad():
-	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr)
+	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr), pTexture_(nullptr)
 {
 
 }
@@ -15,11 +15,12 @@ HRESULT Quad::Initialize() {
 	HRESULT hr = S_OK;
 
 	// 頂点情報
-	XMVECTOR vertices[] = {
-		XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f),	// 四角形の頂点（左上）
-		XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f),	// 四角形の頂点（右上）
-		XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f),	// 四角形の頂点（右下）
-		XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f),	// 四角形の頂点（左下）
+	VERTEX vertices[] = {
+		  //頂点座標							 UV座標
+		{ XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) },   // 四角形の頂点（左上）
+		{ XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f) },   // 四角形の頂点（右上）
+		{ XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f) },   // 四角形の頂点（右下）
+		{ XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) },   // 四角形の頂点（左下）
 	};
 
 	// 頂点データ用バッファの設定
@@ -79,6 +80,14 @@ HRESULT Quad::Initialize() {
 		return hr;
 	}
 
+	pTexture_ = new Texture;
+	hr = pTexture_->Load("Assets\\dice.png");
+	if (FAILED(hr)) {
+		//エラー処理
+		MessageBox(nullptr, "テクスチャの読み込みに失敗しました", "エラー", MB_OK);
+		return hr;
+	}
+
 	return hr;
 }
 
@@ -90,10 +99,17 @@ void Quad::Draw(XMMATRIX& worldMatrix) {
 	D3D11_MAPPED_SUBRESOURCE pdata;
 	Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
 	memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
+
+	ID3D11SamplerState* pSampler = pTexture_->GetSampler();
+	Direct3D::pContext_->PSSetSamplers(0, 1, &pSampler);
+
+	ID3D11ShaderResourceView* pSRV = pTexture_->GetSRV();
+	Direct3D::pContext_->PSSetShaderResources(0, 1, &pSRV);
+
 	Direct3D::pContext_->Unmap(pConstantBuffer_, 0);	//再開
 
 	//頂点バッファ
-	UINT stride = sizeof(XMVECTOR);
+	UINT stride = sizeof(VERTEX);
 	UINT offset = 0;
 	Direct3D::pContext_->IASetVertexBuffers(0, 1, &pVertexBuffer_, &stride, &offset);
 
@@ -111,6 +127,9 @@ void Quad::Draw(XMMATRIX& worldMatrix) {
 }
 
 void Quad::Release() {
+	pTexture_->Release();
+	SAFE_DELETE(pTexture_);
+
 	SAFE_RELEASE(pConstantBuffer_);
 	SAFE_RELEASE(pIndexBuffer_);
 	SAFE_RELEASE(pIndexBuffer_);

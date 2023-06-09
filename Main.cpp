@@ -108,7 +108,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Direct3D::BeginDraw();		//バックバッファの初期化
 
 			static XMMATRIX mat = XMMatrixIdentity();
-			mat *= XMMatrixRotationY(XMConvertToRadians(0.05f));
+			mat *= XMMatrixRotationY(XMConvertToRadians(0.1f));
 			pQuad->Draw(mat);
 
 			Direct3D::EndDraw();		//バッファの入れ替え
