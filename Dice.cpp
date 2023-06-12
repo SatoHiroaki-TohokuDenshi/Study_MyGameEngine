@@ -17,35 +17,35 @@ HRESULT Dice::Initialize() {
 	// 頂点情報
 	VERTEX vertices[] = {
 		//１
-		{XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f,  0.0f, 0.0f, 0.0f)},		//1
-		{XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 0.0f, 0.0f, 0.0f)},		//2
-		{XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//3
-		{XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0f,  0.5f, 0.0f, 0.0f)},		//4
+		{XMVectorSet(-1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.0f,  0.0f, 0.0f, 0.0f)},		//0
+		{XMVectorSet( 1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.0f, 0.0f, 0.0f)},		//1
+		{XMVectorSet( 1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//2
+		{XMVectorSet(-1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.0f,  0.5f, 0.0f, 0.0f)},		//3
 		//２
-		{XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 0.0f, 0.0f, 0.0f)},		//5
-		{XMVectorSet( 1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(0.5f,  0.0f, 0.0f, 0.0f)},		//6
-		{XMVectorSet( 1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//7
-		{XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//8
+		{XMVectorSet( 1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.0f, 0.0f, 0.0f)},		//4
+		{XMVectorSet( 1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  0.0f, 0.0f, 0.0f)},		//5
+		{XMVectorSet( 1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//6
+		{XMVectorSet( 1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//7
 		//３
-		{XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.5f,  0.0f, 0.0f, 0.0f)},		//9
-		{XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.75f, 0.0f, 0.0f, 0.0f)},		//10
-		{XMVectorSet( 1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.75f, 0.5f, 0.0f, 0.0f)},		//11
-		{XMVectorSet(-1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//12
+		{XMVectorSet(-1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.5f,  0.0f, 0.0f, 0.0f)},		//8
+		{XMVectorSet( 1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.75f, 0.0f, 0.0f, 0.0f)},		//9
+		{XMVectorSet( 1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.75f, 0.5f, 0.0f, 0.0f)},		//10
+		{XMVectorSet(-1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//11
 		//４
-		{XMVectorSet(-1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(0.75f, 0.0f, 0.0f, 0.0f)},		//13
-		{XMVectorSet( 1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(1.0f,  0.0f, 0.0f, 0.0f)},		//14
-		{XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f,  0.5f, 0.0f, 0.0f)},		//15
-		{XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.75f, 0.5f, 0.0f, 0.0f)},		//16
+		{XMVectorSet(-1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.75f, 0.0f, 0.0f, 0.0f)},		//12
+		{XMVectorSet( 1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(1.0f,  0.0f, 0.0f, 0.0f)},		//13
+		{XMVectorSet( 1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(1.0f,  0.5f, 0.0f, 0.0f)},		//14
+		{XMVectorSet(-1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.75f, 0.5f, 0.0f, 0.0f)},		//15
 		//５
-		{XMVectorSet(-1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(0.0f,  0.5f, 0.0f, 0.0f)},		//17
-		{XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//18
-		{XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 1.0f, 0.0f, 0.0f)},		//19
-		{XMVectorSet(-1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.0f,  1.0f, 0.0f, 0.0f)},		//20
+		{XMVectorSet(-1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.0f,  0.5f, 0.0f, 0.0f)},		//16
+		{XMVectorSet(-1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//17
+		{XMVectorSet(-1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 1.0f, 0.0f, 0.0f)},		//18
+		{XMVectorSet(-1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.0f,  1.0f, 0.0f, 0.0f)},		//19
 		//６
-		{XMVectorSet( 1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//21
-		{XMVectorSet(-1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//22
-		{XMVectorSet(-1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.5f,  1.0f, 0.0f, 0.0f)},		//23
-		{XMVectorSet( 1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.25f, 1.0f, 0.0f, 0.0f)},		//24
+		{XMVectorSet( 1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//20
+		{XMVectorSet(-1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//21
+		{XMVectorSet(-1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  1.0f, 0.0f, 0.0f)},		//22
+		{XMVectorSet( 1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.25f, 1.0f, 0.0f, 0.0f)},		//23
 	};
 
 	// 頂点データ用バッファの設定
@@ -67,12 +67,12 @@ HRESULT Dice::Initialize() {
 
 	//インデックス情報
 	int index[] = { 
-		0,  2, 3,  0, 1, 2,	//1
-		5,  7, 8,  5, 6, 7,	//2
-		9, 11,12,  9,10,11,	//3
-		13,15,16, 13,14,15,	//4
-		17,19,20, 17,18,19,	//5
-		21,23,24, 21,22,23	//6
+		0, 2, 3,  0, 1, 2,	//1
+		4, 6, 7,  4, 5, 6,	//2
+		8,10,11,  8, 9,10,	//3
+		12,14,15, 12,13,14,	//4
+		16,18,19, 16,17,18,	//5
+		20,22,23, 20,21,22	//6
 	};
 	indexNum_ = sizeof(index) / sizeof(int);
 
