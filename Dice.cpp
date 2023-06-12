@@ -15,12 +15,37 @@ HRESULT Dice::Initialize() {
 	HRESULT hr = S_OK;
 
 	// 頂点情報
-	VERTEX vertices[4] = {
-		//頂点座標							 UV座標
-	  { XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) },   // 四角形の頂点（左上）
-	  { XMVectorSet(1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f) },   // 四角形の頂点（右上）
-	  { XMVectorSet(1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f) },   // 四角形の頂点（右下）
-	  { XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) },   // 四角形の頂点（左下）
+	VERTEX vertices[] = {
+		//１
+		{XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f,  0.0f, 0.0f, 0.0f)},		//1
+		{XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 0.0f, 0.0f, 0.0f)},		//2
+		{XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//3
+		{XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0f,  0.5f, 0.0f, 0.0f)},		//4
+		//２
+		{XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 0.0f, 0.0f, 0.0f)},		//5
+		{XMVectorSet( 1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(0.5f,  0.0f, 0.0f, 0.0f)},		//6
+		{XMVectorSet( 1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//7
+		{XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//8
+		//３
+		{XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.5f,  0.0f, 0.0f, 0.0f)},		//9
+		{XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.75f, 0.0f, 0.0f, 0.0f)},		//10
+		{XMVectorSet( 1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.75f, 0.5f, 0.0f, 0.0f)},		//11
+		{XMVectorSet(-1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//12
+		//４
+		{XMVectorSet(-1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(0.75f, 0.0f, 0.0f, 0.0f)},		//13
+		{XMVectorSet( 1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(1.0f,  0.0f, 0.0f, 0.0f)},		//14
+		{XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f,  0.5f, 0.0f, 0.0f)},		//15
+		{XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.75f, 0.5f, 0.0f, 0.0f)},		//16
+		//５
+		{XMVectorSet(-1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(0.0f,  0.5f, 0.0f, 0.0f)},		//17
+		{XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//18
+		{XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.25f, 1.0f, 0.0f, 0.0f)},		//19
+		{XMVectorSet(-1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.0f,  1.0f, 0.0f, 0.0f)},		//20
+		//６
+		{XMVectorSet( 1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//21
+		{XMVectorSet(-1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//22
+		{XMVectorSet(-1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.5f,  1.0f, 0.0f, 0.0f)},		//23
+		{XMVectorSet( 1.0f, -1.0f, 2.0f, 0.0f), XMVectorSet(0.25f, 1.0f, 0.0f, 0.0f)},		//24
 	};
 
 	// 頂点データ用バッファの設定
