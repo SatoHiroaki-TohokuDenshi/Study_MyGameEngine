@@ -117,7 +117,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Direct3D::BeginDraw();		//バックバッファの初期化
 
 			static XMMATRIX mat = XMMatrixIdentity();
-			mat *= XMMatrixRotationX(XMConvertToRadians(0.01f)) * XMMatrixRotationY(XMConvertToRadians(0.01f)) * XMMatrixRotationZ(XMConvertToRadians(0.02f));
+			mat *= XMMatrixRotationX(XMConvertToRadians(0.02f)) * XMMatrixRotationY(XMConvertToRadians(0.02f)) * XMMatrixRotationZ(XMConvertToRadians(0.02f));
 			//pQuad->Draw(mat);
 			pDice->Draw(mat);
 

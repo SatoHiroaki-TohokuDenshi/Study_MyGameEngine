@@ -1,10 +1,8 @@
 #include "Dice.h"
-#include "Camera.h"
 
 Dice::Dice() :
-	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr), pTexture_(nullptr), indexNum_(0)
+    Quad()
 {
-
 }
 
 Dice::~Dice() {
@@ -18,23 +16,23 @@ HRESULT Dice::Initialize() {
 	VERTEX vertices[] = {
 		//１
 		{XMVectorSet(-1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.0f,  0.0f, 0.0f, 0.0f)},		//0
-		{XMVectorSet( 1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.0f, 0.0f, 0.0f)},		//1
-		{XMVectorSet( 1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//2
+		{XMVectorSet(1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.0f, 0.0f, 0.0f)},		//1
+		{XMVectorSet(1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//2
 		{XMVectorSet(-1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.0f,  0.5f, 0.0f, 0.0f)},		//3
 		//２
-		{XMVectorSet( 1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.0f, 0.0f, 0.0f)},		//4
-		{XMVectorSet( 1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  0.0f, 0.0f, 0.0f)},		//5
-		{XMVectorSet( 1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//6
-		{XMVectorSet( 1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//7
+		{XMVectorSet(1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.0f, 0.0f, 0.0f)},		//4
+		{XMVectorSet(1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  0.0f, 0.0f, 0.0f)},		//5
+		{XMVectorSet(1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//6
+		{XMVectorSet(1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//7
 		//３
 		{XMVectorSet(-1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.5f,  0.0f, 0.0f, 0.0f)},		//8
-		{XMVectorSet( 1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.75f, 0.0f, 0.0f, 0.0f)},		//9
-		{XMVectorSet( 1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.75f, 0.5f, 0.0f, 0.0f)},		//10
+		{XMVectorSet(1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.75f, 0.0f, 0.0f, 0.0f)},		//9
+		{XMVectorSet(1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.75f, 0.5f, 0.0f, 0.0f)},		//10
 		{XMVectorSet(-1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//11
 		//４
 		{XMVectorSet(-1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.75f, 0.0f, 0.0f, 0.0f)},		//12
-		{XMVectorSet( 1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(1.0f,  0.0f, 0.0f, 0.0f)},		//13
-		{XMVectorSet( 1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(1.0f,  0.5f, 0.0f, 0.0f)},		//14
+		{XMVectorSet(1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(1.0f,  0.0f, 0.0f, 0.0f)},		//13
+		{XMVectorSet(1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(1.0f,  0.5f, 0.0f, 0.0f)},		//14
 		{XMVectorSet(-1.0f,  1.0f, -1.0f, 0.0f), XMVectorSet(0.75f, 0.5f, 0.0f, 0.0f)},		//15
 		//５
 		{XMVectorSet(-1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.0f,  0.5f, 0.0f, 0.0f)},		//16
@@ -42,10 +40,10 @@ HRESULT Dice::Initialize() {
 		{XMVectorSet(-1.0f, -1.0f, -1.0f, 0.0f), XMVectorSet(0.25f, 1.0f, 0.0f, 0.0f)},		//18
 		{XMVectorSet(-1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.0f,  1.0f, 0.0f, 0.0f)},		//19
 		//６
-		{XMVectorSet( 1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//20
+		{XMVectorSet(1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.25f, 0.5f, 0.0f, 0.0f)},		//20
 		{XMVectorSet(-1.0f,  1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  0.5f, 0.0f, 0.0f)},		//21
 		{XMVectorSet(-1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.5f,  1.0f, 0.0f, 0.0f)},		//22
-		{XMVectorSet( 1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.25f, 1.0f, 0.0f, 0.0f)},		//23
+		{XMVectorSet(1.0f, -1.0f,  1.0f, 0.0f), XMVectorSet(0.25f, 1.0f, 0.0f, 0.0f)},		//23
 	};
 
 	// 頂点データ用バッファの設定
@@ -66,7 +64,7 @@ HRESULT Dice::Initialize() {
 	}
 
 	//インデックス情報
-	int index[] = { 
+	int index[] = {
 		0, 2, 3,  0, 1, 2,	//1
 		4, 6, 7,  4, 5, 6,	//2
 		8,10,11,  8, 9,10,	//3
@@ -122,52 +120,4 @@ HRESULT Dice::Initialize() {
 	}
 
 	return hr;
-}
-
-void Dice::Draw(XMMATRIX& worldMatrix) {
-	PassInfoConstantBuffer(worldMatrix);
-
-	//頂点バッファ
-	UINT stride = sizeof(VERTEX);
-	UINT offset = 0;
-	Direct3D::pContext_->IASetVertexBuffers(0, 1, &pVertexBuffer_, &stride, &offset);
-
-	// インデックスバッファーをセット
-	stride = sizeof(int);
-	offset = 0;
-	Direct3D::pContext_->IASetIndexBuffer(pIndexBuffer_, DXGI_FORMAT_R32_UINT, 0);
-
-	//コンスタントバッファ
-	Direct3D::pContext_->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
-	Direct3D::pContext_->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
-
-	//描画!!
-	Direct3D::pContext_->DrawIndexed(indexNum_, 0, 0);
-}
-
-void Dice::Release() {
-	pTexture_->Release();
-	SAFE_DELETE(pTexture_);
-
-	SAFE_RELEASE(pConstantBuffer_);
-	SAFE_RELEASE(pIndexBuffer_);
-	SAFE_RELEASE(pIndexBuffer_);
-}
-
-void Dice::PassInfoConstantBuffer(XMMATRIX& worldMatrix) {
-	//コンスタントバッファに渡す情報
-	CONSTANT_BUFFER cb;
-	cb.matWVP = XMMatrixTranspose(worldMatrix * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
-
-	D3D11_MAPPED_SUBRESOURCE pdata;
-	Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
-	memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
-
-	ID3D11SamplerState* pSampler = pTexture_->GetSampler();
-	Direct3D::pContext_->PSSetSamplers(0, 1, &pSampler);
-
-	ID3D11ShaderResourceView* pSRV = pTexture_->GetSRV();
-	Direct3D::pContext_->PSSetShaderResources(0, 1, &pSRV);
-
-	Direct3D::pContext_->Unmap(pConstantBuffer_, 0);	//再開
 }
