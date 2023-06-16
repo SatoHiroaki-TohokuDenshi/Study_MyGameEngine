@@ -17,7 +17,7 @@ namespace Direct3D {
 }
 
 //初期化
-HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd, bool is3D) {
+HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd) {
 	HRESULT hr = S_OK;
 
 	///////////////////////////いろいろ準備するための設定///////////////////////////////
@@ -47,18 +47,18 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd, bool is3D) {
 	////////////////上記設定をもとにデバイス、コンテキスト、スワップチェインを作成////////////////////////
 	D3D_FEATURE_LEVEL level;
 	hr = D3D11CreateDeviceAndSwapChain(
-			nullptr,					// どのビデオアダプタを使用するか？既定ならばnullptrで
-			D3D_DRIVER_TYPE_HARDWARE,	// ドライバのタイプを渡す。ふつうはHARDWARE
-			nullptr,					// 上記をD3D_DRIVER_TYPE_SOFTWAREに設定しないかぎりnullptr
-			0,							// 何らかのフラグを指定する。（デバッグ時はD3D11_CREATE_DEVICE_DEBUG？）
-			nullptr,					// デバイス、コンテキストのレベルを設定。nullptrにしとけばOK
-			0,							// 上の引数でレベルを何個指定したか
-			D3D11_SDK_VERSION,			// SDKのバージョン。必ずこの値
-			&scDesc,					// 上でいろいろ設定した構造体
-			&pSwapChain_,				// 無事完成したSwapChainのアドレスが返ってくる
-			&pDevice_,					// 無事完成したDeviceアドレスが返ってくる
-			&level,						// 無事完成したDevice、Contextのレベルが返ってくる
-			&pContext_);					// 無事完成したContextのアドレスが返ってくる
+		nullptr,					// どのビデオアダプタを使用するか？既定ならばnullptrで
+		D3D_DRIVER_TYPE_HARDWARE,	// ドライバのタイプを渡す。ふつうはHARDWARE
+		nullptr,					// 上記をD3D_DRIVER_TYPE_SOFTWAREに設定しないかぎりnullptr
+		0,							// 何らかのフラグを指定する。（デバッグ時はD3D11_CREATE_DEVICE_DEBUG？）
+		nullptr,					// デバイス、コンテキストのレベルを設定。nullptrにしとけばOK
+		0,							// 上の引数でレベルを何個指定したか
+		D3D11_SDK_VERSION,			// SDKのバージョン。必ずこの値
+		&scDesc,					// 上でいろいろ設定した構造体
+		&pSwapChain_,				// 無事完成したSwapChainのアドレスが返ってくる
+		&pDevice_,					// 無事完成したDeviceアドレスが返ってくる
+		&level,						// 無事完成したDevice、Contextのレベルが返ってくる
+		&pContext_);					// 無事完成したContextのアドレスが返ってくる
 	if (FAILED(hr)) {
 		//エラー処理
 		MessageBox(nullptr, "デバイス、コンテキスト、またはスワップチェインの作成に失敗しました", "エラー", MB_OK);
@@ -102,133 +102,68 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd, bool is3D) {
 	pContext_->RSSetViewports(1, &vp);
 
 	//シェーダー準備
-	if (is3D) {
-		hr = InitShader(true);
-		if (FAILED(hr)) {
-			//エラー処理
-			MessageBox(nullptr, "シェーダーの作成に失敗しました", "エラー", MB_OK);
-			return hr;
-		}
-	}
-	else {
-		hr = InitShader(false);
-		if (FAILED(hr)) {
-			//エラー処理
-			MessageBox(nullptr, "シェーダーの作成に失敗しました", "エラー", MB_OK);
-			return hr;
-		}
+	hr = InitShader();
+	if (FAILED(hr)) {
+		//エラー処理
+		MessageBox(nullptr, "シェーダーの作成に失敗しました", "エラー", MB_OK);
+		return hr;
 	}
 
 	return hr;
 }
 
 //シェーダー準備
-HRESULT Direct3D::InitShader(bool is3D) {
+HRESULT Direct3D::InitShader() {
 	HRESULT hr = S_OK;
 
-	//3D用のシェーダー
-	if (is3D) {
-		// 頂点シェーダの作成（コンパイル）
-		ID3DBlob* pCompileVS = nullptr;
-		D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
-		assert(pCompileVS != nullptr);
-		hr = pDevice_->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader_);
-		if (FAILED(hr)) {
-			//エラー処理
-			MessageBox(nullptr, "頂点シェーダ―の作成に失敗しました", "エラー", MB_OK);
-			return hr;
-		}
-
-		//頂点インプットレイアウト
-		D3D11_INPUT_ELEMENT_DESC layout[] = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::XMVECTOR) , D3D11_INPUT_PER_VERTEX_DATA, 0 },	//UV座標
-			{ "NORMAL",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(DirectX::XMVECTOR) * 2 ,	D3D11_INPUT_PER_VERTEX_DATA, 0 },	//法線
-		};
-		hr = pDevice_->CreateInputLayout(layout, sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC), pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout_);
-		if (FAILED(hr)) {
-			//エラー処理
-			MessageBox(nullptr, "頂点インプットレイアウトの作成に失敗しました", "エラー", MB_OK);
-			return hr;
-		}
-
-		SAFE_RELEASE(pCompileVS);
-
-		//ピクセルシェーダの作成（コンパイル）
-		ID3DBlob* pCompilePS = nullptr;
-		D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
-		assert(pCompilePS != nullptr);
-		hr = pDevice_->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &pPixelShader_);
-		if (FAILED(hr)) {
-			//エラー処理
-			MessageBox(nullptr, "ピクセルシェーダ―の作成に失敗しました", "エラー", MB_OK);
-			return hr;
-		}
-		SAFE_RELEASE(pCompilePS);
-
-		//ラスタライザ作成
-		D3D11_RASTERIZER_DESC rdc = {};
-		rdc.CullMode = D3D11_CULL_BACK;
-		rdc.FillMode = D3D11_FILL_SOLID;
-		rdc.FrontCounterClockwise = FALSE;
-		hr = pDevice_->CreateRasterizerState(&rdc, &pRasterizerState_);
-		if (FAILED(hr)) {
-			//エラー処理
-			MessageBox(nullptr, "ラスタライザの作成に失敗しました", "エラー", MB_OK);
-			return hr;
-		}
+	// 頂点シェーダの作成（コンパイル）
+	ID3DBlob* pCompileVS = nullptr;
+	D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
+	assert(pCompileVS != nullptr);
+	hr = pDevice_->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader_);
+	if (FAILED(hr)) {
+		//エラー処理
+		MessageBox(nullptr, "頂点シェーダ―の作成に失敗しました", "エラー", MB_OK);
+		return hr;
 	}
 
-	//2D用のシェーダー
-	else {
-		// 頂点シェーダの作成（コンパイル）
-		ID3DBlob* pCompileVS = nullptr;
-		D3DCompileFromFile(L"Simple2D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
-		assert(pCompileVS != nullptr);
-		hr = pDevice_->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader_);
-		if (FAILED(hr)) {
-			//エラー処理
-			MessageBox(nullptr, "頂点シェーダ―の作成に失敗しました", "エラー", MB_OK);
-			return hr;
-		}
+	//頂点インプットレイアウト
+	D3D11_INPUT_ELEMENT_DESC layout[] = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::XMVECTOR) , D3D11_INPUT_PER_VERTEX_DATA, 0 },	//UV座標
+		{ "NORMAL",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(DirectX::XMVECTOR) * 2 ,	D3D11_INPUT_PER_VERTEX_DATA, 0 },	//法線
+	};
+	hr = pDevice_->CreateInputLayout(layout, sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC), pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout_);
+	if (FAILED(hr)) {
+		//エラー処理
+		MessageBox(nullptr, "頂点インプットレイアウトの作成に失敗しました", "エラー", MB_OK);
+		return hr;
+	}
 
-		//頂点インプットレイアウト
-		std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::XMVECTOR) , D3D11_INPUT_PER_VERTEX_DATA, 0 },	//UV座標
-		};
-		hr = pDevice_->CreateInputLayout(layout.data(), (UINT)layout.size(), pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout_);
-		if (FAILED(hr)) {
-			//エラー処理
-			MessageBox(nullptr, "頂点インプットレイアウトの作成に失敗しました", "エラー", MB_OK);
-			return hr;
-		}
+	SAFE_RELEASE(pCompileVS);
 
-		//SAFE_RELEASE(pCompileVS);
+	//ピクセルシェーダの作成（コンパイル）
+	ID3DBlob* pCompilePS = nullptr;
+	D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
+	assert(pCompilePS != nullptr);
+	hr = pDevice_->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &pPixelShader_);
+	if (FAILED(hr)) {
+		//エラー処理
+		MessageBox(nullptr, "ピクセルシェーダ―の作成に失敗しました", "エラー", MB_OK);
+		return hr;
+	}
+	SAFE_RELEASE(pCompilePS);
 
-		// ピクセルシェーダの作成（コンパイル）
-		ID3DBlob* pCompilePS = nullptr;
-		D3DCompileFromFile(L"Simple2D.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
-		assert(pCompilePS != nullptr);
-		hr = pDevice_->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &pPixelShader_);
-		if (FAILED(hr)) {
-			//エラー処理
-			MessageBox(nullptr, "ピクセルシェーダ―の作成に失敗しました", "エラー", MB_OK);
-			return hr;
-		}
-		SAFE_RELEASE(pCompilePS);
-
-		//ラスタライザ作成
-		D3D11_RASTERIZER_DESC rdc = {};
-		rdc.CullMode = D3D11_CULL_BACK;
-		rdc.FillMode = D3D11_FILL_SOLID;
-		rdc.FrontCounterClockwise = FALSE;
-		hr = pDevice_->CreateRasterizerState(&rdc, &pRasterizerState_);
-		if (FAILED(hr)) {
-			//エラー処理
-			MessageBox(nullptr, "ラスタライザの作成に失敗しました", "エラー", MB_OK);
-			return hr;
-		}
+	//ラスタライザ作成
+	D3D11_RASTERIZER_DESC rdc = {};
+	rdc.CullMode = D3D11_CULL_BACK;
+	rdc.FillMode = D3D11_FILL_SOLID;
+	rdc.FrontCounterClockwise = FALSE;
+	hr = pDevice_->CreateRasterizerState(&rdc, &pRasterizerState_);
+	if (FAILED(hr)) {
+		//エラー処理
+		MessageBox(nullptr, "ラスタライザの作成に失敗しました", "エラー", MB_OK);
+		return hr;
 	}
 
 	//それぞれをデバイスコンテキストにセット

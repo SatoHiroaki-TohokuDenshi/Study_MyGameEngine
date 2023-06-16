@@ -66,7 +66,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	HRESULT hr = S_OK;
 
 	//Direct3D初期化
-	hr = Direct3D::Initialize(winW, winH, hWnd, true);
+	hr = Direct3D::Initialize(winW, winH, hWnd);
 	if (FAILED(hr)) {
 		//エラー処理
 		MessageBox(nullptr, "Direct3Dの初期化に失敗しました", "エラー", MB_OK);
