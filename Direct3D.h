@@ -15,10 +15,10 @@ namespace Direct3D {
 	extern ID3D11DeviceContext* pContext_;	//デバイスコンテキスト
 
 	//初期化
-	HRESULT Initialize(int winW, int winH, HWND hWnd);
+	HRESULT Initialize(int winW, int winH, HWND hWnd, bool is3D);
 
 	//シェーダー準備
-	HRESULT InitShader();
+	HRESULT InitShader(bool is3D);
 
 	//描画開始（下準備：画面を単色で初期化する）
 	void BeginDraw();
