@@ -10,6 +10,13 @@
 #define SAFE_DELETE(p) if(p != nullptr){ delete p; p = nullptr;}
 #define SAFE_RELEASE(p) if(p != nullptr){ p->Release(); p = nullptr;}
 
+struct Shaders {
+	ID3D11VertexShader* pVertexShader_;			//頂点シェーダー
+	ID3D11PixelShader* pPixelShader_;			//ピクセルシェーダー
+	ID3D11RasterizerState* pRasterizerState_;	//ラスタライザー
+	ID3D11InputLayout* pVertexLayout_;			//頂点インプットレイアウト
+};
+
 namespace Direct3D {
 	extern ID3D11Device* pDevice_;			//デバイス
 	extern ID3D11DeviceContext* pContext_;	//デバイスコンテキスト
@@ -19,6 +26,10 @@ namespace Direct3D {
 
 	//シェーダー準備
 	HRESULT InitShader();
+
+	//コンテキストの設定
+	//引数  0:3D用シェーダー  1:2D用シェーダー
+	void SetContext(int shaderNum);
 
 	//描画開始（下準備：画面を単色で初期化する）
 	void BeginDraw();

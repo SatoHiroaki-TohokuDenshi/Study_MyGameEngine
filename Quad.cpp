@@ -12,6 +12,7 @@ Quad::~Quad() {
 }
 
 HRESULT Quad::Initialize() {
+	Direct3D::SetContext(1);
 	HRESULT hr = S_OK;
 
 	// í∏ì_èÓïÒ
