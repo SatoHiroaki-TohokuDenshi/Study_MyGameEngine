@@ -1,27 +1,27 @@
-#include "Quad.h"
+#include "Sprite.h"
 #include "Camera.h"
 
-Quad::Quad():
+Sprite::Sprite() :
 	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr), pTexture_(nullptr), indexNum_(0)
 {
-}
-
-Quad::~Quad() {
 
 }
 
-HRESULT Quad::Initialize() {
-	Direct3D::SetContext(0);
+Sprite::~Sprite() {
 
+}
+
+HRESULT Sprite::Initialize() {
+	Direct3D::SetContext(1);
 	HRESULT hr = S_OK;
 
 	// 頂点情報
-	VERTEX vertices[] = {
-		  //頂点座標							 UV座標								  法線ベクトル
-		{ XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f) },   // 四角形の頂点（左上）
-		{ XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f) },   // 四角形の頂点（右上）
-		{ XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f) },   // 四角形の頂点（右下）
-		{ XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f) },   // 四角形の頂点（左下）
+	Sprite::VERTEX vertices[] = {
+		//頂点座標							 UV座標								  法線ベクトル
+	  { XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) },   // 四角形の頂点（左上）
+	  { XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f) },   // 四角形の頂点（右上）
+	  { XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f) },   // 四角形の頂点（右下）
+	  { XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) },   // 四角形の頂点（左下）
 	};
 
 	// 頂点データ用バッファの設定
@@ -93,7 +93,7 @@ HRESULT Quad::Initialize() {
 	return hr;
 }
 
-void Quad::Draw(XMMATRIX& worldMatrix) {
+void Sprite::Draw(XMMATRIX& worldMatrix) {
 	PassInfoConstantBuffer(worldMatrix);
 
 	//頂点バッファ
@@ -114,7 +114,7 @@ void Quad::Draw(XMMATRIX& worldMatrix) {
 	Direct3D::pContext_->DrawIndexed(indexNum_, 0, 0);
 }
 
-void Quad::Release() {
+void Sprite::Release() {
 	pTexture_->Release();
 	SAFE_DELETE(pTexture_);
 
@@ -123,10 +123,9 @@ void Quad::Release() {
 	SAFE_RELEASE(pIndexBuffer_);
 }
 
-void Quad::PassInfoConstantBuffer(XMMATRIX& worldMatrix) {
+void Sprite::PassInfoConstantBuffer(XMMATRIX& worldMatrix) {
 	//コンスタントバッファに渡す情報
 	CONSTANT_BUFFER cb;
-	cb.matWVP = XMMatrixTranspose(worldMatrix * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 	cb.matW = XMMatrixTranspose(worldMatrix);
 
 	D3D11_MAPPED_SUBRESOURCE pdata;

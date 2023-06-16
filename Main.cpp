@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Quad.h"
 #include "Dice.h"
+#include "Sprite.h"
 
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";			//ウィンドウクラス名
@@ -14,6 +15,7 @@ const int WINDOW_HEIGHT = 600;		//ウィンドウの高さ
 //ポリゴン表示（お試し）
 Quad* pQuad = nullptr;
 Dice* pDice = nullptr;
+Sprite* pSprite = nullptr;
 
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -94,6 +96,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		PostQuitMessage(0);  //プログラム終了
 		return 0;
 	}
+	pSprite = new Sprite;
+	hr = pSprite->Initialize();
+	if (FAILED(hr)) {
+		//エラー処理
+		MessageBox(nullptr, "インスタンス\"Dice\"の初期化に失敗しました", "エラー", MB_OK);
+		PostQuitMessage(0);  //プログラム終了
+		return 0;
+	}
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
@@ -117,9 +127,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Direct3D::BeginDraw();		//バックバッファの初期化
 
 			static XMMATRIX mat = XMMatrixIdentity();
-			mat *= XMMatrixRotationX(XMConvertToRadians(0.02f)) * XMMatrixRotationY(XMConvertToRadians(0.02f)) * XMMatrixRotationZ(XMConvertToRadians(0.02f));
-			pQuad->Draw(mat);
+			//mat *= XMMatrixRotationX(XMConvertToRadians(0.02f)) * XMMatrixRotationY(XMConvertToRadians(0.02f)) * XMMatrixRotationZ(XMConvertToRadians(0.02f));
+			//pQuad->Draw(mat);
 			//pDice->Draw(mat);
+			pSprite->Draw(mat);
 
 			Direct3D::EndDraw();		//バッファの入れ替え
 		}
@@ -130,6 +141,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	SAFE_DELETE(pQuad);
 	SAFE_RELEASE(pDice);
 	SAFE_DELETE(pDice);
+	SAFE_RELEASE(pSprite);
+	SAFE_DELETE(pSprite);
 	Direct3D::Release();
 
 	return 0;
