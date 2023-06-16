@@ -12,7 +12,6 @@ Sprite::~Sprite() {
 }
 
 HRESULT Sprite::Initialize() {
-	Direct3D::SetContext(1);
 	HRESULT hr = S_OK;
 
 	// 頂点情報
@@ -94,6 +93,7 @@ HRESULT Sprite::Initialize() {
 }
 
 void Sprite::Draw(XMMATRIX& worldMatrix) {
+	Direct3D::SetContext(1);
 	PassInfoConstantBuffer(worldMatrix);
 
 	//頂点バッファ

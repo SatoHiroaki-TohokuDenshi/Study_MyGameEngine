@@ -11,8 +11,6 @@ Quad::~Quad() {
 }
 
 HRESULT Quad::Initialize() {
-	Direct3D::SetContext(0);
-
 	HRESULT hr = S_OK;
 
 	// 頂点情報
@@ -94,6 +92,8 @@ HRESULT Quad::Initialize() {
 }
 
 void Quad::Draw(XMMATRIX& worldMatrix) {
+	Direct3D::SetContext(0);
+
 	PassInfoConstantBuffer(worldMatrix);
 
 	//頂点バッファ
