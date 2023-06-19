@@ -95,9 +95,8 @@ HRESULT Sprite::Initialize() {
 	return hr;
 }
 
-void Sprite::Draw(XMMATRIX& worldMatrix, int winW, int winH) {
+void Sprite::Draw(XMMATRIX& worldMatrix) {
 	Direct3D::SetContext(1);
-	XMMATRIX matW = worldMatrix * XMMatrixScaling();
 	PassInfoConstantBuffer(worldMatrix);
 
 	//頂点バッファ

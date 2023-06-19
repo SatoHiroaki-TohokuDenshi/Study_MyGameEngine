@@ -130,7 +130,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			XMMATRIX Wmat = Imat * XMMatrixRotationX(XMConvertToRadians(0.02f)) * XMMatrixRotationY(XMConvertToRadians(0.02f)) * XMMatrixRotationZ(XMConvertToRadians(0.02f));
 			//pQuad->Draw(mat);
 			pDice->Draw(Wmat);
-			pSprite->Draw(Imat, winW, winH);
+			pSprite->Draw(Imat);
 
 			Direct3D::EndDraw();		//バッファの入れ替え
 		}

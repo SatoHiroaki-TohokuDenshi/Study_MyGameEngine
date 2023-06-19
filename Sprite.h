@@ -31,7 +31,7 @@ public:
 	Sprite();
 	virtual ~Sprite();
 	virtual HRESULT Initialize();
-	void Draw(XMMATRIX& worldMatrix, int winW, int winH);
+	void Draw(XMMATRIX& worldMatrix);
 	void Release();
 
 	void PassInfoConstantBuffer(XMMATRIX& worldMatrix);
