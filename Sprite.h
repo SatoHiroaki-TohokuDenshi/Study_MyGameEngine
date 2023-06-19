@@ -24,11 +24,14 @@ protected:
 
 	Texture* pTexture_;				//テクスチャ情報
 	int indexNum_;					//頂点インデックスの要素数
+
+	float width_;
+	float height_;
 public:
 	Sprite();
 	virtual ~Sprite();
 	virtual HRESULT Initialize();
-	void Draw(XMMATRIX& worldMatrix);
+	void Draw(XMMATRIX& worldMatrix, int winW, int winH);
 	void Release();
 
 	void PassInfoConstantBuffer(XMMATRIX& worldMatrix);

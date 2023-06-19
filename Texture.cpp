@@ -5,7 +5,7 @@
 #pragma comment(lib, "DirectXTex.lib")
 
 Texture::Texture() :
-	pSampler_(nullptr), pSRV_(nullptr)
+	pSampler_(nullptr), pSRV_(nullptr), width_(0), height_(0), depth_(0)
 {
 	Release();
 }
@@ -31,6 +31,9 @@ HRESULT Texture::Load(std::string fileName) {
 		MessageBox(nullptr, "画像の読み込みに失敗しました", "エラー", MB_OK);
 		return hr;
 	}
+	width_ = metadata.width;
+	height_ = metadata.height;
+	depth_ = metadata.depth;
 
 	//サンプラーの作成
 	D3D11_SAMPLER_DESC  SamDesc;

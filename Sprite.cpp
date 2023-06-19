@@ -2,7 +2,8 @@
 #include "Camera.h"
 
 Sprite::Sprite() :
-	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr), pTexture_(nullptr), indexNum_(0)
+	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr), pTexture_(nullptr), indexNum_(0),
+	width_(0.0f), height_(0.0f)
 {
 
 }
@@ -88,12 +89,15 @@ HRESULT Sprite::Initialize() {
 		MessageBox(nullptr, "テクスチャの読み込みに失敗しました", "エラー", MB_OK);
 		return hr;
 	}
+	width_ = (float)pTexture_->GetWidth();
+	height_ = (float)pTexture_->GetHeight();
 
 	return hr;
 }
 
-void Sprite::Draw(XMMATRIX& worldMatrix) {
+void Sprite::Draw(XMMATRIX& worldMatrix, int winW, int winH) {
 	Direct3D::SetContext(1);
+	XMMATRIX matW = worldMatrix * XMMatrixScaling();
 	PassInfoConstantBuffer(worldMatrix);
 
 	//頂点バッファ
