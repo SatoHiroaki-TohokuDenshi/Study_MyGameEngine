@@ -14,10 +14,15 @@ Transform::~Transform() {
 
 //各行列の計算
 void Transform::Calclation() {
-	
+	//移動行列
+	matTranslate_ = XMMatrixTranslation(position_.x, position_.y, position_.z);
+	//回転行列
+	matRotate_ = XMMatrixRotationZ(rotate_.z) * XMMatrixRotationX(rotate_.x) * XMMatrixRotationY(rotate_.y);
+	//拡大縮小行列
+	matScale_ = XMMatrixScaling(rotate_.x, rotate_.y, rotate_.z);
 }
 
 //ワールド行列を取得
 XMMATRIX Transform::GetWorldMatrix() {
-	return ;
+	return matScale_ * matRotate_ * matTranslate_;
 }
