@@ -10,7 +10,13 @@
 #define SAFE_DELETE(p) if(p != nullptr){ delete p; p = nullptr;}
 #define SAFE_RELEASE(p) if(p != nullptr){ p->Release(); p = nullptr;}
 
-struct Shaders {
+enum SHADER_TYPE {
+	SHADER_3D = 0,
+	SHADER_2D,
+	SHADER_MAX,
+};
+
+struct ShaderBundle {
 	ID3D11VertexShader* pVertexShader_;			//頂点シェーダー
 	ID3D11PixelShader* pPixelShader_;			//ピクセルシェーダー
 	ID3D11RasterizerState* pRasterizerState_;	//ラスタライザー
@@ -26,10 +32,12 @@ namespace Direct3D {
 
 	//シェーダー準備
 	HRESULT InitShader();
+	HRESULT Init3DShader();
+	HRESULT Init2DShader();
 
 	//コンテキストの設定
 	//引数  0:3D用シェーダー  1:2D用シェーダー
-	void SetContext(int shaderNum);
+	void SetContext(SHADER_TYPE type);
 
 	//描画開始（下準備：画面を単色で初期化する）
 	void BeginDraw();

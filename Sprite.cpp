@@ -96,7 +96,7 @@ HRESULT Sprite::Initialize() {
 }
 
 void Sprite::Draw(XMMATRIX& worldMatrix) {
-	Direct3D::SetContext(1);
+	Direct3D::SetContext(SHADER_2D);
 	PassInfoConstantBuffer(worldMatrix);
 
 	//頂点バッファ

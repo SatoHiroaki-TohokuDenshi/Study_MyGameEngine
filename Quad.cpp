@@ -92,7 +92,7 @@ HRESULT Quad::Initialize() {
 }
 
 void Quad::Draw(XMMATRIX& worldMatrix) {
-	Direct3D::SetContext(0);
+	Direct3D::SetContext(SHADER_3D);
 
 	PassInfoConstantBuffer(worldMatrix);
 
