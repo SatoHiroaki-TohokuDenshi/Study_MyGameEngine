@@ -269,7 +269,7 @@ void Direct3D::EndDraw() {
 
 //‰ğ•úˆ—
 void Direct3D::Release() {
-	for (int i = 0; i < 2; i++) {
+	for (auto i = 0; i < SHADER_MAX; i++) {
 		SAFE_RELEASE(shaderStruct[i].pRasterizerState_);
 		SAFE_RELEASE(shaderStruct[i].pVertexLayout_);
 		SAFE_RELEASE(shaderStruct[i].pPixelShader_);
