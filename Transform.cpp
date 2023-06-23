@@ -26,3 +26,8 @@ void Transform::Calclation() {
 XMMATRIX Transform::GetWorldMatrix() {
 	return matScale_ * matRotate_ * matTranslate_;
 }
+
+//法線変形用行列を取得
+XMMATRIX Transform::GetNormalMatrix() {
+	return matRotate_ * XMMatrixInverse(nullptr, matScale_);
+}
