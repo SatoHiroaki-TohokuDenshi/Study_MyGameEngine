@@ -1,71 +1,154 @@
 #include "Sprite.h"
+
+#include "Sprite.h"
 #include "Camera.h"
 
+
+//コンストラクタ
 Sprite::Sprite() :
-	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr), pTexture_(nullptr), indexNum_(0),
-	width_(0.0f), height_(0.0f)
+	vertexNum_(0), pVertexBuffer_(nullptr),		//頂点バッファ
+	indexNum(0), pIndexBuffer_(nullptr),		//インデックスバッファ
+	pConstantBuffer_(nullptr),					//コンスタントバッファ
+	pTexture_(nullptr)							//テクスチャ
 {
-
 }
 
+//デストラクタ
 Sprite::~Sprite() {
-
+	Release();
 }
 
+//初期化
 HRESULT Sprite::Initialize() {
-	HRESULT hr = S_OK;
+	//頂点情報
+	InitVertexData();					//頂点データの初期化
+	if (FAILED(CreateVertexBuffer())) {	//頂点バッファ作成
+		return E_FAIL;
+	}
 
+	//インデックス情報
+	InitIndexData();					//インデックスデータの初期化
+	if (FAILED(CreateIndexBuffer())) {	//インデックスバッファ作成
+		return E_FAIL;
+	}
+
+	//コンスタントバッファ作成
+	if (FAILED(CreateConstantBuffer())) {
+		return E_FAIL;
+	}
+
+	//テクスチャのロード
+	if (FAILED(LoadTexture())) {
+		return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+
+//描画
+void Sprite::Draw(Transform& transform) {
+	Direct3D::SetContext(SHADER_2D);		//シェーダーの指定
+
+	transform.Calclation();//トランスフォームを計算
+
+	//コンスタントバッファに情報を渡す
+	PassDataToCB(transform.GetWorldMatrix());
+
+	//頂点バッファ、インデックスバッファ、コンスタントバッファをパイプラインにセット
+	SetBufferToPipeline();
+
+	//描画
+	Direct3D::pContext_->DrawIndexed((UINT)indexNum, 0, 0);
+}
+
+//解放
+void Sprite::Release() {
+	SAFE_DELETE(pTexture_);
+	SAFE_RELEASE(pConstantBuffer_);
+	SAFE_RELEASE(pIndexBuffer_);
+	SAFE_RELEASE(pVertexBuffer_);
+}
+
+
+///////////////ここからはprivate関数///////////////
+
+//頂点情報の準備
+void Sprite::InitVertexData() {
 	// 頂点情報
-	Sprite::VERTEX vertices[] = {
-		//頂点座標							 UV座標								  法線ベクトル
-	  { XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) },   // 四角形の頂点（左上）
-	  { XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f) },   // 四角形の頂点（右上）
-	  { XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f) },   // 四角形の頂点（右下）
-	  { XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) },   // 四角形の頂点（左下）
+	vertices_ = {
+		{ XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) },	// 四角形の頂点（左上）
+		{ XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f) },	// 四角形の頂点（右上）
+		{ XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f) },	// 四角形の頂点（右下）
+		{ XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) },	// 四角形の頂点（左下）		
 	};
 
-	// 頂点データ用バッファの設定
+	//頂点の数
+	vertexNum_ = vertices_.size();	//全データのサイズ　÷　1頂点分のサイズ　＝　頂点数
+
+	//メンバ変数へコピー
+	//vertices_ = new VERTEX[vertexNum_];				//必要なサイズの配列にして
+	//memcpy(vertices_, vertices, sizeof(vertices));	//コピー
+}
+
+//頂点バッファを作成
+HRESULT Sprite::CreateVertexBuffer() {
+	HRESULT hr;
 	D3D11_BUFFER_DESC bd_vertex;
-	bd_vertex.ByteWidth = sizeof(vertices);
+	bd_vertex.ByteWidth = (UINT)(sizeof(VERTEX) * vertexNum_);
 	bd_vertex.Usage = D3D11_USAGE_DEFAULT;
 	bd_vertex.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd_vertex.CPUAccessFlags = 0;
 	bd_vertex.MiscFlags = 0;
 	bd_vertex.StructureByteStride = 0;
 	D3D11_SUBRESOURCE_DATA data_vertex;
-	data_vertex.pSysMem = vertices;
+	data_vertex.pSysMem = vertices_.data();
 	hr = Direct3D::pDevice_->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
-	if (FAILED(hr)) {
-		//エラー処理
-		MessageBox(nullptr, "頂点バッファの作成に失敗しました", "エラー", MB_OK);
+	if (FAILED(hr))
+	{
+		MessageBox(NULL, "頂点バッファの作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
+	return S_OK;
+}
 
-	//インデックス情報
-	int index[] = { 0,2,3, 0,1,2 };
-	indexNum_ = sizeof(index) / sizeof(int);
+//インデックス情報を準備
+void Sprite::InitIndexData() {
+	index_ = { 0,2,3, 0,1,2 };
 
-	// インデックスバッファを生成する
+	//インデックス数
+	indexNum = index_.size();
+
+	//メンバ変数へコピー
+	//index_ = new int[indexNum];
+	//memcpy(index_, index, sizeof(index));
+}
+
+//インデックスバッファを作成
+HRESULT Sprite::CreateIndexBuffer() {
 	D3D11_BUFFER_DESC   bd;
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(index);
+	bd.ByteWidth = (UINT)(sizeof(int) * indexNum);
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = index;
+	InitData.pSysMem = index_.data();
 	InitData.SysMemPitch = 0;
 	InitData.SysMemSlicePitch = 0;
+
+	HRESULT hr;
 	hr = Direct3D::pDevice_->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
 	if (FAILED(hr)) {
-		//エラー処理
-		MessageBox(nullptr, "インデックスバッファの作成に失敗しました", "エラー", MB_OK);
+		MessageBox(NULL, "インデックスバッファの作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
+	return S_OK;
+}
 
-
-	//コンスタントバッファ作成
+//コンスタントバッファ作成
+HRESULT Sprite::CreateConstantBuffer() {
 	D3D11_BUFFER_DESC cb;
 	cb.ByteWidth = sizeof(CONSTANT_BUFFER);
 	cb.Usage = D3D11_USAGE_DYNAMIC;
@@ -75,59 +158,30 @@ HRESULT Sprite::Initialize() {
 	cb.StructureByteStride = 0;
 
 	// コンスタントバッファの作成
+	HRESULT hr;
 	hr = Direct3D::pDevice_->CreateBuffer(&cb, nullptr, &pConstantBuffer_);
 	if (FAILED(hr)) {
-		//エラー処理
-		MessageBox(nullptr, "コンスタントバッファの作成に失敗しました", "エラー", MB_OK);
+		MessageBox(NULL, "コンスタントバッファの作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
+	return S_OK;
+}
 
+//テクスチャをロード
+HRESULT Sprite::LoadTexture() {
 	pTexture_ = new Texture;
-	hr = pTexture_->Load("Assets\\dice.png");
+
+	HRESULT hr;
+	hr = pTexture_->Load("Assets\\Dice.png");
 	if (FAILED(hr)) {
-		//エラー処理
-		MessageBox(nullptr, "テクスチャの読み込みに失敗しました", "エラー", MB_OK);
+		MessageBox(NULL, "テクスチャの読み込みに失敗しました", "エラー", MB_OK);
 		return hr;
 	}
-	width_ = (float)pTexture_->GetWidth();
-	height_ = (float)pTexture_->GetHeight();
-
-	return hr;
+	return S_OK;
 }
 
-void Sprite::Draw(XMMATRIX& worldMatrix) {
-	Direct3D::SetContext(SHADER_2D);
-	PassInfoConstantBuffer(worldMatrix);
-
-	//頂点バッファ
-	UINT stride = sizeof(VERTEX);
-	UINT offset = 0;
-	Direct3D::pContext_->IASetVertexBuffers(0, 1, &pVertexBuffer_, &stride, &offset);
-
-	// インデックスバッファーをセット
-	stride = sizeof(int);
-	offset = 0;
-	Direct3D::pContext_->IASetIndexBuffer(pIndexBuffer_, DXGI_FORMAT_R32_UINT, 0);
-
-	//コンスタントバッファ
-	Direct3D::pContext_->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
-	Direct3D::pContext_->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
-
-	//描画!!
-	Direct3D::pContext_->DrawIndexed(indexNum_, 0, 0);
-}
-
-void Sprite::Release() {
-	pTexture_->Release();
-	SAFE_DELETE(pTexture_);
-
-	SAFE_RELEASE(pConstantBuffer_);
-	SAFE_RELEASE(pIndexBuffer_);
-	SAFE_RELEASE(pIndexBuffer_);
-}
-
-void Sprite::PassInfoConstantBuffer(XMMATRIX& worldMatrix) {
-	//コンスタントバッファに渡す情報
+//コンスタントバッファに各種情報を渡す
+void Sprite::PassDataToCB(XMMATRIX worldMatrix) {
 	CONSTANT_BUFFER cb;
 	cb.matW = XMMatrixTranspose(worldMatrix);
 
@@ -142,4 +196,21 @@ void Sprite::PassInfoConstantBuffer(XMMATRIX& worldMatrix) {
 	Direct3D::pContext_->PSSetShaderResources(0, 1, &pSRV);
 
 	Direct3D::pContext_->Unmap(pConstantBuffer_, 0);	//再開
+}
+
+//各バッファをパイプラインにセット
+void Sprite::SetBufferToPipeline() {
+	//頂点バッファ
+	UINT stride = sizeof(VERTEX);
+	UINT offset = 0;
+	Direct3D::pContext_->IASetVertexBuffers(0, 1, &pVertexBuffer_, &stride, &offset);
+
+	// インデックスバッファーをセット
+	stride = sizeof(int);
+	offset = 0;
+	Direct3D::pContext_->IASetIndexBuffer(pIndexBuffer_, DXGI_FORMAT_R32_UINT, 0);
+
+	//コンスタントバッファ
+	Direct3D::pContext_->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
+	Direct3D::pContext_->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
 }

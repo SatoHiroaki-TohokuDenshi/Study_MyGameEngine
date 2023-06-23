@@ -1,38 +1,70 @@
 #pragma once
-#include <DirectXMath.h>
 #include "Direct3D.h"
 #include "Texture.h"
+#include <vector>
+#include "Transform.h"
 
-using namespace DirectX;
 
+
+#define SAFE_DELETE_ARRAY(p) if(p != nullptr){ delete[] p; p = nullptr;}
+
+
+
+//2次元画像を四角形ポリゴンに表示するクラス
 class Sprite {
-	//コンスタントバッファー
+	//コンスタントバッファーに渡す情報をまとめた構造体
 	struct CONSTANT_BUFFER {
-		XMMATRIX	matW;
+		XMMATRIX	matW;		//ワールド行列
 	};
 
 	//頂点情報
-	struct VERTEX
-	{
-		XMVECTOR position;	//位置情報
-		XMVECTOR uv;		//UV座標
+	struct VERTEX {
+		XMVECTOR position;	//位置
+		XMVECTOR uv;		//UV
 	};
+
 protected:
+	uint64_t vertexNum_;			//頂点数
+	std::vector<VERTEX> vertices_;	//頂点情報
 	ID3D11Buffer* pVertexBuffer_;	//頂点バッファ
+
+	uint64_t indexNum;				//インデックス数
+	std::vector<int> index_;		//インデックス情報
 	ID3D11Buffer* pIndexBuffer_;	//インデックスバッファ
+
 	ID3D11Buffer* pConstantBuffer_;	//コンスタントバッファ
 
-	Texture* pTexture_;				//テクスチャ情報
-	int indexNum_;					//頂点インデックスの要素数
+	Texture* pTexture_;				//テクスチャ
 
-	float width_;
-	float height_;
 public:
 	Sprite();
-	virtual ~Sprite();
-	virtual HRESULT Initialize();
-	void Draw(XMMATRIX& worldMatrix);
+	~Sprite();
+
+	//初期化（ポリゴンを表示するための各種情報を準備）
+	//戻値：成功／失敗
+	HRESULT Initialize();
+
+	//描画
+	//引数：transform	トランスフォームクラスオブジェクト
+	void Draw(Transform& transform);
+
+	//解放
 	void Release();
 
-	void PassInfoConstantBuffer(XMMATRIX& worldMatrix);
+private:
+	//---------Initializeから呼ばれる関数---------//
+	virtual void InitVertexData();		//頂点情報の準備
+	HRESULT CreateVertexBuffer();		//頂点バッファを作成
+
+	virtual void InitIndexData();		//インデックス情報を準備
+	HRESULT CreateIndexBuffer();		//インデックスバッファを作成
+
+	HRESULT CreateConstantBuffer();		//コンスタントバッファ作成
+
+	HRESULT LoadTexture();				//テクスチャをロード
+
+
+	//---------Draw関数から呼ばれる関数---------//
+	void PassDataToCB(XMMATRIX worldMatrix);	//コンスタントバッファに各種情報を渡す
+	void SetBufferToPipeline();					//各バッファをパイプラインにセット
 };
