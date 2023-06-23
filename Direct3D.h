@@ -1,27 +1,24 @@
 #pragma once
+
 #include <d3d11.h>
-#include <cassert>
+#include <DirectXMath.h>
+
+#define SAFE_RELEASE(p) if(p != nullptr){ p->Release(); p = nullptr;}
+#define SAFE_DELETE(p)  if(p != nullptr){ delete p; p = nullptr;}
 
 //リンカ
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
-//安全に開放するマクロ
-#define SAFE_DELETE(p) if(p != nullptr){ delete p; p = nullptr;}
-#define SAFE_RELEASE(p) if(p != nullptr){ p->Release(); p = nullptr;}
+using namespace DirectX;
 
+//シェーダーの種類
 enum SHADER_TYPE {
-	SHADER_3D = 0,
-	SHADER_2D,
+	SHADER_2D,		//2D用シェーダー
+	SHADER_3D,		//3D用シェーダー
 	SHADER_MAX,
 };
 
-struct ShaderBundle {
-	ID3D11VertexShader* pVertexShader_;			//頂点シェーダー
-	ID3D11PixelShader* pPixelShader_;			//ピクセルシェーダー
-	ID3D11RasterizerState* pRasterizerState_;	//ラスタライザー
-	ID3D11InputLayout* pVertexLayout_;			//頂点インプットレイアウト
-};
 
 namespace Direct3D {
 	extern ID3D11Device* pDevice_;			//デバイス
@@ -32,17 +29,15 @@ namespace Direct3D {
 
 	//シェーダー準備
 	HRESULT InitShader();
-	HRESULT Init3DShader();
-	HRESULT Init2DShader();
+	HRESULT InitShader3D();
+	HRESULT InitShader2D();
 
-	//コンテキストの設定
-	//引数  0:3D用シェーダー  1:2D用シェーダー
-	void SetContext(SHADER_TYPE type);
+	void SetShader(SHADER_TYPE type);
 
-	//描画開始（下準備：画面を単色で初期化する）
+	//描画開始
 	void BeginDraw();
 
-	//描画終了（完了：画面を表示させる）
+	//描画終了
 	void EndDraw();
 
 	//解放
