@@ -48,7 +48,7 @@ HRESULT Sprite::Initialize() {
 
 //描画
 void Sprite::Draw(Transform& transform) {
-	Direct3D::SetContext(SHADER_2D);		//シェーダーの指定
+	Direct3D::SetShader(SHADER_2D);		//シェーダーの指定
 
 	transform.Calclation();//トランスフォームを計算
 
