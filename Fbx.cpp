@@ -1,44 +1,46 @@
-#include "Quad.h"
+#include "Fbx.h"
+#include "Direct3D.h"
 #include "Camera.h"
 
-Quad::Quad() :
-	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr),
-	pConstantBuffer_(nullptr), pTexture_(nullptr), vertexNum_(0), indexNum_(0)
+Fbx::Fbx()
+	:vertexCount_(0), polygonCount_(0),
+	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
+	pTexture_(nullptr)
 {
 }
 
-Quad::~Quad() {
-	Release();
-}
+HRESULT Fbx::Load(std::string fileName) {
+	//マネージャを生成
+	FbxManager* pFbxManager = FbxManager::Create();
 
-//初期化
-HRESULT Quad::Initialize() {
-	//頂点情報の初期化
-	InitVertexData();
-	if (FAILED(CreateVertexBuffer())) {
-		return E_FAIL;
-	}
+	//インポーターを生成
+	FbxImporter* fbxImporter = FbxImporter::Create(pFbxManager, "imp");
+	fbxImporter->Initialize(fileName.c_str(), -1, pFbxManager->GetIOSettings());
 
-	//インデックス情報の初期化
-	InitIndexData();
-	if (FAILED(CreateIndexBuffer())) {
-		return E_FAIL;
-	}
+	//シーンオブジェクトにFBXファイルの情報を流し込む
+	FbxScene* pFbxScene = FbxScene::Create(pFbxManager, "fbxscene");
+	fbxImporter->Import(pFbxScene);
+	fbxImporter->Destroy();
 
-	if (FAILED(CreateConstantBuffer())) {
-		return E_FAIL;
-	}
+	//メッシュ情報を取得
+	FbxNode* rootNode = pFbxScene->GetRootNode();
+	FbxNode* pNode = rootNode->GetChild(0);
+	FbxMesh* mesh = pNode->GetMesh();
 
-	//テクスチャのロード
-	if (FAILED(LoadTexture())) {
-		return E_FAIL;
-	}
+	//各情報の個数を取得
+	vertexCount_ = mesh->GetControlPointsCount();	//頂点の数
+	polygonCount_ = mesh->GetPolygonCount();	//ポリゴンの数
 
+	InitVertex(mesh);		//頂点バッファ準備
+	InitIndex(mesh);		//インデックスバッファ準備
+	InitConstantBuffer();	//コンスタントバッファ準備
+
+	//マネージャ解放
+	pFbxManager->Destroy();
 	return S_OK;
 }
 
-//描画
-void Quad::Draw(Transform& transform) {
+void Fbx::Draw(Transform& transform) {
 	//シェーダーの設定
 	Direct3D::SetShader(SHADER_3D);
 	transform.Calclation();//トランスフォームを計算
@@ -49,43 +51,43 @@ void Quad::Draw(Transform& transform) {
 	SetBufferToPipeline();
 
 	//描画
-	Direct3D::pContext_->DrawIndexed((UINT)index_.size(), 0, 0);
+	Direct3D::pContext_->DrawIndexed((UINT)(polygonCount_ * 3), 0, 0);
 }
 
-//開放
-void Quad::Release() {
-	SAFE_RELEASE(pConstantBuffer_);
-	SAFE_RELEASE(pIndexBuffer_);
+void Fbx::Release() {
 	SAFE_RELEASE(pVertexBuffer_);
+	SAFE_RELEASE(pIndexBuffer_);
+	SAFE_RELEASE(pConstantBuffer_);
 }
 
+//頂点バッファ準備
+HRESULT Fbx::InitVertex(fbxsdk::FbxMesh* mesh) {
+	//頂点情報を入れる配列
+	VERTEX* vertices = new VERTEX[vertexCount_];
 
-//-----以下プライベート関数-----//
+	//全ポリゴン
+	for (DWORD poly = 0; poly < (unsigned)polygonCount_; poly++) {
+		//3頂点分
+		for (int vertex = 0; vertex < 3; vertex++) {
+			//調べる頂点の番号
+			int index = mesh->GetPolygonVertex(poly, vertex);
 
-//頂点情報の初期化
-void Quad::InitVertexData() {
-	// 頂点情報
-	vertices_ = {
-		{XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f,  0.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f)},// 四角形の頂点（左上）
-		{XMVectorSet( 1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f,  0.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f)},// 四角形の頂点（右上）
-		{XMVectorSet( 1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f)},// 四角形の頂点（右下）
-		{XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f)}	// 四角形の頂点（左下）		
-	};
-	vertexNum_ = (int)vertices_.size();
-}
+			//頂点の位置
+			FbxVector4 pos = mesh->GetControlPointAt(index);
+			vertices[index].position = XMVectorSet((float)pos[0], (float)pos[1], (float)pos[2], 0.0f);
+		}
+	}
 
-//頂点バッファを作成
-HRESULT Quad::CreateVertexBuffer() {
 	HRESULT hr;			//エラー処理用変数
 	D3D11_BUFFER_DESC bd_vertex;
-	bd_vertex.ByteWidth = sizeof(VERTEX) * vertexNum_;
+	bd_vertex.ByteWidth = sizeof(VERTEX) * vertexCount_;
 	bd_vertex.Usage = D3D11_USAGE_DEFAULT;
 	bd_vertex.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd_vertex.CPUAccessFlags = 0;
 	bd_vertex.MiscFlags = 0;
 	bd_vertex.StructureByteStride = 0;
 	D3D11_SUBRESOURCE_DATA data_vertex;
-	data_vertex.pSysMem = vertices_.data();
+	data_vertex.pSysMem = vertices;
 	hr = Direct3D::pDevice_->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
 	if (FAILED(hr)) {
 		MessageBox(NULL, "頂点バッファの作成に失敗しました", "エラー", MB_OK);
@@ -94,25 +96,29 @@ HRESULT Quad::CreateVertexBuffer() {
 	return S_OK;
 }
 
-//インデックス情報を準備
-void Quad::InitIndexData() {
-	index_ = { 0,2,3, 0,1,2 };
+//インデックスバッファ準備
+HRESULT Fbx::InitIndex(fbxsdk::FbxMesh* mesh) {
+	int* index = new int[polygonCount_ * 3];
+	int count = 0;
 
-	//インデックス数
-	indexNum_ = (int)index_.size();
-}
+	//全ポリゴン
+	for (DWORD poly = 0; poly < (unsigned)polygonCount_; poly++) {
+		//3頂点分
+		for (DWORD vertex = 0; vertex < 3; vertex++) {
+			index[count] = mesh->GetPolygonVertex(poly, vertex);
+			count++;
+		}
+	}
 
-//インデックスバッファを作成
-HRESULT Quad::CreateIndexBuffer() {
 	D3D11_BUFFER_DESC   bd;
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(int) * indexNum_;
+	bd.ByteWidth = sizeof(int) * vertexCount_;
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = index_.data();
+	InitData.pSysMem = index;
 	InitData.SysMemPitch = 0;
 	InitData.SysMemSlicePitch = 0;
 
@@ -125,9 +131,8 @@ HRESULT Quad::CreateIndexBuffer() {
 	return S_OK;
 }
 
-
-//コンスタントバッファ作成
-HRESULT Quad::CreateConstantBuffer() {
+//コンスタントバッファ準備
+HRESULT Fbx::InitConstantBuffer() {
 	D3D11_BUFFER_DESC cb;
 	cb.ByteWidth = sizeof(CONSTANT_BUFFER);
 	cb.Usage = D3D11_USAGE_DYNAMIC;
@@ -146,22 +151,8 @@ HRESULT Quad::CreateConstantBuffer() {
 	return S_OK;
 }
 
-//テクスチャをロード
-HRESULT Quad::LoadTexture() {
-	pTexture_ = new Texture;
-
-	HRESULT hr;
-	hr = pTexture_->Load("Assets\\Dice.png");
-	if (FAILED(hr)) {
-		MessageBox(NULL, "テクスチャの作成に失敗しました", "エラー", MB_OK);
-		return hr;
-	}
-	return S_OK;
-}
-
-
 //コンスタントバッファに各種情報を渡す
-void Quad::PassDataToCB(Transform transform) {
+void Fbx::PassDataToCB(Transform transform) {
 	CONSTANT_BUFFER cb;
 	cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 	cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
@@ -182,7 +173,7 @@ void Quad::PassDataToCB(Transform transform) {
 }
 
 //各バッファをパイプラインにセット
-void Quad::SetBufferToPipeline() {
+void Fbx::SetBufferToPipeline() {
 	//頂点バッファ
 	UINT stride = sizeof(VERTEX);
 	UINT offset = 0;
@@ -197,5 +188,5 @@ void Quad::SetBufferToPipeline() {
 	Direct3D::pContext_->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
 	Direct3D::pContext_->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
 
-	Direct3D::pContext_->DrawIndexed(indexNum_, 0, 0);
+	Direct3D::pContext_->DrawIndexed(vertexCount_, 0, 0);
 }

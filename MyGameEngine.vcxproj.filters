@@ -13,54 +13,66 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{322d40d8-c59f-425c-a048-551f205d44aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Something">
+      <UniqueIdentifier>{05e3d4ab-76cc-4e55-bcf8-4aa07ae58dec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Direct3D.cpp">
+    <ClCompile Include="Fbx.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Quad.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Dice.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Dice.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Direct3D.cpp">
+      <Filter>Something</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Something</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Something</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Something</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Quad.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Direct3D.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
+    <ClInclude Include="Fbx.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Dice.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Something</Filter>
+    </ClInclude>
+    <ClInclude Include="Direct3D.h">
+      <Filter>Something</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Something</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>Something</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

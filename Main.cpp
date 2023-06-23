@@ -1,12 +1,12 @@
 //インクルード
 #include <Windows.h>
 #include "Direct3D.h"
-//#include "Quad.h"
 #include "Camera.h"
-#include "Dice.h"
-#include "Sprite.h"
 #include "Transform.h"
 
+#include "Dice.h"
+#include "Sprite.h"
+#include "Fbx.h"
 
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
@@ -67,13 +67,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	Camera::Initialize();
 
-	//pQuad = new Quad;
-	//pQuad->Initialize();
-
-	Dice* pDice = new Dice;
+	Dice* pDice = new Dice();
 	hr = pDice->Initialize();
-	Sprite* pSprite = new Sprite;
-	hr = pSprite->Initialize();
+	if (FAILED(hr)) {
+		PostQuitMessage(0); //エラー起きたら強制終了
+	}
+
+	Fbx* pFbx = new Fbx();
+	hr = pFbx->Load("Oden.fbx");
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
@@ -94,29 +95,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			//描画処理
 			Direct3D::BeginDraw();		//バックバッファの初期化
-			static float angle = 0;
-			angle += 0.05f;
-			//XMMATRIX mat = XMMatrixRotationY(XMConvertToRadians(angle)) * XMMatrixTranslation(0,3,0);
 
-			Transform diceTransform;
-			diceTransform.position_.y = 3.0f;
-			diceTransform.rotate_.y = angle;
-			pDice->Draw(diceTransform);
-
-			////mat = XMMatrixScaling(512.0f / 800.0f, 256.0f / 600.0f, 1.0f);
-			Transform spriteTransform;
-			spriteTransform.scale_.x = 512.0f / 800.0f;
-			spriteTransform.scale_.y = 256.0f / 600.0f;
-			//mat = XMMatrixScaling(512.0f/800.0f, 256.0f/600.0f, 1.0f);
-			pSprite->Draw(spriteTransform);
+			Transform t;
+			pDice->Draw(t);
 
 			Direct3D::EndDraw();		//バッファの入れ替え
 		}
 	}
-	//SAFE_DELETE(pQuad);
+	SAFE_DELETE(pFbx);
+	SAFE_RELEASE(pFbx);
 	SAFE_DELETE(pDice);
-	SAFE_DELETE(pSprite);
-
+	SAFE_RELEASE(pDice);
 	Direct3D::Release();
 
 	return 0;
