@@ -74,7 +74,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	}
 
 	Fbx* pFbx = new Fbx();
-	hr = pFbx->Load("Assets/Oden.fbx");
+	hr = pFbx->Load("Assets/Oden_2.fbx");
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
@@ -96,7 +96,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//描画処理
 			Direct3D::BeginDraw();		//バックバッファの初期化
 
-			Transform t;
+			static Transform t;
+			t.rotate_.x += 3.0f;
+			t.rotate_.y += 4.0f;
+			t.rotate_.z += 5.0f;
 			//pDice->Draw(t);
 			pFbx->Draw(t);
 
