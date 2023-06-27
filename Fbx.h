@@ -23,14 +23,20 @@ class Fbx {
 		XMVECTOR position;
 	};
 
+	//マテリアル
+	struct MATERIAL {
+		Texture* pTexture;
+	};
+
 	int vertexCount_;	//頂点数
 	int polygonCount_;	//ポリゴン数
+	int materialCount_;	//マテリアルの個数
 
 	ID3D11Buffer* pVertexBuffer_;
 	ID3D11Buffer* pIndexBuffer_;
 	ID3D11Buffer* pConstantBuffer_;
+	MATERIAL* pMaterialList_;
 
-	Texture* pTexture_;
 public:
 	Fbx();
 	//読み込み
@@ -50,6 +56,9 @@ private:
 
 	//コンスタントバッファ準備
 	HRESULT InitConstantBuffer();
+
+	//マテリアル準備
+	void InitMaterial(fbxsdk::FbxNode* pNode);
 
 	//---------Draw関数から呼ばれる関数---------
 	void PassDataToCB(Transform transform);	//コンスタントバッファに各種情報を渡す

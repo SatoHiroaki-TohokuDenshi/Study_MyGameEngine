@@ -16,7 +16,7 @@
     <Filter Include="Object">
       <UniqueIdentifier>{322d40d8-c59f-425c-a048-551f205d44aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Something">
+    <Filter Include="Source">
       <UniqueIdentifier>{05e3d4ab-76cc-4e55-bcf8-4aa07ae58dec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -37,16 +37,16 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="Direct3D.cpp">
-      <Filter>Something</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Something</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Something</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Something</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,16 +63,16 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Something</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Direct3D.h">
-      <Filter>Something</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Something</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Something</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

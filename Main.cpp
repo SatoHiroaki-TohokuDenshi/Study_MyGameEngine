@@ -74,7 +74,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	}
 
 	Fbx* pFbx = new Fbx();
-	hr = pFbx->Load("\\Assets\\Oden.fbx");
+	hr = pFbx->Load("Assets/Oden.fbx");
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;

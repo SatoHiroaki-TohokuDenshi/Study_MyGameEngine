@@ -5,7 +5,7 @@
 Fbx::Fbx()
 	:vertexCount_(0), polygonCount_(0),
 	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
-	pTexture_(nullptr)
+	materialCount_(0), pMaterialList_(nullptr)
 {
 }
 
@@ -29,11 +29,13 @@ HRESULT Fbx::Load(std::string fileName) {
 
 	//各情報の個数を取得
 	vertexCount_ = mesh->GetControlPointsCount();	//頂点の数
-	polygonCount_ = mesh->GetPolygonCount();	//ポリゴンの数
+	polygonCount_ = mesh->GetPolygonCount();		//ポリゴンの数
+	materialCount_ = pNode->GetMaterialCount();		//マテリアルの個数
 
 	InitVertex(mesh);		//頂点バッファ準備
 	InitIndex(mesh);		//インデックスバッファ準備
 	InitConstantBuffer();	//コンスタントバッファ準備
+	InitMaterial(pNode);	//マテリアル準備
 
 	//マネージャ解放
 	pFbxManager->Destroy();
@@ -151,6 +153,43 @@ HRESULT Fbx::InitConstantBuffer() {
 	return S_OK;
 }
 
+//マテリアル準備
+void Fbx::InitMaterial(fbxsdk::FbxNode* pNode) {
+	pMaterialList_ = new MATERIAL[materialCount_];
+
+	for (int i = 0; i < materialCount_; i++) {
+		//i番目のマテリアル情報を取得
+		FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
+
+		//テクスチャ情報
+		FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
+
+		//テクスチャの数
+		int fileTextureCount = lProperty.GetSrcObjectCount<FbxFileTexture>();
+
+		//テクスチャあり
+		if (fileTextureCount >= 1) {
+			FbxFileTexture* textureInfo = lProperty.GetSrcObject<FbxFileTexture>(0);
+			string textureFilePath = textureInfo->GetRelativeFileName();
+
+			//ファイル名+拡張だけにする
+			char name[_MAX_FNAME];	//ファイル名
+			char ext[_MAX_EXT];		//拡張子
+			_splitpath_s(textureFilePath.c_str(), nullptr, 0, nullptr, 0, name, _MAX_FNAME, ext, _MAX_EXT);
+			wsprintf(name, "%s%s", name, ext);
+
+			//ファイルからテクスチャ作成
+			pMaterialList_[i].pTexture = new Texture;
+			pMaterialList_[i].pTexture->Load(textureFilePath);
+		}
+
+		//テクスチャ無し
+		else {
+			pMaterialList_[i].pTexture = nullptr;
+		}
+	}
+}
+
 //コンスタントバッファに各種情報を渡す
 void Fbx::PassDataToCB(Transform transform) {
 	CONSTANT_BUFFER cb;
@@ -160,15 +199,6 @@ void Fbx::PassDataToCB(Transform transform) {
 	D3D11_MAPPED_SUBRESOURCE pdata;
 	Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
 	memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
-
-	//ID3D11SamplerState* pSampler = pTexture_->GetSampler();
-
-	//Direct3D::pContext_->PSSetSamplers(0, 1, &pSampler);
-
-	//ID3D11ShaderResourceView* pSRV = pTexture_->GetSRV();
-
-	//Direct3D::pContext_->PSSetShaderResources(0, 1, &pSRV);
-
 	Direct3D::pContext_->Unmap(pConstantBuffer_, 0);	//再開
 }
 
