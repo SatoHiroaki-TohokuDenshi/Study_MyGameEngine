@@ -16,7 +16,8 @@ Texture::~Texture() {
 }
 
 //ファイルの読み込み
-HRESULT Texture::Load(string filename){
+HRESULT Texture::Load(string filename) {
+	HRESULT hr;
 	using namespace DirectX;
 	//////////画像読み込み部分（変更）
 
@@ -26,12 +27,12 @@ HRESULT Texture::Load(string filename){
 
 	TexMetadata metadata;
 	ScratchImage image;
-	HRESULT hr;
+
 	hr = LoadFromWICFile(wtext, WIC_FLAGS::WIC_FLAGS_NONE, &metadata, image);
-	/////////
 	if (FAILED(hr)) {
 		return E_FAIL;
 	}
+
 	//サンプラーの作成
 	D3D11_SAMPLER_DESC  SamDesc;
 	ZeroMemory(&SamDesc, sizeof(D3D11_SAMPLER_DESC));
@@ -56,11 +57,10 @@ HRESULT Texture::Load(string filename){
 		return S_FALSE;
 	}
 
-
 	return S_OK;
 }
 
-//開放
+//解放
 void Texture::Release() {
 	SAFE_RELEASE(pSampler_);
 	SAFE_RELEASE(pSRV_);

@@ -6,8 +6,7 @@
 using namespace Microsoft::WRL;
 using std::string;
 
-class Texture
-{
+class Texture {
 	ID3D11SamplerState* pSampler_;
 	ID3D11ShaderResourceView* pSRV_;
 public:
@@ -15,7 +14,7 @@ public:
 	~Texture();
 	//ファイルの読み込み
 	HRESULT Load(string filename);
-	//開放
+	//解放
 	void Release();
 	ID3D11SamplerState* GetSampler() { return pSampler_; }
 	ID3D11ShaderResourceView* GetSRV() { return pSRV_; }
