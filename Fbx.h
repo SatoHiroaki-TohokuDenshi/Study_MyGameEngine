@@ -14,8 +14,10 @@
 class Fbx {
 	//コンスタントバッファに渡す情報をまとめた構造体
 	struct CONSTANT_BUFFER {
-		XMMATRIX	matWVP;
-		XMMATRIX	matNormal;
+		XMMATRIX matWVP;
+		XMMATRIX matNormal;
+		XMFLOAT4 color;
+		bool isTexture;
 	};
 
 	//頂点情報
@@ -28,6 +30,7 @@ class Fbx {
 	//マテリアル
 	struct MATERIAL {
 		Texture* pTexture;
+		XMFLOAT4	diffuse;
 	};
 
 	int vertexCount_;	//頂点数
@@ -64,6 +67,6 @@ private:
 	void InitMaterial(fbxsdk::FbxNode* pNode);
 
 	//---------Draw関数から呼ばれる関数---------
-	void PassDataToCB(Transform transform);	//コンスタントバッファに各種情報を渡す
-	void SetBufferToPipeline();
+	void PassDataToCB(Transform transform, int i);	//コンスタントバッファに各種情報を渡す
+	void SetBufferToPipeline(int i);
 };
