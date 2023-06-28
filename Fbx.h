@@ -37,6 +37,7 @@ class Fbx {
 	ID3D11Buffer** pIndexBuffer_;
 	ID3D11Buffer* pConstantBuffer_;
 	MATERIAL* pMaterialList_;
+	int* indexCount_;
 
 public:
 	Fbx();

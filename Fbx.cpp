@@ -5,7 +5,7 @@
 Fbx::Fbx()
 	:vertexCount_(0), polygonCount_(0),
 	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
-	materialCount_(0), pMaterialList_(nullptr)
+	materialCount_(0), pMaterialList_(nullptr), indexCount_(nullptr)
 {
 }
 
@@ -59,8 +59,9 @@ HRESULT Fbx::Load(std::string fileName) {
 
 void Fbx::Draw(Transform& transform) {
 	//シェーダーの設定
-	Direct3D::SetShader(SHADER_2D);
+	Direct3D::SetShader(SHADER_3D);
 	transform.Calclation();//トランスフォームを計算
+
 	//コンスタントバッファに情報を渡す
 	PassDataToCB(transform);
 
@@ -125,6 +126,7 @@ HRESULT Fbx::InitVertex(fbxsdk::FbxMesh* mesh) {
 //インデックスバッファ準備
 HRESULT Fbx::InitIndex(fbxsdk::FbxMesh* mesh) {
 	pIndexBuffer_ = new ID3D11Buffer * [materialCount_];
+	indexCount_ = new int[materialCount_];
 
 	int* index = new int[polygonCount_ * 3];
 	for (int i = 0; i < materialCount_; i++)
@@ -144,6 +146,7 @@ HRESULT Fbx::InitIndex(fbxsdk::FbxMesh* mesh) {
 				}
 			}
 		}
+		indexCount_[i] = count;
 
 		D3D11_BUFFER_DESC   bd;
 		bd.Usage = D3D11_USAGE_DEFAULT;
