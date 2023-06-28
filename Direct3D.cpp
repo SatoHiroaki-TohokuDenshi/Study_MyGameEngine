@@ -326,6 +326,8 @@ void Direct3D::Release() {
 		SAFE_RELEASE(shaderBundle[i].pVertexShader_);
 	}
 
+	SAFE_RELEASE(pDepthStencilView_);
+	SAFE_RELEASE(pDepthStencil_);
 	SAFE_RELEASE(pRenderTargetView_);
 	SAFE_RELEASE(pSwapChain_);
 	SAFE_RELEASE(pContext_);
