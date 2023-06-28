@@ -10,6 +10,11 @@ namespace Direct3D {
 	ID3D11DeviceContext* pContext_;				//デバイスコンテキスト
 	IDXGISwapChain* pSwapChain_;				//スワップチェイン
 	ID3D11RenderTargetView* pRenderTargetView_;	//レンダーターゲットビュー
+	ID3D11Texture2D* pDepthStencil_;			//深度ステンシル
+	ID3D11DepthStencilView* pDepthStencilView_;	//深度ステンシルビュー
+
+	int scrWidth = 0;
+	int scrHeight = 0;
 
 	//シェーダーの情報をまとめた構造体
 	struct SHADER_BUNDLE {
@@ -105,10 +110,29 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd) {
 	vp.TopLeftX = 0;		//左
 	vp.TopLeftY = 0;		//上
 
+	//深度ステンシルビューの作成
+	D3D11_TEXTURE2D_DESC descDepth;
+	descDepth.Width = winW;
+	descDepth.Height = winH;
+	descDepth.MipLevels = 1;
+	descDepth.ArraySize = 1;
+	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
+	descDepth.SampleDesc.Count = 1;
+	descDepth.SampleDesc.Quality = 0;
+	descDepth.Usage = D3D11_USAGE_DEFAULT;
+	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	descDepth.CPUAccessFlags = 0;
+	descDepth.MiscFlags = 0;
+	pDevice_->CreateTexture2D(&descDepth, NULL, &pDepthStencil_);
+	pDevice_->CreateDepthStencilView(pDepthStencil_, NULL, &pDepthStencilView_);
+
 	//データを画面に描画するための一通りの設定（パイプライン）
 	pContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // データの入力種類を指定
-	pContext_->OMSetRenderTargets(1, &pRenderTargetView_, nullptr);            // 描画先を設定
+	pContext_->OMSetRenderTargets(1, &pRenderTargetView_, pDepthStencilView_);            // 描画先を設定
 	pContext_->RSSetViewports(1, &vp);
+
+	scrWidth = winW;
+	scrHeight = winH;
 
 	//シェーダー準備
 	hr = InitShader();
@@ -278,6 +302,9 @@ void Direct3D::BeginDraw()	{
 
 	//画面をクリア
 	pContext_->ClearRenderTargetView(pRenderTargetView_, clearColor);
+
+	//深度バッファクリア
+	pContext_->ClearDepthStencilView(pDepthStencilView_, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 

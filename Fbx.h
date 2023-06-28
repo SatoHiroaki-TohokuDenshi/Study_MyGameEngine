@@ -22,6 +22,7 @@ class Fbx {
 	struct VERTEX {
 		XMVECTOR position;
 		XMVECTOR uv;
+		XMVECTOR normal;
 	};
 
 	//ƒ}ƒeƒŠƒAƒ‹

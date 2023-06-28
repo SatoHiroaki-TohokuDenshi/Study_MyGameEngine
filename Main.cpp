@@ -88,7 +88,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 		//メッセージなし
 		else {
-			Camera::Update();		//カメラの更新
+			//カメラの更新
+			Camera::Update();
 
 			//ゲームの処理
 
