@@ -1,11 +1,10 @@
 //インクルード
 #include <Windows.h>
 #include "Direct3D.h"
+#include "Input.h"
 #include "Camera.h"
 #include "Transform.h"
 
-#include "Dice.h"
-#include "Sprite.h"
 #include "Fbx.h"
 
 //定数宣言
@@ -65,16 +64,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		PostQuitMessage(0); //エラー起きたら強制終了
 	}
 
+	//DirectInputの初期化
+	Input::Initialize(hWnd);
+
+	//カメラの初期化
 	Camera::Initialize();
 
-	Dice* pDice = new Dice();
-	hr = pDice->Initialize();
+	//FBXクラスの準備
+	Fbx* pFbx = new Fbx();
+	hr = pFbx->Load("Assets/Oden_2.fbx");
 	if (FAILED(hr)) {
 		PostQuitMessage(0); //エラー起きたら強制終了
 	}
-
-	Fbx* pFbx = new Fbx();
-	hr = pFbx->Load("Assets/Oden_2.fbx");
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
@@ -92,16 +93,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Camera::Update();
 
 			//ゲームの処理
-
+			//Inputの更新
+			Input::Update();
+			//ESCキーが押されていたら
+			if (Input::IsKey(DIK_ESCAPE))
+			{
+				//プログラムを閉じる
+				PostQuitMessage(0);
+			}
 
 			//描画処理
 			Direct3D::BeginDraw();		//バックバッファの初期化
 
 			static Transform t;
-			t.rotate_.x += 3.0f;
+			//t.rotate_.x += 3.0f;
 			t.rotate_.y += 0.05f;
-			t.rotate_.z += 5.0f;
-			//pDice->Draw(t);
+			//t.rotate_.z += 5.0f;
 			pFbx->Draw(t);
 
 			Direct3D::EndDraw();		//バッファの入れ替え
@@ -109,8 +116,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	}
 	SAFE_DELETE(pFbx);
 	SAFE_RELEASE(pFbx);
-	SAFE_DELETE(pDice);
-	SAFE_RELEASE(pDice);
+	Input::Release();
 	Direct3D::Release();
 
 	return 0;
