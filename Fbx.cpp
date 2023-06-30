@@ -244,14 +244,9 @@ void Fbx::PassDataToCB(Transform transform, int i) {
 	CONSTANT_BUFFER cb;
 	cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 	cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
-	if (pMaterialList_[i].pTexture == nullptr) {
-		cb.color = pMaterialList_[i].diffuse;
-		cb.isTexture = true;
-	}
-	else {
-		cb.color = pMaterialList_[i].diffuse;
-		cb.isTexture = false;
-	}
+	cb.color = pMaterialList_[i].diffuse;
+	cb.isTexture = pMaterialList_[i].pTexture != nullptr;
+
 
 	D3D11_MAPPED_SUBRESOURCE pdata;
 	Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める

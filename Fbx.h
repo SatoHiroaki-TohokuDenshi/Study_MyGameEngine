@@ -17,7 +17,7 @@ class Fbx {
 		XMMATRIX matWVP;
 		XMMATRIX matNormal;
 		XMFLOAT4 color;
-		bool isTexture;
+		int isTexture;
 	};
 
 	//í∏ì_èÓïÒ

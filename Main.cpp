@@ -98,9 +98,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Direct3D::BeginDraw();		//バックバッファの初期化
 
 			static Transform t;
-			//t.rotate_.x += 3.0f;
+			t.rotate_.x += 3.0f;
 			t.rotate_.y += 0.05f;
-			//t.rotate_.z += 5.0f;
+			t.rotate_.z += 5.0f;
 			//pDice->Draw(t);
 			pFbx->Draw(t);
 
