@@ -41,17 +41,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	//ウィンドウを作成
 	HWND hWnd = CreateWindow(
-		WIN_CLASS_NAME,         //ウィンドウクラス名
-		"サンプルゲーム",     //タイトルバーに表示する内容
-		WS_OVERLAPPEDWINDOW, //スタイル（普通のウィンドウ）
-		CW_USEDEFAULT,       //表示位置左（おまかせ）
-		CW_USEDEFAULT,       //表示位置上（おまかせ）
-		winW,               //ウィンドウ幅
-		winH,               //ウィンドウ高さ
-		NULL,                //親ウインドウ（なし）
-		NULL,                //メニュー（なし）
-		hInstance,           //インスタンス
-		NULL                 //パラメータ（なし）
+		WIN_CLASS_NAME,			//ウィンドウクラス名
+		"サンプルゲーム",		//タイトルバーに表示する内容
+		WS_OVERLAPPEDWINDOW,	//スタイル（普通のウィンドウ）
+		CW_USEDEFAULT,			//表示位置左（おまかせ）
+		CW_USEDEFAULT,			//表示位置上（おまかせ）
+		winW,					//ウィンドウ幅
+		winH,					//ウィンドウ高さ
+		NULL,					//親ウインドウ（なし）
+		NULL,					//メニュー（なし）
+		hInstance,				//インスタンス
+		NULL					//パラメータ（なし）
 	);
 
 	//ウィンドウを表示
@@ -95,11 +95,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//ゲームの処理
 			//Inputの更新
 			Input::Update();
+
 			//ESCキーが押されていたら
-			if (Input::IsKey(DIK_ESCAPE))
+			if (Input::IsKeyUp(DIK_A))
 			{
-				//プログラムを閉じる
-				PostQuitMessage(0);
+				static int cnt = 0;
+				cnt++;
+				if (cnt >= 3) {
+					//プログラムを閉じる
+					PostQuitMessage(0);
+				}
 			}
 
 			//描画処理

@@ -13,10 +13,21 @@ namespace Input {
 	void Initialize(HWND hWnd);
 	//更新
 	void Update();
-	//キーの検出
-	//引数：キーの番号
-	//戻値：true押されている　false押されていない
+
+	/// <summary>キーが押されているか</summary>
+	/// <param name="keyCode">調べたいキーの番号</param>
+	/// <returns>押されていたらtrue</returns>
 	bool IsKey(int keyCode);
+	
+	/// <summary>キーが押されたか</summary>
+	/// <param name="keyCode">調べたいキーの番号</param>
+	/// <returns>押された瞬間ならtrue</returns>
+	bool IsKeyDown(int keyCode);
+
+	/// <summary>キーが離されたか</summary>
+	/// <param name="keyCode">調べたいキーの番号</param>
+	/// <returns>離された瞬間ならtrue</returns>
+	bool IsKeyUp(int keyCode);
 	//解放
 	void Release();
 };
