@@ -1,4 +1,5 @@
 #include "RootJob.h"
+#include "../PlayScene.h"
 
 RootJob::RootJob() :
 	GameObject()
@@ -10,6 +11,7 @@ RootJob::~RootJob() {
 
 //‰Šú‰»
 void RootJob::Initialize() {
+	Instantiate<PlayScene>(this);
 }
 
 //XV
