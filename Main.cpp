@@ -1,13 +1,16 @@
 //インクルード
 #include <Windows.h>
 #include "Engine/Direct3D.h"
-#include "Engine/Input.h"
 #include "Engine/Camera.h"
+#include "Engine/Input.h"
+#include "Engine/RootJob.h"
 
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
 const int WINDOW_WIDTH = 800;  //ウィンドウの幅
 const int WINDOW_HEIGHT = 600; //ウィンドウの高さ
+
+RootJob* pRootJob = nullptr;
 
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -58,7 +61,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	HRESULT hr;
 	hr = Direct3D::Initialize(winW, winH, hWnd);
 	if (FAILED(hr)) {
-		PostQuitMessage(0); //エラー起きたら強制終了
+		//エラー起きたら強制終了
+		PostQuitMessage(0);
 	}
 
 	//DirectInputの初期化
@@ -66,6 +70,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	//カメラの初期化
 	Camera::Initialize();
+
+	pRootJob = new RootJob;
+	pRootJob->Initialize();
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
@@ -86,27 +93,34 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//Inputの更新
 			Input::Update();
 
+			pRootJob->Update();
+
 			//★描画処理
 			Direct3D::BeginDraw();		//バックバッファの初期化
 
 			//描画するもの
+			//RootJobからすべての子供のDraw関数を呼ぶ
 
 
 			Direct3D::EndDraw();		//バッファの入れ替え
 		}
 	}
+	SAFE_RELEASE(pRootJob);
+	SAFE_DELETE(pRootJob);
 	Input::Release();
 	Direct3D::Release();
 
 	return 0;
 }
+
 //ウィンドウプロシージャ（何かあった時によばれる関数）
 //返り値　LRESULT（ここ以外では特に使わないから気にしなくてヨシ）
 //CALLBACK　特定の状況で呼ばれるよって宣言（通常は勝手に呼ばれたりしない）
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
-	case WM_DESTROY:	//ウィンドウを閉じたとき
-		PostQuitMessage(0);  //プログラム終了
+	case WM_DESTROY:			//ウィンドウを閉じたとき
+		//プログラム終了
+		PostQuitMessage(0);
 		return 0;
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);

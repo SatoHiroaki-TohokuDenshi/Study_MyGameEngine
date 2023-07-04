@@ -1,12 +1,10 @@
 #pragma once
 #include <dInput.h>
+#include "SafetyMacro.h"
 
 //ƒŠƒ“ƒJ
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "dInput8.lib")
-
-//‰ğ•úƒ}ƒNƒ
-#define SAFE_RELEASE(p) if(p != nullptr){ p->Release(); p = nullptr;}
 
 namespace Input {
 	//‰Šú‰»
