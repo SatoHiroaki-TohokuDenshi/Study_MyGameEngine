@@ -1,11 +1,8 @@
 //インクルード
 #include <Windows.h>
-#include "Direct3D.h"
-#include "Input.h"
-#include "Camera.h"
-#include "Transform.h"
-
-#include "Fbx.h"
+#include "Engine/Direct3D.h"
+#include "Engine/Input.h"
+#include "Engine/Camera.h"
 
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
@@ -70,13 +67,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//カメラの初期化
 	Camera::Initialize();
 
-	//FBXクラスの準備
-	Fbx* pFbx = new Fbx();
-	hr = pFbx->Load("Assets/Oden_2.fbx");
-	if (FAILED(hr)) {
-		PostQuitMessage(0); //エラー起きたら強制終了
-	}
-
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
@@ -89,38 +79,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 		//メッセージなし
 		else {
+			//★ゲームの処理
 			//カメラの更新
 			Camera::Update();
-
-			//ゲームの処理
+			
 			//Inputの更新
 			Input::Update();
 
-			//ESCキーが押されていたら
-			if (Input::IsKeyUp(DIK_A))
-			{
-				static int cnt = 0;
-				cnt++;
-				if (cnt >= 3) {
-					//プログラムを閉じる
-					PostQuitMessage(0);
-				}
-			}
-
-			//描画処理
+			//★描画処理
 			Direct3D::BeginDraw();		//バックバッファの初期化
 
-			static Transform t;
-			//t.rotate_.x += 3.0f;
-			t.rotate_.y += 0.05f;
-			//t.rotate_.z += 5.0f;
-			pFbx->Draw(t);
+			//描画するもの
+
 
 			Direct3D::EndDraw();		//バッファの入れ替え
 		}
 	}
-	SAFE_DELETE(pFbx);
-	SAFE_RELEASE(pFbx);
 	Input::Release();
 	Direct3D::Release();
 

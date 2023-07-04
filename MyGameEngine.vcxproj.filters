@@ -13,73 +13,41 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{322d40d8-c59f-425c-a048-551f205d44aa}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Engine">
+      <UniqueIdentifier>{bb119a56-668d-4407-b3ed-497df9a40e00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source">
-      <UniqueIdentifier>{05e3d4ab-76cc-4e55-bcf8-4aa07ae58dec}</UniqueIdentifier>
+    <Filter Include="ヘッダー ファイル\Engine">
+      <UniqueIdentifier>{6b1e305f-33c6-443d-a782-ba1590b7bdc1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Fbx.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Engine\Camera.cpp">
+      <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Quad.cpp">
-      <Filter>Object</Filter>
+    <ClCompile Include="Engine\Direct3D.cpp">
+      <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Object</Filter>
+    <ClCompile Include="Engine\Fbx.cpp">
+      <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Dice.cpp">
-      <Filter>Object</Filter>
+    <ClCompile Include="Engine\Input.cpp">
+      <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Direct3D.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Engine\Quad.cpp">
+      <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Engine\Sprite.cpp">
+      <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Engine\Texture.cpp">
+      <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Engine\Transform.cpp">
+      <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Fbx.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Dice.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Quad.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Direct3D.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple3D.hlsl" />
@@ -87,5 +55,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\Camera.h">
+      <Filter>ヘッダー ファイル\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Direct3D.h">
+      <Filter>ヘッダー ファイル\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Fbx.h">
+      <Filter>ヘッダー ファイル\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input.h">
+      <Filter>ヘッダー ファイル\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Quad.h">
+      <Filter>ヘッダー ファイル\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Sprite.h">
+      <Filter>ヘッダー ファイル\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Texture.h">
+      <Filter>ヘッダー ファイル\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Transform.h">
+      <Filter>ヘッダー ファイル\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
