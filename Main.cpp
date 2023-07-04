@@ -19,15 +19,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow) {
 	//ウィンドウクラス（設計図）を作成
 	WNDCLASSEX wc;
-	wc.cbSize = sizeof(WNDCLASSEX);             //この構造体のサイズ
-	wc.hInstance = hInstance;                   //インスタンスハンドル
-	wc.lpszClassName = WIN_CLASS_NAME;            //ウィンドウクラス名
-	wc.lpfnWndProc = WndProc;                   //ウィンドウプロシージャ
-	wc.style = CS_VREDRAW | CS_HREDRAW;         //スタイル（デフォルト）
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION); //アイコン
-	wc.hIconSm = LoadIcon(NULL, IDI_WINLOGO);   //小さいアイコン
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);   //マウスカーソル
-	wc.lpszMenuName = NULL;                     //メニュー（なし）
+	wc.cbSize = sizeof(WNDCLASSEX);				//この構造体のサイズ
+	wc.hInstance = hInstance;					//インスタンスハンドル
+	wc.lpszClassName = WIN_CLASS_NAME;			//ウィンドウクラス名
+	wc.lpfnWndProc = WndProc;					//ウィンドウプロシージャ
+	wc.style = CS_VREDRAW | CS_HREDRAW;			//スタイル（デフォルト）
+	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);	//アイコン
+	wc.hIconSm = LoadIcon(NULL, IDI_WINLOGO);	//小さいアイコン
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);	//マウスカーソル
+	wc.lpszMenuName = NULL;						//メニュー（なし）
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH); //背景（白）
