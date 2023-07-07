@@ -1,4 +1,5 @@
 #include "PlayScene.h"
+#include "Player.h"
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
@@ -7,21 +8,19 @@ PlayScene::PlayScene(GameObject* parent)
 }
 
 //初期化
-void PlayScene::Initialize()
-{
+void PlayScene::Initialize() {
+	Instantiate<Player>(this);
 }
 
 //更新
-void PlayScene::Update()
-{
+void PlayScene::Update() {
 }
 
 //描画
-void PlayScene::Draw()
-{
+void PlayScene::Draw() {
 }
 
 //開放
-void PlayScene::Release()
-{
+void PlayScene::Release() {
+
 }

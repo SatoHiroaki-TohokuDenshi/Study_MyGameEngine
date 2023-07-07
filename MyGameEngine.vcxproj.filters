@@ -46,10 +46,15 @@
       <Filter>01Engine\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="Engine\RootJob.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Simple3D.hlsl" />
-    <FxCompile Include="Simple2D.hlsl" />
+    <FxCompile Include="Simple2D.hlsl">
+      <Filter>01Engine</Filter>
+    </FxCompile>
+    <FxCompile Include="Simple3D.hlsl">
+      <Filter>01Engine</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -87,5 +92,6 @@
       <Filter>01Engine\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="Engine\RootJob.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
 </Project>

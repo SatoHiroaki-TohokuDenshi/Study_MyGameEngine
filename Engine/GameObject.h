@@ -19,6 +19,9 @@ public:
 	GameObject(GameObject* parent, const string& name);
 	~GameObject();
 
+	//インターフェース用純粋仮想関数//
+	//以下の4つの関数は必ずオーバーライドすること
+
 	//初期化
 	virtual void Initialize() = 0;
 	//更新
@@ -27,6 +30,11 @@ public:
 	virtual void Draw() = 0;
 	//解放
 	virtual void Release() = 0;
+
+	//Initialize以外の関数を再帰的に呼び出す関数群
+	void DrawSub();
+	void UpdateSub();
+	void ReleaseSub();
 
 	template <class T>
 	void Instantiate(GameObject* parent) {

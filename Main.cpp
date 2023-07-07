@@ -93,14 +93,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//Inputの更新
 			Input::Update();
 
-			pRootJob->Update();
+			pRootJob->UpdateSub();
 
 			//★描画処理
 			Direct3D::BeginDraw();		//バックバッファの初期化
 
 			//描画するもの
-			//RootJobからすべての子供のDraw関数を呼ぶ
-
+			//RootJobを介して、全部のDraw関数を呼ぶ
+			pRootJob->DrawSub();
 
 			Direct3D::EndDraw();		//バッファの入れ替え
 		}
