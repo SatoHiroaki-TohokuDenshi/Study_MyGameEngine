@@ -1,14 +1,15 @@
 #include "GameObject.h"
+#include "SafetyMacro.h"
 
 GameObject::GameObject() :
 	transform_(Transform()),
-	pParent_(nullptr), objectName_("")
+	pParent_(nullptr), objectName_(""), isDead(false)
 {
 }
 
 GameObject::GameObject(GameObject* parent, const std::string& name) :
 	transform_(Transform()),
-	pParent_(parent), objectName_(name)
+	pParent_(parent), objectName_(name), isDead(false)
 {
 }
 
@@ -28,8 +29,14 @@ void GameObject::UpdateSub() {
 	//Ž©•ª‚ÌUpdate‚ðŒÄ‚Ño‚·
 	Update();
 	//Žq‹Ÿ‚ÌUpdateSub‚ðŒÄ‚Ô
-	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)
+	for (auto itr = childList_.begin(); itr != childList_.end(); itr++) {
 		(*itr)->UpdateSub();
+		if ((*itr)->isDead) {
+			(*itr)->ReleaseSub();
+			SAFE_DELETE(*itr);
+			itr = childList_.erase(itr);
+		}
+	}
 }
 
 void GameObject::ReleaseSub() {
@@ -38,4 +45,16 @@ void GameObject::ReleaseSub() {
 	//Žq‹Ÿ‚ÌReleaseSub‚ðŒÄ‚Ô
 	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)
 		(*itr)->ReleaseSub();
+}
+
+void GameObject::KillMe() {
+	this->isDead = true;
+}
+
+void GameObject::DeleteObject() {
+	for (auto itr = childList_.begin(); itr != childList_.end(); itr++) {
+		(*itr)->ReleaseSub();
+		delete* itr;
+		childList_.erase(itr);
+	}
 }

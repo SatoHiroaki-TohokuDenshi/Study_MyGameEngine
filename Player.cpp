@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Engine/Fbx.h"
+#include "Engine/Input.h"
 
 //コンストラクタ
 Player::Player(GameObject* parent)
@@ -22,6 +23,9 @@ void Player::Initialize() {
 //更新
 void Player::Update() {
 	transform_.rotate_.y += 1.0f;
+	if (Input::IsKeyDown(DIK_A)) {
+		this->KillMe();
+	}
 }
 
 //描画
