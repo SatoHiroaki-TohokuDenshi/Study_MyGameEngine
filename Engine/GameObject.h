@@ -44,8 +44,8 @@ public:
 		parent->childList_.push_back(p);
 	}
 
-	//オブジェクトの消滅処理
+	//オブジェクトの消去処理
 	bool isDead;		//フラグ
-	void KillMe();		//フラグを起動
+	void KillMe();		//フラグを立てる
 	void DeleteObject();//オブジェクトを消す
 };

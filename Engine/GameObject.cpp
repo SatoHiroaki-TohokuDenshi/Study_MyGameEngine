@@ -31,12 +31,10 @@ void GameObject::UpdateSub() {
 	//子供のUpdateSubを呼ぶ
 	for (auto itr = childList_.begin(); itr != childList_.end(); itr++) {
 		(*itr)->UpdateSub();
-		if ((*itr)->isDead) {
-			(*itr)->ReleaseSub();
-			SAFE_DELETE(*itr);
-			itr = childList_.erase(itr);
-		}
 	}
+
+	//オブジェクトの消去
+	DeleteObject();
 }
 
 void GameObject::ReleaseSub() {
@@ -52,9 +50,16 @@ void GameObject::KillMe() {
 }
 
 void GameObject::DeleteObject() {
-	for (auto itr = childList_.begin(); itr != childList_.end(); itr++) {
-		(*itr)->ReleaseSub();
-		delete* itr;
-		childList_.erase(itr);
+	//オブジェクトの消去
+	for (auto itr = childList_.begin(); itr != childList_.end();) {
+		//消去フラグが立っている場合
+		if ((*itr)->isDead) {
+			(*itr)->ReleaseSub();
+			SAFE_DELETE(*itr);
+			itr = childList_.erase(itr);
+		}
+		//立っていないなら次を走査
+		else
+			itr++;
 	}
 }

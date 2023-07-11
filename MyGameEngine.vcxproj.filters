@@ -47,6 +47,7 @@
     </ClCompile>
     <ClCompile Include="Engine\RootJob.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="MiniPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple2D.hlsl">
@@ -93,5 +94,6 @@
     </ClInclude>
     <ClInclude Include="Engine\RootJob.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="MiniPlayer.h" />
   </ItemGroup>
 </Project>

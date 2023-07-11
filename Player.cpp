@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Engine/Fbx.h"
 #include "Engine/Input.h"
+#include "MiniPlayer.h"
 
 //コンストラクタ
 Player::Player(GameObject* parent)
@@ -18,6 +19,7 @@ void Player::Initialize() {
 	pFbx = new Fbx();
 	pFbx->Load("Assets/Oden_2.fbx");
 	this->transform_.rotate_.z = 38.0f;
+	Instantiate< MiniPlayer>(this);
 }
 
 //更新
