@@ -37,15 +37,16 @@ public:
 	void ReleaseSub();
 
 	template <class T>
-	void Instantiate(GameObject* parent) {
+	GameObject* Instantiate(GameObject* parent) {
 		T* p;
 		p = new T(parent);
 		p->Initialize();
 		parent->childList_.push_back(p);
+		return p;
 	}
 
 	//オブジェクトの消去処理
-	bool isDead;		//フラグ
+	bool isDead_;		//フラグ
 	void KillMe();		//フラグを立てる
 	void DeleteObject();//オブジェクトを消す
 };

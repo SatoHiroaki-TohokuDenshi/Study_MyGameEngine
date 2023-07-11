@@ -23,10 +23,9 @@ void MiniPlayer::Initialize() {
 
 //XV
 void MiniPlayer::Update() {
-	transform_.rotate_.y += 1.0f;
-	if (Input::IsKeyDown(DIK_A)) {
-		this->KillMe();
-	}
+	transform_.rotate_.x += rand() % 60;
+	transform_.rotate_.y += rand() % 60;
+	transform_.rotate_.z += rand() % 60;
 }
 
 //•`‰æ

@@ -3,13 +3,13 @@
 
 GameObject::GameObject() :
 	transform_(Transform()),
-	pParent_(nullptr), objectName_(""), isDead(false)
+	pParent_(nullptr), objectName_(""), isDead_(false)
 {
 }
 
 GameObject::GameObject(GameObject* parent, const std::string& name) :
 	transform_(Transform()),
-	pParent_(parent), objectName_(name), isDead(false)
+	pParent_(parent), objectName_(name), isDead_(false)
 {
 }
 
@@ -46,14 +46,14 @@ void GameObject::ReleaseSub() {
 }
 
 void GameObject::KillMe() {
-	this->isDead = true;
+	this->isDead_ = true;
 }
 
 void GameObject::DeleteObject() {
 	//オブジェクトの消去
 	for (auto itr = childList_.begin(); itr != childList_.end();) {
 		//消去フラグが立っている場合
-		if ((*itr)->isDead) {
+		if ((*itr)->isDead_) {
 			(*itr)->ReleaseSub();
 			SAFE_DELETE(*itr);
 			itr = childList_.erase(itr);

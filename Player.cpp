@@ -28,6 +28,8 @@ void Player::Update() {
 	if (Input::IsKeyDown(DIK_A)) {
 		this->KillMe();
 	}
+	if (Input::IsKey(DIK_LEFT))		transform_.position_.x -= 0.1f;
+	if (Input::IsKey(DIK_RIGHT))	transform_.position_.x += 0.1f;
 }
 
 //•`‰æ
