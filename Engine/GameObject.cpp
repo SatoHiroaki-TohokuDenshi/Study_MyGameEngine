@@ -17,28 +17,25 @@ GameObject::~GameObject() {
 }
 
 void GameObject::DrawSub() {
-	for (auto itr = childList_.begin(); itr != childList_.end(); itr++) {
-		//自分のDrawを呼び出す
-		(*itr)->Draw();
-		//子供のDrawSubを呼ぶ
+	//自分のDrawを呼び出す
+	Draw();
+	//子供のDrawSubを呼ぶ
+	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)
 		(*itr)->DrawSub();
-	}
 }
 
 void GameObject::UpdateSub() {
-	for (auto itr = childList_.begin(); itr != childList_.end(); itr++) {
-		//自分のUpdateを呼び出す
-		(*itr)->Update();
-		//子供のUpdateSubを呼ぶ
+	//自分のUpdateを呼び出す
+	Update();
+	//子供のUpdateSubを呼ぶ
+	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)
 		(*itr)->UpdateSub();
-	}
 }
 
 void GameObject::ReleaseSub() {
-	for (auto itr = childList_.begin(); itr != childList_.end(); itr++) {
-		//自分のReleaseを呼び出す
-		(*itr)->Release();
-		//子供のReleaseSubを呼ぶ
+	//自分のReleaseを呼び出す
+	Release();
+	//子供のReleaseSubを呼ぶ
+	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)
 		(*itr)->ReleaseSub();
-	}
 }

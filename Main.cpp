@@ -1,9 +1,12 @@
 //インクルード
 #include <Windows.h>
+#include <cstdlib>
 #include "Engine/Direct3D.h"
 #include "Engine/Camera.h"
 #include "Engine/Input.h"
 #include "Engine/RootJob.h"
+
+#pragma comment(lib, "winmm.lib")
 
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
@@ -86,13 +89,37 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 		//メッセージなし
 		else {
+			timeBeginPeriod(1);							//正確に計るためのコマンド
+			static DWORD countFps = 0;					//FPS
+			static DWORD startTime = timeGetTime();		//プログラムの開始時刻
+			DWORD nowTime = timeGetTime();				//現在時刻
+			static DWORD lastUpdateTime = nowTime;		//最後の更新
+
+			//1秒経っていたら
+			if (nowTime - startTime >= 1000) {
+				char str[16];
+				wsprintf(str, "%u", countFps);
+				SetWindowText(hWnd, str);
+
+				countFps = 0;
+				startTime = nowTime;
+			}
+
+			//前回の更新から1/60秒経過していない場合
+			if ((nowTime - lastUpdateTime) * 60 <= 1000) {
+				continue;
+			}
+			lastUpdateTime = nowTime;
+
+			countFps++;
+			timeEndPeriod(1);
+
 			//★ゲームの処理
 			//カメラの更新
 			Camera::Update();
-			
 			//Inputの更新
 			Input::Update();
-
+			//オブジェクトの更新
 			pRootJob->UpdateSub();
 
 			//★描画処理
@@ -105,7 +132,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Direct3D::EndDraw();		//バッファの入れ替え
 		}
 	}
-	SAFE_RELEASE(pRootJob);
+	pRootJob->ReleaseSub();
 	SAFE_DELETE(pRootJob);
 	Input::Release();
 	Direct3D::Release();
