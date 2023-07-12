@@ -18,8 +18,10 @@ Player::~Player()
 void Player::Initialize() {
 	pFbx = new Fbx();
 	pFbx->Load("Assets/Oden_2.fbx");
-	this->transform_.rotate_.z = 38.0f;
-	Instantiate< MiniPlayer>(this);
+	//this->transform_.rotate_.z = 38.0f;
+	//this->transform_.scale_ = XMFLOAT3(0.5f, 0.5f, 0.5f);
+	Instantiate< MiniPlayer>(this)->SetPosition(XMFLOAT3(1.0f, 0.7f, 0.0f));
+	Instantiate< MiniPlayer>(this)->SetPosition(XMFLOAT3(-1.0f, 0.7f, 0.0f));
 }
 
 //XV
@@ -39,6 +41,6 @@ void Player::Draw() {
 
 //ŠJ•ú
 void Player::Release() {
-	pFbx->Release();
-	delete pFbx;
+	//pFbx->Release();
+	//delete pFbx;
 }

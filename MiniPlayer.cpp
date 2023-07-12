@@ -18,14 +18,16 @@ void MiniPlayer::Initialize() {
 	pFbx = new Fbx();
 	pFbx->Load("Assets/Oden_2.fbx");
 	transform_.position_.x = 3.0f;
-	this->transform_.scale_ = XMFLOAT3(0.5f, 0.5f, 0.5f);
+	this->transform_.scale_ = XMFLOAT3(0.3f, 0.3f, 0.3f);
 }
 
 //XV
 void MiniPlayer::Update() {
-	transform_.rotate_.x += rand() % 60;
-	transform_.rotate_.y += rand() % 60;
-	transform_.rotate_.z += rand() % 60;
+	//transform_.rotate_.x += rand() % 60;
+	//transform_.rotate_.y += rand() % 60;
+	//transform_.rotate_.z += rand() % 60;
+
+	if (Input::IsKeyDown(DIK_D))	KillMe();
 }
 
 //•`‰æ
@@ -35,6 +37,6 @@ void MiniPlayer::Draw() {
 
 //ŠJ•ú
 void MiniPlayer::Release() {
-	pFbx->Release();
-	delete pFbx;
+	//pFbx->Release();
+	//delete pFbx;
 }

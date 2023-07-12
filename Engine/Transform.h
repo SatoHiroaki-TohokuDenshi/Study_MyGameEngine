@@ -14,6 +14,8 @@ public:
 	XMFLOAT3 rotate_;	//向き
 	XMFLOAT3 scale_;	//拡大率
 
+	Transform* pParent_;//親オブジェクトのTransform
+
 	//コンストラクタ
 	Transform();
 
@@ -28,4 +30,7 @@ public:
 
 	//法線変形用行列を取得
 	XMMATRIX GetNormalMatrix();
+
+	//親オブジェクトの登録
+	void SetParentTransform(Transform* p) { pParent_ = p; };
 };

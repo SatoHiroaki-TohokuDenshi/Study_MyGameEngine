@@ -36,6 +36,12 @@ public:
 	void UpdateSub();
 	void ReleaseSub();
 
+	//アクセス関数
+	void SetPosition(XMFLOAT3 pos) { transform_.position_ = pos; };
+	void SetRotate(XMFLOAT3 rot) { transform_.rotate_ = rot; };
+	void SetScale(XMFLOAT3 scl) { transform_.scale_ = scl; };
+
+	//初期化用クラステンプレート
 	template <class T>
 	GameObject* Instantiate(GameObject* parent) {
 		T* p;

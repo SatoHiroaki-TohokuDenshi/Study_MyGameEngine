@@ -11,6 +11,8 @@ GameObject::GameObject(GameObject* parent, const std::string& name) :
 	transform_(Transform()),
 	pParent_(parent), objectName_(name), isDead_(false)
 {
+	if (pParent_ != nullptr)
+		this->transform_.SetParentTransform(&parent->transform_);
 }
 
 GameObject::~GameObject() {
@@ -38,11 +40,13 @@ void GameObject::UpdateSub() {
 }
 
 void GameObject::ReleaseSub() {
+	//Žq‹Ÿ‚ÌReleaseSub‚ðŒÄ‚Ô
+	for (auto itr = childList_.begin(); itr != childList_.end(); itr++) {
+		(*itr)->ReleaseSub();
+		SAFE_DELETE(*itr);
+	}
 	//Ž©•ª‚ÌRelease‚ðŒÄ‚Ño‚·
 	Release();
-	//Žq‹Ÿ‚ÌReleaseSub‚ðŒÄ‚Ô
-	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)
-		(*itr)->ReleaseSub();
 }
 
 void GameObject::KillMe() {
