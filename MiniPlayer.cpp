@@ -1,10 +1,10 @@
 #include "MiniPlayer.h"
-#include "Engine/Fbx.h"
+#include "Engine/Model.h"
 #include "Engine/Input.h"
 
 //コンストラクタ
 MiniPlayer::MiniPlayer(GameObject* parent)
-	:GameObject(parent, "MiniPlayer"), pFbx(nullptr)
+	:GameObject(parent, "MiniPlayer"), hModel_(-1)
 {
 }
 
@@ -15,28 +15,27 @@ MiniPlayer::~MiniPlayer()
 
 //初期化
 void MiniPlayer::Initialize() {
-	pFbx = new Fbx();
-	pFbx->Load("Assets/Oden_2.fbx");
-	transform_.position_.x = 3.0f;
+	hModel_ = Model::Load("Assets/Oden_2.fbx");
+	assert(hModel_ >= 0);
+
 	this->transform_.scale_ = XMFLOAT3(0.3f, 0.3f, 0.3f);
 }
 
 //更新
 void MiniPlayer::Update() {
-	//transform_.rotate_.x += rand() % 60;
-	//transform_.rotate_.y += rand() % 60;
-	//transform_.rotate_.z += rand() % 60;
+	transform_.rotate_.y++;
+	transform_.position_.z += 0.5f;
 
-	if (Input::IsKeyDown(DIK_D))	KillMe();
+	if (transform_.position_.z >= 50.0f)
+		KillMe();
 }
 
 //描画
 void MiniPlayer::Draw() {
-	pFbx->Draw(this->transform_);
+	Model::SetTransform(hModel_, transform_);
+	Model::Draw(hModel_);
 }
 
 //開放
 void MiniPlayer::Release() {
-	//pFbx->Release();
-	//delete pFbx;
 }

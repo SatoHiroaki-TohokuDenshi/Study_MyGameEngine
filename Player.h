@@ -1,14 +1,11 @@
 #pragma once
 #include "Engine/GameObject.h"
 
-//前方宣言
-class Fbx;
-
 //Playerを管理するクラス
 class Player : public GameObject
 {
 private:
-    Fbx* pFbx;
+    int hModel_;
 public:
     //コンストラクタ
     Player(GameObject* parent);

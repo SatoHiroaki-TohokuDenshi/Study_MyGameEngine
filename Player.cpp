@@ -1,11 +1,11 @@
 #include "Player.h"
-#include "Engine/Fbx.h"
+#include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "MiniPlayer.h"
 
 //コンストラクタ
 Player::Player(GameObject* parent)
-    :GameObject(parent, "Player"), pFbx(nullptr)
+    :GameObject(parent, "Player"), hModel_(-1)
 {
 }
 
@@ -16,31 +16,28 @@ Player::~Player()
 
 //初期化
 void Player::Initialize() {
-	pFbx = new Fbx();
-	pFbx->Load("Assets/Oden_2.fbx");
-	//this->transform_.rotate_.z = 38.0f;
-	//this->transform_.scale_ = XMFLOAT3(0.5f, 0.5f, 0.5f);
-	Instantiate< MiniPlayer>(this)->SetPosition(XMFLOAT3(1.0f, 0.7f, 0.0f));
-	Instantiate< MiniPlayer>(this)->SetPosition(XMFLOAT3(-1.0f, 0.7f, 0.0f));
+	hModel_ = Model::Load("Assets/Oden_2.fbx");
+	assert(hModel_ >= 0);
 }
 
 //更新
 void Player::Update() {
-	transform_.rotate_.y += 1.0f;
-	if (Input::IsKeyDown(DIK_A)) {
-		this->KillMe();
-	}
+	transform_.rotate_.y++;
+
 	if (Input::IsKey(DIK_LEFT))		transform_.position_.x -= 0.1f;
 	if (Input::IsKey(DIK_RIGHT))	transform_.position_.x += 0.1f;
+
+	if (Input::IsKeyDown(DIK_SPACE)) {
+		Instantiate<MiniPlayer>(this->pParent_)->SetPosition(this->transform_.position_);
+	}
 }
 
 //描画
 void Player::Draw() {
-	pFbx->Draw(this->transform_);
+	Model::SetTransform(hModel_, this->transform_);
+	Model::Draw(hModel_);
 }
 
 //開放
 void Player::Release() {
-	//pFbx->Release();
-	//delete pFbx;
 }

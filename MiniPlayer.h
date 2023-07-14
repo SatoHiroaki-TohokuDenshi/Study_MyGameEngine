@@ -1,14 +1,11 @@
 #pragma once
 #include "Engine/GameObject.h"
 
-//前方宣言
-class Fbx;
-
 //MiniPlayerを管理するクラス
 class MiniPlayer : public GameObject
 {
 private:
-    Fbx* pFbx;
+    int hModel_;
 public:
     //コンストラクタ
     MiniPlayer(GameObject* parent);
