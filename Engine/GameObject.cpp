@@ -16,15 +16,6 @@ GameObject::GameObject(GameObject* parent, const std::string& name) :
 }
 
 GameObject::~GameObject() {
-
-}
-
-void GameObject::DrawSub() {
-	//自分のDrawを呼び出す
-	Draw();
-	//子供のDrawSubを呼ぶ
-	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)
-		(*itr)->DrawSub();
 }
 
 void GameObject::UpdateSub() {
@@ -37,6 +28,14 @@ void GameObject::UpdateSub() {
 
 	//オブジェクトの消去
 	DeleteObject();
+}
+
+void GameObject::DrawSub() {
+	//自分のDrawを呼び出す
+	Draw();
+	//子供のDrawSubを呼ぶ
+	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)
+		(*itr)->DrawSub();
 }
 
 void GameObject::ReleaseSub() {
@@ -66,4 +65,9 @@ void GameObject::DeleteObject() {
 		else
 			itr++;
 	}
+}
+
+GameObject* GameObject::FindChildObject(string objName) {
+	
+	return nullptr;
 }

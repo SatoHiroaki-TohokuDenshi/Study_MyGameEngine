@@ -32,14 +32,22 @@ public:
 	virtual void Release() = 0;
 
 	//Initialize以外の関数を再帰的に呼び出す関数群
-	void DrawSub();
 	void UpdateSub();
+	void DrawSub();
 	void ReleaseSub();
 
 	//アクセス関数
 	void SetPosition(XMFLOAT3 pos) { transform_.position_ = pos; };
 	void SetRotate(XMFLOAT3 rot) { transform_.rotate_ = rot; };
 	void SetScale(XMFLOAT3 scl) { transform_.scale_ = scl; };
+
+	//オブジェクトの消去処理
+	bool isDead_;		//フラグ
+	void KillMe();		//フラグを立てる
+	void DeleteObject();//オブジェクトを消す
+
+	//オブジェクトの検索
+	GameObject* FindChildObject(string objName);
 
 	//初期化用クラステンプレート
 	template <class T>
@@ -50,9 +58,4 @@ public:
 		parent->childList_.push_back(p);
 		return p;
 	}
-
-	//オブジェクトの消去処理
-	bool isDead_;		//フラグ
-	void KillMe();		//フラグを立てる
-	void DeleteObject();//オブジェクトを消す
 };
