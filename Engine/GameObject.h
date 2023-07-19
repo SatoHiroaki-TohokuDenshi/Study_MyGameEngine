@@ -31,25 +31,46 @@ public:
 	//解放
 	virtual void Release() = 0;
 
-	//Initialize以外の関数を再帰的に呼び出す関数群
+	//子供のUpdate関数を再帰的に呼び出す
 	void UpdateSub();
+	//子供のDraw関数を再帰的に呼び出す
 	void DrawSub();
+	//子供のRelease関数を再帰的に呼び出す
 	void ReleaseSub();
 
-	//アクセス関数
+	//アクセス関数//
+	//位置の取得
 	void SetPosition(XMFLOAT3 pos) { transform_.position_ = pos; };
+	//回転の取得
 	void SetRotate(XMFLOAT3 rot) { transform_.rotate_ = rot; };
+	//拡大率の取得
 	void SetScale(XMFLOAT3 scl) { transform_.scale_ = scl; };
 
-	//オブジェクトの消去処理
+	//オブジェクトの消去処理//
 	bool isDead_;		//フラグ
 	void KillMe();		//フラグを立てる
 	void DeleteObject();//オブジェクトを消す
 
-	//オブジェクトの検索
+	//子供の検索
+	//引数：オブジェクトの名前
+	//戻値：GameObject型のポインタ　見つからない場合はnullptr
 	GameObject* FindChildObject(string objName);
 
-	//初期化用クラステンプレート
+	//オブジェクトの検索
+	//引数：探したいオブジェクトの名前
+	//戻値：RootJobのポインタ
+	GameObject* GetRootJob();
+
+	//オブジェクトの検索
+	//引数：探したいオブジェクトの名前
+	//戻値：GameObject型のポインタ　見つからない場合はnullptr
+	GameObject* FindObject(string objName);
+
+public:
+	/// <summary>初期化用テンプレート</summary>
+	/// <typeparam name="T">初期化するクラス</typeparam>
+	/// <param name="parent">親のアドレス</param>
+	/// <returns>作成されたオブジェクトのポインタ</returns>
 	template <class T>
 	GameObject* Instantiate(GameObject* parent) {
 		T* p;

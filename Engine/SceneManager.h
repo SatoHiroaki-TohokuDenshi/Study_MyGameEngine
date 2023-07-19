@@ -18,6 +18,9 @@ public:
 	void Draw() override;
 	void Release() override;
 
-	//シーンを切り替える
+	void DeleteScene();
+
+	/// <summary>シーンを切り替える</summary>
+	/// <param name="next">次のシーンID</param>
 	void ChangeScene(SCENE_ID next);
 };

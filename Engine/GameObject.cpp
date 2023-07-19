@@ -68,6 +68,31 @@ void GameObject::DeleteObject() {
 }
 
 GameObject* GameObject::FindChildObject(string objName) {
-	
+	//自分の名前だったら自分のアドレスを返す
+	if (objName == this->objectName_) {
+		return this;
+	}
+	else {
+		for (auto &itr : childList_) {
+			GameObject* obj = itr->FindChildObject(objName);
+			if (obj != nullptr)
+				return obj;
+		}
+	}
+
+	//見つからなかった場合
 	return nullptr;
+}
+
+GameObject* GameObject::GetRootJob() {
+	//自身がRootJobの場合
+	if (pParent_ == nullptr)
+		return this;
+
+	//親のGetRootJobで親について検索
+	return pParent_->GetRootJob();
+}
+
+GameObject* GameObject::FindObject(string objName) {
+	return GetRootJob()->FindChildObject(objName);
 }

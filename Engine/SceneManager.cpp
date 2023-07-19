@@ -22,18 +22,11 @@ void SceneManager::Initialize() {
 void SceneManager::Update() {
 	//現在のシーンIDと次のシーンIDが異なる場合切り替える
 	if (currentSceneID_ != nextSceneID) {
-		//現在のシーンの後片付け
-		auto scene = childList_.begin();
-		(*scene)->ReleaseSub();
-		SAFE_DELETE(*scene);
-		childList_.clear();
-
-		//ロードしたデータの削除
-		Model::Release();
+		//現在のシーンを削除
+		DeleteScene();
 
 		//次のシーンの準備
-		switch (nextSceneID)
-		{
+		switch (nextSceneID) {
 		case SCENE_ID_TEST:
 			Instantiate<TestScene>(this);
 			break;
@@ -52,7 +45,19 @@ void SceneManager::Draw() {
 void SceneManager::Release() {
 }
 
-//シーンを切り替える
+/// <summary>シーンを切り替える</summary>
+/// <param name="next">次のシーンID</param>
 void SceneManager::ChangeScene(SCENE_ID next) {
 	nextSceneID = next;
+}
+
+void SceneManager::DeleteScene() {
+	//現在のシーンの後片付け
+	auto scene = childList_.begin();
+	(*scene)->ReleaseSub();
+	SAFE_DELETE(*scene);
+	childList_.clear();
+
+	//ロードしたデータの削除
+	Model::Release();
 }
