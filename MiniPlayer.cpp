@@ -1,6 +1,7 @@
 #include "MiniPlayer.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
+#include "Engine/SphereCollider.h"
 
 //コンストラクタ
 MiniPlayer::MiniPlayer(GameObject* parent)
@@ -19,6 +20,9 @@ void MiniPlayer::Initialize() {
 	assert(hModel_ >= 0);
 
 	this->transform_.scale_ = XMFLOAT3(0.3f, 0.3f, 0.3f);
+
+	SphereCollider* col = new SphereCollider();
+	AddCollider(col);
 }
 
 //更新

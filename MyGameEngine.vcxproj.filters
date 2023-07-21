@@ -57,6 +57,8 @@
     <ClCompile Include="Engine\SceneManager.cpp">
       <Filter>01Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Engine\SphereCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple2D.hlsl">
@@ -113,5 +115,7 @@
     <ClInclude Include="Engine\SceneManager.h">
       <Filter>01Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Engine\SphereCollider.h" />
   </ItemGroup>
 </Project>

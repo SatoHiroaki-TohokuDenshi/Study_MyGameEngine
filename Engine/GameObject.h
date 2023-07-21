@@ -7,12 +7,15 @@
 using std::string;
 using std::list;
 
+class SphereCollider;
+
 class GameObject {
 protected:
 	list<GameObject*>	childList_;		//自分の子供のポインタのリスト
 	Transform			transform_;		//自分の位置、向き、拡大率
 	GameObject*			pParent_;		//自分の親のポインタ
 	string				objectName_;	//自分の名前
+	SphereCollider* pCollider_;			//当たり判定
 
 public:
 	GameObject();
@@ -31,14 +34,13 @@ public:
 	//解放
 	virtual void Release() = 0;
 
-	//子供のUpdate関数を再帰的に呼び出す
+	//--------各処理を再帰的に呼ぶ関数--------//
 	void UpdateSub();
-	//子供のDraw関数を再帰的に呼び出す
 	void DrawSub();
-	//子供のRelease関数を再帰的に呼び出す
 	void ReleaseSub();
 
-	//アクセス関数//
+
+	//--------アクセス関数--------//
 	//位置の取得
 	void SetPosition(XMFLOAT3 pos) { transform_.position_ = pos; };
 	//回転の取得
@@ -46,25 +48,33 @@ public:
 	//拡大率の取得
 	void SetScale(XMFLOAT3 scl) { transform_.scale_ = scl; };
 
-	//オブジェクトの消去処理//
+
+	//--------オブジェクトの消去処理--------//
 	bool isDead_;		//フラグ
 	void KillMe();		//フラグを立てる
 	void DeleteObject();//オブジェクトを消す
 
+
+	//--------検索をする関数--------//
 	//子供の検索
-	//引数：オブジェクトの名前
-	//戻値：GameObject型のポインタ　見つからない場合はnullptr
+	//引数：オブジェクトの名前  戻値：GameObject型のポインタ　見つからない場合はnullptr
 	GameObject* FindChildObject(string objName);
 
-	//オブジェクトの検索
-	//引数：探したいオブジェクトの名前
-	//戻値：RootJobのポインタ
+	//ルートジョブの検索
+	//引数：オブジェクトの名前  戻値：RootJobのポインタ
 	GameObject* GetRootJob();
 
 	//オブジェクトの検索
-	//引数：探したいオブジェクトの名前
-	//戻値：GameObject型のポインタ　見つからない場合はnullptr
+	//引数：探したいオブジェクトの名前  戻値：GameObject型のポインタ　見つからない場合はnullptr
 	GameObject* FindObject(string objName);
+
+	//--------当たり判定--------//
+	//当たり判定の追加
+	void AddCollider(SphereCollider* pCollider);
+	//
+	void Collision(GameObject* pTarget);
+	//総当たり
+	void RoundRobin(GameObject* pTarget);
 
 public:
 	/// <summary>初期化用テンプレート</summary>
