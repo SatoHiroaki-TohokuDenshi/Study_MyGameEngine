@@ -17,7 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Engine\GameObject.cpp">
       <Filter>01Engine</Filter>
     </ClCompile>
@@ -45,8 +44,6 @@
     <ClCompile Include="Engine\Transform.cpp">
       <Filter>01Engine\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="MiniPlayer.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Engine\Model.cpp">
       <Filter>01Engine\ObjectResource</Filter>
@@ -57,8 +54,9 @@
     <ClCompile Include="Engine\SceneManager.cpp">
       <Filter>01Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Engine\SphereCollider.cpp" />
+    <ClCompile Include="Engine\SphereCollider.cpp">
+      <Filter>01Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple2D.hlsl">
@@ -72,7 +70,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Engine\GameObject.h">
       <Filter>01Engine</Filter>
     </ClInclude>
@@ -103,8 +100,6 @@
     <ClInclude Include="Engine\Transform.h">
       <Filter>01Engine\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="MiniPlayer.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="Engine\Model.h">
       <Filter>01Engine\ObjectResource</Filter>
@@ -115,7 +110,8 @@
     <ClInclude Include="Engine\SceneManager.h">
       <Filter>01Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Engine\SphereCollider.h" />
+    <ClInclude Include="Engine\SphereCollider.h">
+      <Filter>01Engine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

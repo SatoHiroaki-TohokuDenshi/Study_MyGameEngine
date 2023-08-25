@@ -2,7 +2,6 @@
 #include "Model.h"
 #include "SafetyMacro.h"
 #include "../TestScene.h"
-#include "../PlayScene.h"
 
 SceneManager::SceneManager(GameObject* parent) :
 	GameObject(parent, "SceneManager"), 
@@ -14,9 +13,9 @@ SceneManager::~SceneManager() {
 }
 
 void SceneManager::Initialize() {
-	currentSceneID_ = SCENE_ID_PLAY;
+	currentSceneID_ = SCENE_ID_TEST;
 	nextSceneID = currentSceneID_;
-	Instantiate<PlayScene>(this);
+	Instantiate<TestScene>(this);
 }
 
 void SceneManager::Update() {
@@ -29,9 +28,6 @@ void SceneManager::Update() {
 		switch (nextSceneID) {
 		case SCENE_ID_TEST:
 			Instantiate<TestScene>(this);
-			break;
-		case SCENE_ID_PLAY:
-			Instantiate<PlayScene>(this);
 			break;
 		}
 		currentSceneID_ = nextSceneID;
