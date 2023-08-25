@@ -75,6 +75,8 @@ public:
 	void Collision(GameObject* pTarget);
 	//総当たり
 	void RoundRobin(GameObject* pTarget);
+	//
+	virtual void OnCollision(GameObject* pTarget);
 
 public:
 	/// <summary>初期化用テンプレート</summary>

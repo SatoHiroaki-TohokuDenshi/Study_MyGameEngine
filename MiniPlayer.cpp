@@ -43,3 +43,8 @@ void MiniPlayer::Draw() {
 //ŠJ•ú
 void MiniPlayer::Release() {
 }
+
+void MiniPlayer::OnCollision(GameObject* pTarget)
+{
+	int i = 0;
+}
