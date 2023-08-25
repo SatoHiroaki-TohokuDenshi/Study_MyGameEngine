@@ -58,6 +58,7 @@
       <Filter>01Engine</Filter>
     </ClCompile>
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="Controller.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple2D.hlsl">
@@ -115,5 +116,6 @@
       <Filter>01Engine</Filter>
     </ClInclude>
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="Controller.h" />
   </ItemGroup>
 </Project>

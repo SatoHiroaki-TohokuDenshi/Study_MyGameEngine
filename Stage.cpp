@@ -28,8 +28,22 @@ void Stage::Update()
 //描画
 void Stage::Draw()
 {
-    Model::SetTransform(hModel_, transform_);
-    Model::Draw(hModel_);
+    //Stageオブジェクトをずらさずに、ステージを配置するための変数
+    Transform blockTrans;
+    //表示するモデルを管理する変数
+    int type = 0;
+
+    for (int x = 0; x < 15; x++)
+    {
+        for (int z = 0; z < 15; z++)
+        {
+            blockTrans.position_.x = (float)x;
+            blockTrans.position_.z = (float)z;
+
+            Model::SetTransform(hModel_, blockTrans);
+            Model::Draw(hModel_);
+        }
+    }
 }
 
 //開放
