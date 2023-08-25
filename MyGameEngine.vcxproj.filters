@@ -57,6 +57,7 @@
     <ClCompile Include="Engine\SphereCollider.cpp">
       <Filter>01Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple2D.hlsl">
@@ -113,5 +114,6 @@
     <ClInclude Include="Engine\SphereCollider.h">
       <Filter>01Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Stage.h" />
   </ItemGroup>
 </Project>
