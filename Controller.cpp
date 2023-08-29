@@ -6,6 +6,7 @@
 Controller::Controller(GameObject* parent)
 	:GameObject(parent, "Controller")
 {
+	transform_.position_ = XMFLOAT3(7.0f, 0.0f, 7.0f);
 }
 
 //デストラクタ
@@ -37,8 +38,8 @@ void Controller::Update()
 		transform_.rotate_.x -= 2.0f;
 	}
 
-	if (transform_.rotate_.x >=  60.0f) transform_.rotate_.x =  60.0f;
-	if (transform_.rotate_.x <= -90.0f) transform_.rotate_.x = -89.0f;
+	if (transform_.rotate_.x >= 60.0f) transform_.rotate_.x = 60.0f;
+	if (transform_.rotate_.x <=  -25.0f) transform_.rotate_.x =  -25.0f;
 
 	//現在地情報をベクトル型に変換
 	XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
