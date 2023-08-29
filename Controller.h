@@ -23,4 +23,9 @@ public:
 
     //ŠJ•ú
     void Release() override;
+
+private:
+    void InputRotate();
+    void InputMove();
+    void SetCamera();
 };
