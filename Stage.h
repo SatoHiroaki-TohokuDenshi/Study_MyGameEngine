@@ -4,10 +4,7 @@
 
 using std::vector;
 
-//Stageを管理するクラス
-class Stage : public GameObject
-{
-private:
+namespace {
 	enum BOX_TYPE {
 		BOX_DEFAULT = 0,
 		BOX_BRICK,
@@ -18,9 +15,20 @@ private:
 	};
 	const int sizeX = 15;
 	const int sizeZ = 15;
+}
+
+//Stageを管理するクラス
+class Stage : public GameObject
+{
+private:
+
+
+	struct {
+		BOX_TYPE type_;
+		int height_;
+	} table_[sizeX][sizeZ];
 	
 	vector<int> hModel_;		//モデル番号
-	vector<vector<int>> table_;	//表示内容
 public:
 	//コンストラクタ
 	Stage(GameObject* parent);
