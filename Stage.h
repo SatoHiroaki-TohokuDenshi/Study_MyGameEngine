@@ -29,7 +29,8 @@ private:
 	} table_[sizeX][sizeZ];
 	
 	vector<int> hModel_;		//モデル番号
-public:
+
+public:	//オーバーライド関数
 	//コンストラクタ
 	Stage(GameObject* parent);
 
@@ -47,4 +48,8 @@ public:
 
 	//開放
 	void Release() override;
+
+public:
+	void SetBlock(int _x, int _z, BOX_TYPE _type);
+	void SetBlockHeight(int _x, int _z, int _height);
 };

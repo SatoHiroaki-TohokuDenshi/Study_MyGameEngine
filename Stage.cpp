@@ -11,7 +11,7 @@ Stage::Stage(GameObject* parent)
 	for (int x = 0; x < sizeX; x++) {
 		for (int z = 0; z < sizeZ; z++) {
 			table_[x][z].type_ = (BOX_TYPE)(x % BOX_TYPE::BOX_MAX);
-			table_[x][z].height_ =1;
+			table_[x][z].height_ = 1;
 		}
 	}
 }
@@ -75,4 +75,16 @@ void Stage::Draw()
 //ŠJ•ú
 void Stage::Release()
 {
+}
+
+void Stage::SetBlock(int _x, int _z, BOX_TYPE _type)
+{
+	if (_type >= BOX_TYPE::BOX_MAX)		return;
+	table_[_x][_z].type_ = _type;
+}
+
+void Stage::SetBlockHeight(int _x, int _z, int _height)
+{
+	if (_height >= 6) return;
+	table_[_x][_z].height_ = _height;
 }
