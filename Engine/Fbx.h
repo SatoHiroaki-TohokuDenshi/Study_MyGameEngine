@@ -11,6 +11,14 @@
 #pragma comment(lib, "LibXml2-MD.lib")
 #pragma comment(lib, "zlib-MD.lib")
 
+//レイキャスト用構造体
+struct RayCastData {
+	XMFLOAT3 start;
+	XMFLOAT3 dir;
+	bool hit;
+	float dist;
+};
+
 class Fbx {
 	//コンスタントバッファに渡す情報をまとめた構造体
 	struct CONSTANT_BUFFER {
@@ -32,6 +40,9 @@ class Fbx {
 		Texture* pTexture;
 		XMFLOAT4	diffuse;
 	};
+
+	VERTEX* pVertices_;	//頂点情報
+	int** ppIndex_;		//頂点番号
 
 	int vertexCount_;	//頂点数
 	int polygonCount_;	//ポリゴン数
@@ -69,4 +80,9 @@ private:
 	//---------Draw関数から呼ばれる関数---------
 	void PassDataToCB(Transform transform, int i);	//コンスタントバッファに各種情報を渡す
 	void SetBufferToPipeline(int i);
+
+public:
+	/// <summary>レイキャストを計算する</summary>
+	/// <param name="rayData">必要なデータの構造体</param>
+	void RayCast(RayCastData& rayData);
 };
