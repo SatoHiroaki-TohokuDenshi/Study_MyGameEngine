@@ -154,6 +154,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 //CALLBACK　特定の状況で呼ばれるよって宣言（通常は勝手に呼ばれたりしない）
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
+	case WM_MOUSEMOVE:
+		Input::SetMousePosition(LOWORD(lParam), HIWORD(lParam));
+		return 0;
 	case WM_DESTROY:			//ウィンドウを閉じたとき
 		//プログラム終了
 		PostQuitMessage(0);
