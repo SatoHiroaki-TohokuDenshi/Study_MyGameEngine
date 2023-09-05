@@ -117,5 +117,11 @@
     </ClInclude>
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MapEditor.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
