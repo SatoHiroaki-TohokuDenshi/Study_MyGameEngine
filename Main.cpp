@@ -6,6 +6,7 @@
 #include "Engine/Input.h"
 #include "Engine/RootJob.h"
 #include "Engine/Model.h"
+#include "Stage.h"
 
 #include "resource.h"
 
@@ -163,9 +164,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 //ダイアログのウィンドウプロシージャ
 BOOL CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam) {
-	switch (msg) {
-	default:
-		break;
-	}
-	return FALSE;
+	Stage* pStage = (Stage*)pRootJob->FindObject("Stage");
+	return pStage->DialogProc(hDlg, msg, wParam, lParam);
 }

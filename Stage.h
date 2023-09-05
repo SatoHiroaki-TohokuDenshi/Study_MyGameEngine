@@ -1,5 +1,7 @@
 #pragma once
+
 #include <vector>
+#include <windows.h>
 #include "Engine/GameObject.h"
 
 using std::vector;
@@ -21,14 +23,15 @@ namespace {
 class Stage : public GameObject
 {
 private:
-
-
 	struct {
 		BOX_TYPE type_;
 		int height_;
 	} table_[sizeX][sizeZ];
 	
 	vector<int> hModel_;		//モデル番号
+
+	int mode_;		//0:上げる  1:下げる  2:変える
+	int select_;	//種類
 
 public:	//オーバーライド関数
 	//コンストラクタ
@@ -52,4 +55,6 @@ public:	//オーバーライド関数
 public:
 	void SetBlock(int _x, int _z, BOX_TYPE _type);
 	void SetBlockHeight(int _x, int _z, int _height);
+
+	BOOL DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp);
 };
