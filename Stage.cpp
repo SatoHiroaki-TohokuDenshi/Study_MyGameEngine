@@ -1,6 +1,9 @@
 #include "Stage.h"
 #include <string>
+#include "Engine/Direct3D.h"
 #include "Engine/Model.h"
+#include "Engine/Input.h"
+#include "Engine/Camera.h"
 #include "resource.h"
 
 using std::string;
@@ -43,6 +46,35 @@ void Stage::Initialize()
 //çXêV
 void Stage::Update()
 {
+	float w = (float)Direct3D::scrWidth_ / 2.0f;
+	float h = (float)Direct3D::scrHeight_ / 2.0f;
+	float offsetX = 0.0f, offsetY = 0.0f;
+	float maxZ = 1.0f, minZ = 0.0f;
+	XMMATRIX vp = {
+		w			, 0.0f			, 0.0f			, 0.0f,
+		0.0f		, -h			, 0.0f			, 0.0f,
+		0.0f		, 0.0f			, maxZ - minZ	, 0.0f,
+		offsetX + w	, offsetY + h	, minZ			, 1.0f
+	};
+
+	//ãtçsóÒÇéÊìæ
+	XMMATRIX invVP = XMMatrixInverse(nullptr, vp);
+	XMMATRIX invProj = XMMatrixInverse(nullptr, Camera::GetProjectionMatrix());
+	XMMATRIX invView = XMMatrixInverse(nullptr, Camera::GetViewMatrix());
+
+	XMFLOAT3 mousePosFront = Input::GetMousePosition();
+	mousePosFront.z = 0.0f;
+	XMFLOAT3 mousePosBack = Input::GetMousePosition();
+	mousePosBack.z = 1.0f;
+
+	XMVECTOR mouseVecFront = XMLoadFloat3(&mousePosFront);
+	mouseVecFront = XMVector3TransformCoord(mouseVecFront, invVP);
+	mouseVecFront = XMVector3TransformCoord(mouseVecFront, invProj);
+	mouseVecFront = XMVector3TransformCoord(mouseVecFront, invView);
+	XMVECTOR mouseVecBack = XMLoadFloat3(&mousePosBack);
+	mouseVecBack = XMVector3TransformCoord(mouseVecBack, invVP);
+	mouseVecBack = XMVector3TransformCoord(mouseVecBack, invProj);
+	mouseVecBack = XMVector3TransformCoord(mouseVecBack, invView);
 }
 
 //ï`âÊ

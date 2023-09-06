@@ -62,4 +62,8 @@ namespace Model {
 		}
 		modelList_.clear();
 	}
+
+	void RayCast(int hModel, RayCastData& data) {
+		modelList_.at(hModel)->pFbx_->RayCast(data);
+	}
 }
