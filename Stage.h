@@ -57,4 +57,7 @@ public:
 	void SetBlockHeight(int _x, int _z, int _height);
 
 	BOOL DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp);
+
+private:
+	void CalcChoiceBlock();
 };

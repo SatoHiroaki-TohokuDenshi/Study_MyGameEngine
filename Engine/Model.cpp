@@ -1,5 +1,6 @@
 #include "Model.h"
 #include <vector>
+#include "Direct3D.h"
 #include "SafetyMacro.h"
 
 using std::vector;
@@ -64,6 +65,27 @@ namespace Model {
 	}
 
 	void RayCast(int hModel, RayCastData& data) {
+		//モデルの位置を計算
+		modelList_.at(hModel)->transform_.Calclation();
+		//ワールド行列の逆行列
+		XMMATRIX invWorld = XMMatrixInverse(nullptr, modelList_.at(hModel)->transform_.GetWorldMatrix());
+
+		//レイの通過点を調べる
+		XMVECTOR vPass = {
+			data.start.x + data.dir.x,
+			data.start.y + data.dir.y,
+			data.start.z + data.dir.z,
+			data.start.w + data.dir.w
+		};
+		//data.startをモデル空間に変換
+		XMVECTOR vStart = XMLoadFloat4(&data.start);
+		vStart = XMVector3TransformCoord(vStart, invWorld);
+		//通過点にワールド行列の逆をかける
+		vPass = XMVector3TransformCoord(vPass, invWorld);
+		//data.dirにレイのベクトルを入れる
+		vPass = vPass - vStart;
+		XMStoreFloat4(&data.dir, vPass);
+
 		modelList_.at(hModel)->pFbx_->RayCast(data);
 	}
 }

@@ -8,116 +8,119 @@
     <Filter Include="01Engine">
       <UniqueIdentifier>{0e75b4ea-32fb-4bd2-962a-6972117e5a9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01Engine\DirectX">
-      <UniqueIdentifier>{10052aa1-4442-461a-8655-403dfb2f7584}</UniqueIdentifier>
+    <Filter Include="01Engine\Core">
+      <UniqueIdentifier>{9701b26c-df8e-4c1f-8931-e5a2c42a9042}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01Engine\ObjectResource">
-      <UniqueIdentifier>{1978a42b-642b-499e-9be1-9f41250d1732}</UniqueIdentifier>
+    <Filter Include="01Engine\Shader">
+      <UniqueIdentifier>{eafb1ebe-6a82-48b7-988a-b851ced2e3f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01Engine\Inheritances">
+      <UniqueIdentifier>{81d21e1b-6e1e-44af-a1d0-72747f8a3012}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Engine\GameObject.cpp">
-      <Filter>01Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Camera.cpp">
-      <Filter>01Engine\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Direct3D.cpp">
-      <Filter>01Engine\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Input.cpp">
-      <Filter>01Engine\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Fbx.cpp">
-      <Filter>01Engine\ObjectResource</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Quad.cpp">
-      <Filter>01Engine\ObjectResource</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Sprite.cpp">
-      <Filter>01Engine\ObjectResource</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Texture.cpp">
-      <Filter>01Engine\ObjectResource</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Transform.cpp">
-      <Filter>01Engine\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="TestScene.cpp" />
-    <ClCompile Include="Engine\Model.cpp">
-      <Filter>01Engine\ObjectResource</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\RootJob.cpp">
-      <Filter>01Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\SceneManager.cpp">
-      <Filter>01Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\SphereCollider.cpp">
-      <Filter>01Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Engine\Direct3D.cpp">
+      <Filter>01Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject.cpp">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model.cpp">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Quad.cpp">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite.cpp">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Texture.cpp">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Transform.cpp">
+      <Filter>01Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\RootJob.cpp">
+      <Filter>01Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Fbx.cpp">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SphereCollider.cpp">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SceneManager.cpp">
+      <Filter>01Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Camera.cpp">
+      <Filter>01Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input.cpp">
+      <Filter>01Engine\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple2D.hlsl">
-      <Filter>01Engine</Filter>
+      <Filter>01Engine\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Simple3D.hlsl">
-      <Filter>01Engine</Filter>
+      <Filter>01Engine\Shader</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\GameObject.h">
-      <Filter>01Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\SafetyMacro.h">
       <Filter>01Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Camera.h">
-      <Filter>01Engine\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Direct3D.h">
-      <Filter>01Engine\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Input.h">
-      <Filter>01Engine\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Fbx.h">
-      <Filter>01Engine\ObjectResource</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Quad.h">
-      <Filter>01Engine\ObjectResource</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Sprite.h">
-      <Filter>01Engine\ObjectResource</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Texture.h">
-      <Filter>01Engine\ObjectResource</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Transform.h">
-      <Filter>01Engine\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="TestScene.h" />
-    <ClInclude Include="Engine\Model.h">
-      <Filter>01Engine\ObjectResource</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\RootJob.h">
-      <Filter>01Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\SceneManager.h">
-      <Filter>01Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\SphereCollider.h">
-      <Filter>01Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Engine\Direct3D.h">
+      <Filter>01Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject.h">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model.h">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Quad.h">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Sprite.h">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Texture.h">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Transform.h">
+      <Filter>01Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\RootJob.h">
+      <Filter>01Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Fbx.h">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SphereCollider.h">
+      <Filter>01Engine\Inheritances</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SceneManager.h">
+      <Filter>01Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Camera.h">
+      <Filter>01Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input.h">
+      <Filter>01Engine\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MapEditor.rc">

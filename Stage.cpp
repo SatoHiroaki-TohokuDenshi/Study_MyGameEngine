@@ -46,35 +46,9 @@ void Stage::Initialize()
 //更新
 void Stage::Update()
 {
-	float w = (float)Direct3D::scrWidth_ / 2.0f;
-	float h = (float)Direct3D::scrHeight_ / 2.0f;
-	float offsetX = 0.0f, offsetY = 0.0f;
-	float maxZ = 1.0f, minZ = 0.0f;
-	XMMATRIX vp = {
-		w			, 0.0f			, 0.0f			, 0.0f,
-		0.0f		, -h			, 0.0f			, 0.0f,
-		0.0f		, 0.0f			, maxZ - minZ	, 0.0f,
-		offsetX + w	, offsetY + h	, minZ			, 1.0f
-	};
+	if (!Input::IsMouseButtonDown(0))	return;
 
-	//逆行列を取得
-	XMMATRIX invVP = XMMatrixInverse(nullptr, vp);
-	XMMATRIX invProj = XMMatrixInverse(nullptr, Camera::GetProjectionMatrix());
-	XMMATRIX invView = XMMatrixInverse(nullptr, Camera::GetViewMatrix());
-
-	XMFLOAT3 mousePosFront = Input::GetMousePosition();
-	mousePosFront.z = 0.0f;
-	XMFLOAT3 mousePosBack = Input::GetMousePosition();
-	mousePosBack.z = 1.0f;
-
-	XMVECTOR mouseVecFront = XMLoadFloat3(&mousePosFront);
-	mouseVecFront = XMVector3TransformCoord(mouseVecFront, invVP);
-	mouseVecFront = XMVector3TransformCoord(mouseVecFront, invProj);
-	mouseVecFront = XMVector3TransformCoord(mouseVecFront, invView);
-	XMVECTOR mouseVecBack = XMLoadFloat3(&mousePosBack);
-	mouseVecBack = XMVector3TransformCoord(mouseVecBack, invVP);
-	mouseVecBack = XMVector3TransformCoord(mouseVecBack, invProj);
-	mouseVecBack = XMVector3TransformCoord(mouseVecBack, invView);
+	CalcChoiceBlock();
 }
 
 //描画
@@ -141,4 +115,50 @@ BOOL Stage::DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp){
 		break;
 	}
 	return FALSE;
+}
+
+void Stage::CalcChoiceBlock() {
+	float w = (float)(Direct3D::scrWidth_ / 2.0f);
+	float h = (float)(Direct3D::scrHeight_ / 2.0f);
+	XMMATRIX vp = {
+		w	, 0.0f	, 0.0f	, 0.0f,
+		0.0f, -h	, 0.0f	, 0.0f,
+		0.0f, 0.0f	, 1.0f	, 0.0f,
+		w	, h		, 0.0f	, 1.0f
+	};
+
+	//逆行列を取得
+	XMMATRIX invVP = XMMatrixInverse(nullptr, vp);								//ビューポート変換
+	XMMATRIX invProj = XMMatrixInverse(nullptr, Camera::GetProjectionMatrix());	//プロジェクション変換
+	XMMATRIX invView = XMMatrixInverse(nullptr, Camera::GetViewMatrix());		//ビュー変換
+
+	XMFLOAT3 mousePosFront = Input::GetMousePosition();
+	mousePosFront.z = 0.0f;
+	XMFLOAT3 mousePosBack = Input::GetMousePosition();
+	mousePosBack.z = 1.0f;
+
+	//3D空間に逆計算
+	XMVECTOR mouseVecFront = XMLoadFloat3(&mousePosFront);
+	mouseVecFront = XMVector3TransformCoord(mouseVecFront, invVP * invProj * invView);
+
+	XMVECTOR mouseVecBack = XMLoadFloat3(&mousePosBack);
+	mouseVecBack = XMVector3TransformCoord(mouseVecBack, invVP * invProj * invView);
+
+	for (int x = 0; x < sizeX; x++) {
+		for (int z = 0; z < sizeZ; z++) {
+			for (int y = 0; y < table_[x][z].height_; y++) {
+				RayCastData data;
+				XMStoreFloat4(&data.start, mouseVecFront);
+				XMStoreFloat4(&data.dir, mouseVecBack - mouseVecFront);
+				Transform t;
+				t.position_ = XMFLOAT3((float)x, (float)y, (float)z);
+				Model::SetTransform(hModel_.at(1), t);
+
+				Model::RayCast(hModel_.at(1), data);
+
+				if (data.hit)
+					int a = 0;
+			}
+		}
+	}
 }
