@@ -17,7 +17,9 @@ namespace Model {
 	};
 
 	vector<ModelData*> modelList_;
+}
 
+namespace Model {
 	int Load(string fileName) {
 		ModelData* pData = new ModelData();
 		for (auto& e : modelList_) {
@@ -80,6 +82,8 @@ namespace Model {
 		//data.startをモデル空間に変換
 		XMVECTOR vStart = XMLoadFloat4(&data.start);
 		vStart = XMVector3TransformCoord(vStart, invWorld);
+		XMStoreFloat4(&data.start, vStart);
+
 		//通過点にワールド行列の逆をかける
 		vPass = XMVector3TransformCoord(vPass, invWorld);
 		//data.dirにレイのベクトルを入れる

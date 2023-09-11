@@ -146,18 +146,21 @@ void Stage::CalcChoiceBlock() {
 
 	for (int x = 0; x < sizeX; x++) {
 		for (int z = 0; z < sizeZ; z++) {
-			for (int y = 0; y < table_[x][z].height_; y++) {
+			for (int y = 0; y < table_[x][z].height_ + 1; y++) {
 				RayCastData data;
 				XMStoreFloat4(&data.start, mouseVecFront);
 				XMStoreFloat4(&data.dir, mouseVecBack - mouseVecFront);
-				Transform t;
-				t.position_ = XMFLOAT3((float)x, (float)y, (float)z);
-				Model::SetTransform(hModel_.at(1), t);
 
-				Model::RayCast(hModel_.at(1), data);
+				Transform trans;
+				trans.position_ = XMFLOAT3((float)x, (float)y, (float)z);
+				Model::SetTransform(hModel_.at(0), trans);
 
-				if (data.hit)
-					int a = 0;
+				Model::RayCast(hModel_.at(0), data);
+
+				if (data.hit) {
+					table_[x][z].height_++;
+					break;
+				}
 			}
 		}
 	}
