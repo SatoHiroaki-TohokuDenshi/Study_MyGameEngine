@@ -53,6 +53,7 @@ void Stage::Update()
 	if (!Input::IsMouseButtonDown(0))	return;
 
 	CalcChoiceBlock();
+	//何も選ばれていないなら中止
 	if (selectBlock_.dist_ <= 0.0f)		return;
 
 	switch (mode_) {
@@ -60,7 +61,8 @@ void Stage::Update()
 		table_[selectBlock_.x_][selectBlock_.z_].height_++;
 		break;
 	case MODE::MODE_DOWN:
-		if (table_[selectBlock_.x_][selectBlock_.z_].height_ != 0)
+		//0以下には下げられない
+		if (table_[selectBlock_.x_][selectBlock_.z_].height_ > 0)
 			table_[selectBlock_.x_][selectBlock_.z_].height_--;
 		break;
 	case MODE::MODE_CHANGE:
@@ -160,6 +162,7 @@ BOOL Stage::DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp){
 	return FALSE;
 }
 
+//選択されたブロックの計算
 void Stage::CalcChoiceBlock() {
 	float w = (float)(Direct3D::scrWidth_ / 2.0f);
 	float h = (float)(Direct3D::scrHeight_ / 2.0f);
@@ -175,12 +178,13 @@ void Stage::CalcChoiceBlock() {
 	XMMATRIX invProj = XMMatrixInverse(nullptr, Camera::GetProjectionMatrix());	//プロジェクション変換
 	XMMATRIX invView = XMMatrixInverse(nullptr, Camera::GetViewMatrix());		//ビュー変換
 
+	//マウスの位置の取得
 	XMFLOAT3 mousePosFront = Input::GetMousePosition();
 	mousePosFront.z = 0.0f;
 	XMFLOAT3 mousePosBack = Input::GetMousePosition();
 	mousePosBack.z = 1.0f;
 
-	//3D空間に逆計算
+	//マウスの位置を3D空間に逆計算
 	XMVECTOR mouseVecFront = XMLoadFloat3(&mousePosFront);
 	mouseVecFront = XMVector3TransformCoord(mouseVecFront, invVP * invProj * invView);
 	//XMVECTOR camPos = XMVector3TransformCoord(Camera::GetCameraPosition(), invVP * invProj * invView);
@@ -204,8 +208,10 @@ void Stage::CalcChoiceBlock() {
 				trans.position_ = XMFLOAT3((float)x, (float)y, (float)z);
 				Model::SetTransform(hModel_.at(0), trans);
 
+				//レイキャスト
 				Model::RayCast(hModel_.at(0), data);
 
+				//当たっていたら
 				if (data.hit) {
 					//初めての場合
 					if (selectBlock_.dist_ <= 0.0f) {

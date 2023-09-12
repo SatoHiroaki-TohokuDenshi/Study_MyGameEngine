@@ -7,21 +7,23 @@
 using std::vector;
 
 namespace {
+	//ブロックの種類
 	enum BOX_TYPE {
-		BOX_DEFAULT = 0,
-		BOX_BRICK,
-		BOX_GRASS,
-		BOX_SAND,
-		BOX_WATER,
-		BOX_MAX,
+		BOX_DEFAULT = 0,		//通常
+		BOX_BRICK,				//石
+		BOX_GRASS,				//草
+		BOX_SAND,				//砂
+		BOX_WATER,				//水
+		BOX_MAX,				//最大値
 	};
-	const int sizeX = 15;
-	const int sizeZ = 15;
+	const int sizeX = 15;		//x座標の最大値
+	const int sizeZ = 15;		//z座標の最大値
 
+	//編集モード
 	enum MODE {
-		MODE_UP = 0,
-		MODE_DOWN,
-		MODE_CHANGE,
+		MODE_UP = 0,			//上げる
+		MODE_DOWN,				//下げる
+		MODE_CHANGE,			//変える
 	};
 }
 
@@ -32,13 +34,13 @@ private:
 	struct {
 		BOX_TYPE type_;
 		int height_;
-	} table_[sizeX][sizeZ];
+	} table_[sizeX][sizeZ];		//データを格納する2次元配列
 
 	struct {
 		int x_;
 		int z_;
 		float dist_;
-	} selectBlock_;
+	} selectBlock_;				//選んだブロックの情報を保持する変数
 	
 	vector<int> hModel_;		//モデル番号
 
