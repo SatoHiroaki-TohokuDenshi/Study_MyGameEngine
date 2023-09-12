@@ -18,6 +18,10 @@ Stage::Stage(GameObject* parent)
 			table_[x][z].height_ = 1;
 		}
 	}
+
+	selectBlock_.x_ = 0;
+	selectBlock_.z_ = 0;
+	selectBlock_.dist_ = -1.0f;
 }
 
 //デストラクタ
@@ -140,9 +144,15 @@ void Stage::CalcChoiceBlock() {
 	//3D空間に逆計算
 	XMVECTOR mouseVecFront = XMLoadFloat3(&mousePosFront);
 	mouseVecFront = XMVector3TransformCoord(mouseVecFront, invVP * invProj * invView);
+	//XMVECTOR camPos = XMVector3TransformCoord(Camera::GetCameraPosition(), invVP * invProj * invView);
 
 	XMVECTOR mouseVecBack = XMLoadFloat3(&mousePosBack);
 	mouseVecBack = XMVector3TransformCoord(mouseVecBack, invVP * invProj * invView);
+
+	//選択ブロックの初期化
+	selectBlock_.x_ = 0;
+	selectBlock_.z_ = 0;
+	selectBlock_.dist_ = -1.0f;
 
 	for (int x = 0; x < sizeX; x++) {
 		for (int z = 0; z < sizeZ; z++) {
@@ -158,10 +168,24 @@ void Stage::CalcChoiceBlock() {
 				Model::RayCast(hModel_.at(0), data);
 
 				if (data.hit) {
-					table_[x][z].height_++;
+					//初めての場合
+					if (selectBlock_.dist_ <= 0.0f) {
+						selectBlock_.x_ = x;
+						selectBlock_.z_ = z;
+						selectBlock_.dist_ = data.dist;
+					}
+					//それ以外
+					else if (selectBlock_.dist_ >= data.dist) {
+						selectBlock_.x_ = x;
+						selectBlock_.z_ = z;
+						selectBlock_.dist_ = data.dist;
+					}
 					break;
 				}
 			}
 		}
 	}
+
+	if (selectBlock_.dist_ <= 0.0f) return;
+	table_[selectBlock_.x_][selectBlock_.z_].height_++;
 }

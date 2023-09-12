@@ -27,6 +27,12 @@ private:
 		BOX_TYPE type_;
 		int height_;
 	} table_[sizeX][sizeZ];
+
+	struct {
+		int x_;
+		int z_;
+		float dist_;
+	} selectBlock_;
 	
 	vector<int> hModel_;		//ƒ‚ƒfƒ‹”Ô†
 
