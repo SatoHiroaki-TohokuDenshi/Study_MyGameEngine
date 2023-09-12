@@ -15,7 +15,7 @@ Stage::Stage(GameObject* parent)
 	for (int x = 0; x < sizeX; x++) {
 		for (int z = 0; z < sizeZ; z++) {
 			table_[x][z].type_ = (BOX_TYPE)(x % BOX_TYPE::BOX_MAX);
-			table_[x][z].height_ = 1;
+			table_[x][z].height_ = 0;
 		}
 	}
 
@@ -53,6 +53,22 @@ void Stage::Update()
 	if (!Input::IsMouseButtonDown(0))	return;
 
 	CalcChoiceBlock();
+	if (selectBlock_.dist_ <= 0.0f)		return;
+
+	switch (mode_) {
+	case MODE::MODE_UP:
+		table_[selectBlock_.x_][selectBlock_.z_].height_++;
+		break;
+	case MODE::MODE_DOWN:
+		if (table_[selectBlock_.x_][selectBlock_.z_].height_ != 0)
+			table_[selectBlock_.x_][selectBlock_.z_].height_--;
+		break;
+	case MODE::MODE_CHANGE:
+		table_[selectBlock_.x_][selectBlock_.z_].type_ = (BOX_TYPE)select_;
+		break;
+	default:
+		break;
+	}
 }
 
 //描画
@@ -74,7 +90,7 @@ void Stage::Draw()
 			type = table_[x][z].type_;
 			height = table_[x][z].height_;
 
-			for (int h = 0; h < height; h++) {
+			for (int h = 0; h < height + 1; h++) {
 				blockTrans.position_.y = (float)h;
 				Model::SetTransform(hModel_.at(type), blockTrans);
 				Model::Draw(hModel_.at(type));
@@ -114,6 +130,29 @@ BOOL Stage::DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp){
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING, 0, (LPARAM)"砂");
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING, 0, (LPARAM)"水");
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_SETCURSEL, 0, 0);
+		return TRUE;
+
+	case WM_COMMAND:		//ダイアログ選択
+		WORD id;
+		id = LOWORD(wp);
+		if (id == IDC_COMBO1) {
+			select_ = (int)SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_GETCURSEL, 0, 0);
+		}
+		else {
+			switch (id) {
+			case IDC_RADIO_UP:
+				mode_ = MODE::MODE_UP;
+				break;
+			case IDC_RADIO_DOWN:
+				mode_ = MODE::MODE_DOWN;
+				break;
+			case IDC_RADIO_CHANGE:
+				mode_ = MODE::MODE_CHANGE;
+				break;
+			default:
+				break;
+			}
+		}
 		return TRUE;
 	default:
 		break;
@@ -185,7 +224,4 @@ void Stage::CalcChoiceBlock() {
 			}
 		}
 	}
-
-	if (selectBlock_.dist_ <= 0.0f) return;
-	table_[selectBlock_.x_][selectBlock_.z_].height_++;
 }

@@ -17,6 +17,12 @@ namespace {
 	};
 	const int sizeX = 15;
 	const int sizeZ = 15;
+
+	enum MODE {
+		MODE_UP = 0,
+		MODE_DOWN,
+		MODE_CHANGE,
+	};
 }
 
 //Stage‚ğŠÇ—‚·‚éƒNƒ‰ƒX
