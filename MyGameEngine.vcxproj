@@ -206,6 +206,9 @@
   <ItemGroup>
     <ResourceCompile Include="MapEditor.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\directxtex_desktop_win10.2023.4.28.1\build\native\directxtex_desktop_win10.targets" Condition="Exists('packages\directxtex_desktop_win10.2023.4.28.1\build\native\directxtex_desktop_win10.targets')" />
