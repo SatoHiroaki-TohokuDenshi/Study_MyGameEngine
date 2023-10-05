@@ -6,6 +6,8 @@
 #include "Engine/Camera.h"
 #include "resource.h"
 
+#include <Windows.h>
+
 using std::string;
 
 //コンストラクタ
@@ -233,7 +235,12 @@ void Stage::CalcChoiceBlock() {
 }
 
 void Stage::NewStage() {
-	int a = 0;
+	for (int x = 0; x < sizeX; x++) {
+		for (int z = 0; z < sizeZ; z++) {
+			table_[x][z].type_ = (BOX_TYPE)(x % BOX_TYPE::BOX_MAX);
+			table_[x][z].height_ = 0;
+		}
+	}
 }
 
 void Stage::LoadStage() {
@@ -241,5 +248,37 @@ void Stage::LoadStage() {
 }
 
 void Stage::SaveStage() {
-	int a = 0;
+	HANDLE hFile;        //ファイルのハンドル
+	hFile = CreateFile(
+		"data.map",				//ファイル名
+		GENERIC_WRITE,			//アクセスモード（書き込み用）
+		0,						//共有（なし）
+		NULL,					//セキュリティ属性（継承しない）
+		CREATE_ALWAYS,			//作成方法
+		FILE_ATTRIBUTE_NORMAL,	//属性とフラグ（設定なし）
+		NULL					//拡張属性（なし）
+	);
+	if (hFile == nullptr)	return;
+
+	DWORD dwBytes = 0;	//書き込み位置
+
+	string data;
+	for (int x = 0; x < sizeX; x++) {
+		for (int z = 0; z < sizeZ; z++) {
+			data += table_[x][z].height_ + ",";
+			if (x == sizeX - 1 && z == sizeZ - 1)	break;
+			data += ",";
+		}
+		data += "\n";
+	}
+
+	BOOL result = WriteFile(
+		hFile,						//ファイルハンドル
+		data.c_str(),				//保存するデータ（文字列）
+		(DWORD)strlen(data.c_str()),//書き込む文字数
+		&dwBytes,					//書き込んだサイズを入れる変数
+		NULL						//オーバーラップド構造体（今回は使わない）
+	);
+
+	CloseHandle(hFile);
 }
