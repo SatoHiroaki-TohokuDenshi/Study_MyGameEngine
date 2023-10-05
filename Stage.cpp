@@ -126,19 +126,19 @@ BOOL Stage::DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp){
 		SendMessage(GetDlgItem(hDlg, IDC_RADIO_UP), BM_SETCHECK, BST_CHECKED, 0);
 
 		//コンボボックス
-		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING, 0, (LPARAM)"デフォルト");
-		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING, 0, (LPARAM)"石");
-		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING, 0, (LPARAM)"草");
-		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING, 0, (LPARAM)"砂");
-		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING, 0, (LPARAM)"水");
-		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_SETCURSEL, 0, 0);
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_ADDSTRING, 0, (LPARAM)"デフォルト");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_ADDSTRING, 0, (LPARAM)"石");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_ADDSTRING, 0, (LPARAM)"草");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_ADDSTRING, 0, (LPARAM)"砂");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_ADDSTRING, 0, (LPARAM)"水");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_SETCURSEL, 0, 0);
 		return TRUE;
 
 	case WM_COMMAND:		//ダイアログ選択
 		WORD id;
 		id = LOWORD(wp);
-		if (id == IDC_COMBO1) {
-			select_ = (int)SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_GETCURSEL, 0, 0);
+		if (id == IDC_COMBO_SELECT) {
+			select_ = (int)SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_GETCURSEL, 0, 0);
 		}
 		else {
 			switch (id) {
@@ -230,4 +230,16 @@ void Stage::CalcChoiceBlock() {
 			}
 		}
 	}
+}
+
+void Stage::NewStage() {
+	int a = 0;
+}
+
+void Stage::LoadStage() {
+	int a = 0;
+}
+
+void Stage::SaveStage() {
+	int a = 0;
 }
