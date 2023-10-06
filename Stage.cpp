@@ -244,13 +244,95 @@ void Stage::NewStage() {
 }
 
 void Stage::LoadStage() {
-	int a = 0;
+	HANDLE hFile;        //ファイルのハンドル
+	hFile = CreateFile(
+		"map.csv",				//ファイル名
+		GENERIC_READ,			//アクセスモード（書き込み用）
+		0,						//共有（なし）
+		NULL,					//セキュリティ属性（継承しない）
+		OPEN_EXISTING,			//作成方法
+		FILE_ATTRIBUTE_NORMAL,	//属性とフラグ（設定なし）
+		NULL					//拡張属性（なし）
+	);
+
+	//ファイルのサイズを取得
+	DWORD fileSize = GetFileSize(hFile, NULL);
+
+	//ファイルのサイズ分メモリを確保
+	char* data;
+	data = new char[fileSize];
+
+	DWORD dwBytes = 0; //読み込み位置
+
+	BOOL result = ReadFile(
+		hFile,		//ファイルハンドル
+		data,		//データを入れる変数
+		fileSize,	//読み込むサイズ
+		&dwBytes,	//読み込んだサイズ
+		NULL		//オーバーラップド構造体（今回は使わない）
+	);
+
+	string sData = data;
+	string tmp = "";
+	string::iterator it = sData.begin();
+
+	for (int x = 0; x < sizeX; x++) {
+		for (int z = 0; z < sizeZ; z++) {
+			while (true) {
+				if ((*it) == ',')	break;
+				tmp += (*it);
+				it++;
+			}
+			table_[x][z].height_ = std::stoi(tmp);
+			tmp = "";
+			it++;
+
+			while (true) {
+				if ((*it) == ',' || (*it) == 'z')	break;
+				tmp += (*it);
+				it++;
+			}
+			table_[x][z].type_ = (BOX_TYPE)std::stoi(tmp);
+			tmp = "";
+			if ((*it) == 'z')	break;
+			it++;
+
+			if ((*it) == '\n')	it++;
+		}
+		if ((*it) == 'z')	break;
+	}
+
+	delete[] data;
+	CloseHandle(hFile);
 }
 
 void Stage::SaveStage() {
+	//セーブダイアログ
+	/*
+	char fileName[MAX_PATH] = "無題.map";  //ファイル名を入れる変数
+
+	//「ファイルを保存」ダイアログの設定
+	OPENFILENAME ofn;										//名前をつけて保存ダイアログの設定用構造体
+	ZeroMemory(&ofn, sizeof(ofn));							//構造体初期化
+	ofn.lStructSize = sizeof(OPENFILENAME);					//構造体のサイズ
+	ofn.lpstrFilter = TEXT("マップデータ(*.map)\0*.map\0")	//─┬ファイルの種類
+		TEXT("すべてのファイル(*.*)\0*.*\0\0");				//─┘
+	ofn.lpstrFile = fileName;								//ファイル名
+	ofn.nMaxFile = MAX_PATH;								//パスの最大文字数
+	ofn.Flags = OFN_OVERWRITEPROMPT;						//フラグ（同名ファイルが存在したら上書き確認）
+	ofn.lpstrDefExt = "map";								//デフォルト拡張子
+
+	//「ファイルを保存」ダイアログ
+	BOOL selFile;
+	selFile = GetSaveFileName(&ofn);
+
+	//キャンセルしたら中断
+	if (selFile == FALSE) return;
+	*/
+
 	HANDLE hFile;        //ファイルのハンドル
 	hFile = CreateFile(
-		"data.map",				//ファイル名
+		"map.csv",				//ファイル名
 		GENERIC_WRITE,			//アクセスモード（書き込み用）
 		0,						//共有（なし）
 		NULL,					//セキュリティ属性（継承しない）
@@ -262,16 +344,20 @@ void Stage::SaveStage() {
 
 	DWORD dwBytes = 0;	//書き込み位置
 
-	string data;
+	string data = "";
 	for (int x = 0; x < sizeX; x++) {
 		for (int z = 0; z < sizeZ; z++) {
-			data += table_[x][z].height_ + ",";
+			data += std::to_string(table_[x][z].height_) + ",";
+			data += std::to_string(table_[x][z].type_);
+			//最後のデータだったらコンマを打たない
 			if (x == sizeX - 1 && z == sizeZ - 1)	break;
 			data += ",";
 		}
+		if (x == sizeX - 1)	break;
 		data += "\n";
 	}
 
+	data += "z";
 	BOOL result = WriteFile(
 		hFile,						//ファイルハンドル
 		data.c_str(),				//保存するデータ（文字列）
