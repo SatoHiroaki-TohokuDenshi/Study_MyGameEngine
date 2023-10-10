@@ -7,7 +7,6 @@
 #include "resource.h"
 
 #include <Windows.h>
-#include <filesystem>
 
 using std::string;
 
@@ -245,31 +244,9 @@ void Stage::NewStage() {
 }
 
 void Stage::LoadStage() {
-	//ロードダイアログ
-	char fileName[MAX_PATH] = "無題.map";  //ファイル名を入れる変数
-
-	//「ファイルを開く」ダイアログの設定
-	OPENFILENAME ofn;										//名前をつけて保存ダイアログの設定用構造体
-	ZeroMemory(&ofn, sizeof(ofn));							//構造体初期化
-	ofn.lStructSize = sizeof(OPENFILENAME);					//構造体のサイズ
-	ofn.lpstrFilter = TEXT("マップデータ(*.map)\0*.map\0")	//─┬ファイルの種類
-		TEXT("すべてのファイル(*.*)\0*.*\0\0");				//─┘
-	ofn.lpstrFile = fileName;								//ファイル名
-	ofn.nMaxFile = MAX_PATH;								//パスの最大文字数
-	ofn.Flags = OFN_FILEMUSTEXIST;							//フラグ（同名ファイルが存在したら上書き確認）
-	ofn.lpstrDefExt = "map";								//デフォルト拡張子
-
-	//「ファイルを開く」ダイアログ
-	BOOL selFile;
-	selFile = GetOpenFileName(&ofn);
-
-	//キャンセルしたら中断
-	if (selFile == FALSE) return;
-
-	///// ファイルから読み込む /////
-	HANDLE hFile = nullptr;		//ファイルのハンドル
+	HANDLE hFile;        //ファイルのハンドル
 	hFile = CreateFile(
-		fileName,				//ファイル名
+		"map.csv",				//ファイル名
 		GENERIC_READ,			//アクセスモード（書き込み用）
 		0,						//共有（なし）
 		NULL,					//セキュリティ属性（継承しない）
@@ -277,8 +254,6 @@ void Stage::LoadStage() {
 		FILE_ATTRIBUTE_NORMAL,	//属性とフラグ（設定なし）
 		NULL					//拡張属性（なし）
 	);
-	//失敗したら終了
-	if (hFile == INVALID_HANDLE_VALUE)	return;
 
 	//ファイルのサイズを取得
 	DWORD fileSize = GetFileSize(hFile, NULL);
@@ -296,13 +271,6 @@ void Stage::LoadStage() {
 		&dwBytes,	//読み込んだサイズ
 		NULL		//オーバーラップド構造体（今回は使わない）
 	);
-
-	//失敗したら終了
-	if (result == FALSE) {
-		delete[] data;
-		CloseHandle(hFile);
-		return;
-	}
 
 	string sData = data;
 	string tmp = "";
@@ -340,6 +308,7 @@ void Stage::LoadStage() {
 
 void Stage::SaveStage() {
 	//セーブダイアログ
+	/*
 	char fileName[MAX_PATH] = "無題.map";  //ファイル名を入れる変数
 
 	//「ファイルを保存」ダイアログの設定
@@ -359,14 +328,11 @@ void Stage::SaveStage() {
 
 	//キャンセルしたら中断
 	if (selFile == FALSE) return;
+	*/
 
-	std::filesystem::path p = std::filesystem::current_path().c_str();
-	string fullPath = std::filesystem::current_path().string() + fileName;
-
-	///// ファイルに書き込む /////
 	HANDLE hFile;        //ファイルのハンドル
 	hFile = CreateFile(
-		fileName,				//ファイル名
+		"map.csv",				//ファイル名
 		GENERIC_WRITE,			//アクセスモード（書き込み用）
 		0,						//共有（なし）
 		NULL,					//セキュリティ属性（継承しない）
@@ -374,7 +340,6 @@ void Stage::SaveStage() {
 		FILE_ATTRIBUTE_NORMAL,	//属性とフラグ（設定なし）
 		NULL					//拡張属性（なし）
 	);
-	//失敗したら終了
 	if (hFile == nullptr)	return;
 
 	DWORD dwBytes = 0;	//書き込み位置
