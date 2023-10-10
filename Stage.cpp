@@ -7,6 +7,7 @@
 #include "resource.h"
 
 #include <Windows.h>
+#include <filesystem>
 
 using std::string;
 
@@ -308,8 +309,10 @@ void Stage::LoadStage() {
 
 void Stage::SaveStage() {
 	//セーブダイアログ
-	/*
-	char fileName[MAX_PATH] = "無題.map";  //ファイル名を入れる変数
+	char fileName[MAX_PATH] = "";  //ファイル名を入れる変数
+	string path = std::filesystem::current_path().string();
+	path += "\\無題.map";
+	path.copy(fileName, MAX_PATH);
 
 	//「ファイルを保存」ダイアログの設定
 	OPENFILENAME ofn;										//名前をつけて保存ダイアログの設定用構造体
@@ -328,11 +331,11 @@ void Stage::SaveStage() {
 
 	//キャンセルしたら中断
 	if (selFile == FALSE) return;
-	*/
 
+	///// 書き込み /////
 	HANDLE hFile;        //ファイルのハンドル
 	hFile = CreateFile(
-		"map.csv",				//ファイル名
+		fileName,				//ファイル名
 		GENERIC_WRITE,			//アクセスモード（書き込み用）
 		0,						//共有（なし）
 		NULL,					//セキュリティ属性（継承しない）
