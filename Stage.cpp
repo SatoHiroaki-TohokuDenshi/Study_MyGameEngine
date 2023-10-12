@@ -245,6 +245,31 @@ void Stage::NewStage() {
 }
 
 void Stage::LoadStage() {
+	//セーブダイアログ
+	char fileName[MAX_PATH] = "";  //ファイル名を入れる変数
+	string path = std::filesystem::current_path().string();
+	path += "\\無題.map";
+	path.copy(fileName, MAX_PATH);
+
+	//「ファイルを保存」ダイアログの設定
+	OPENFILENAME ofn;										//名前をつけて保存ダイアログの設定用構造体
+	ZeroMemory(&ofn, sizeof(ofn));							//構造体初期化
+	ofn.lStructSize = sizeof(OPENFILENAME);					//構造体のサイズ
+	ofn.lpstrFilter = TEXT("マップデータ(*.map)\0*.map\0")	//─┬ファイルの種類
+		TEXT("すべてのファイル(*.*)\0*.*\0\0");				//─┘
+	ofn.lpstrFile = fileName;								//ファイル名
+	ofn.nMaxFile = MAX_PATH;								//パスの最大文字数
+	ofn.Flags = OFN_FILEMUSTEXIST;							//フラグ（存在するファイルしか選べない）
+	ofn.lpstrDefExt = "map";								//デフォルト拡張子
+
+	//「ファイルを保存」ダイアログ
+	BOOL selFile;
+	selFile = GetOpenFileName(&ofn);
+
+	//キャンセルしたら中断
+	if (selFile == FALSE) return;
+
+	///// 読み込み /////
 	HANDLE hFile;        //ファイルのハンドル
 	hFile = CreateFile(
 		"map.csv",				//ファイル名
@@ -272,6 +297,11 @@ void Stage::LoadStage() {
 		&dwBytes,	//読み込んだサイズ
 		NULL		//オーバーラップド構造体（今回は使わない）
 	);
+	if (result == FALSE) {
+		delete[] data;
+		CloseHandle(hFile);
+		return;
+	}
 
 	string sData = data;
 	string tmp = "";
@@ -279,6 +309,7 @@ void Stage::LoadStage() {
 
 	for (int x = 0; x < sizeX; x++) {
 		for (int z = 0; z < sizeZ; z++) {
+			//高さの情報の検索
 			while (true) {
 				if ((*it) == ',')	break;
 				tmp += (*it);
@@ -288,16 +319,18 @@ void Stage::LoadStage() {
 			tmp = "";
 			it++;
 
+			//種類の情報の検索
 			while (true) {
 				if ((*it) == ',' || (*it) == 'z')	break;
 				tmp += (*it);
 				it++;
 			}
 			table_[x][z].type_ = (BOX_TYPE)std::stoi(tmp);
-			tmp = "";
 			if ((*it) == 'z')	break;
+			tmp = "";
 			it++;
 
+			//改行コードがあったらイテレータを進める
 			if ((*it) == '\n')	it++;
 		}
 		if ((*it) == 'z')	break;
