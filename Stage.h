@@ -25,6 +25,17 @@ namespace {
 		MODE_DOWN,				//下げる
 		MODE_CHANGE,			//変える
 	};
+
+	//ブラシの大きさ
+	enum BRUSH_SIZE {
+		BRUSH_SMALL = 0,		//小
+		BRUSH_MEDIUM,			//中
+		BRUSH_LARGE,			//大
+	};
+
+	const int brushS = 1;
+	const int brushM = 3;
+	const int brushL = 5;
 }
 
 //Stageを管理するクラス
@@ -46,6 +57,7 @@ private:
 
 	int mode_;		//0:上げる  1:下げる  2:変える
 	int select_;	//種類
+	int brushSize_;
 
 public:	//オーバーライド関数
 	//コンストラクタ

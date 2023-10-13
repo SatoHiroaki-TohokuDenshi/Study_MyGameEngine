@@ -13,7 +13,7 @@ using std::string;
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-	:GameObject(parent, "Stage"), mode_(0), select_(0)
+	:GameObject(parent, "Stage"), mode_(0), select_(0), brushSize_(brushS)
 {
 	for (int x = 0; x < sizeX; x++) {
 		for (int z = 0; z < sizeZ; z++) {
@@ -135,6 +135,13 @@ BOOL Stage::DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp){
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_ADDSTRING, 0, (LPARAM)"砂");
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_ADDSTRING, 0, (LPARAM)"水");
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_SETCURSEL, 0, 0);
+
+		//サイズ
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SIZE), CB_ADDSTRING, 0, (LPARAM)"1");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SIZE), CB_ADDSTRING, 0, (LPARAM)"3");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SIZE), CB_ADDSTRING, 0, (LPARAM)"5");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO_SIZE), CB_SETCURSEL, 0, 0);
+
 		return TRUE;
 
 	case WM_COMMAND:		//ダイアログ選択
@@ -142,6 +149,22 @@ BOOL Stage::DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp){
 		id = LOWORD(wp);
 		if (id == IDC_COMBO_SELECT) {
 			select_ = (int)SendMessage(GetDlgItem(hDlg, IDC_COMBO_SELECT), CB_GETCURSEL, 0, 0);
+		}
+		else if (id == IDC_COMBO_SIZE) {
+			int size = (int)SendMessage(GetDlgItem(hDlg, IDC_COMBO_SIZE), CB_GETCURSEL, 0, 0);
+			switch (size) {
+			case BRUSH_SIZE::BRUSH_SMALL:
+				brushSize_ = brushS;
+				break;
+			case BRUSH_SIZE::BRUSH_MEDIUM:
+				brushSize_ = brushM;
+				break;
+			case BRUSH_SIZE::BRUSH_LARGE:
+				brushSize_ = brushL;
+				break;
+			default:
+				break;
+			}
 		}
 		else {
 			switch (id) {
