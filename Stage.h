@@ -57,7 +57,7 @@ private:
 
 	int mode_;		//0:上げる  1:下げる  2:変える
 	int select_;	//種類
-	int brushSize_;
+	int brushSize_;	//ブラシの大きさ
 
 public:	//オーバーライド関数
 	//コンストラクタ
@@ -79,14 +79,21 @@ public:	//オーバーライド関数
 	void Release() override;
 
 public:
+	//セッター関数
 	void SetBlock(int _x, int _z, BOX_TYPE _type);
 	void SetBlockHeight(int _x, int _z, int _height);
 
+	//ダイアログプロシージャ―
 	BOOL DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp);
+
+	//セーブ・ロード
 	void NewStage();
 	void LoadStage();
 	void SaveStage();
 
 private:
 	void CalcChoiceBlock();
+	void MoveUpBlock();
+	void MoveDownBlock();
+	void ChangeBlock();
 };

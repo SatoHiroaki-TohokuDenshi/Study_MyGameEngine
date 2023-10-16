@@ -61,109 +61,13 @@ void Stage::Update()
 
 	switch (mode_) {
 	case MODE::MODE_UP:
-		switch (brushSize_) {
-		case brushS:
-			table_[selectBlock_.x_][selectBlock_.z_].height_++;
-			break;
-		case brushM:
-			for (int x = -1; x < 2; x++) {
-				for (int z = -1; z < 2; z++) {
-					//範囲外ならスキップ
-					if (selectBlock_.x_ + x < 0)	continue;
-					if (selectBlock_.x_ + x >= 15)	continue;
-					if (selectBlock_.z_ + z < 0)	continue;
-					if (selectBlock_.z_ + z >= 15)	continue;
-					table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_++;
-				}
-			}
-			break;
-		case brushL:
-			for (int x = -2; x < 3; x++) {
-				for (int z = -2; z < 3; z++) {
-					//範囲外ならスキップ
-					if (selectBlock_.x_ + x < 0)	continue;
-					if (selectBlock_.x_ + x >= 15)	continue;
-					if (selectBlock_.z_ + z < 0)	continue;
-					if (selectBlock_.z_ + z >= 15)	continue;
-					table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_++;
-				}
-			}
-			break;
-		default:
-			break;
-		}
+		MoveUpBlock();
 		break;
 	case MODE::MODE_DOWN:
-		switch (brushSize_) {
-		case brushS:
-			//0以下には下げられない
-			if (table_[selectBlock_.x_][selectBlock_.z_].height_ > 0)
-				table_[selectBlock_.x_][selectBlock_.z_].height_--;
-			break;
-		case brushM:
-			for (int x = -1; x < 2; x++) {
-				for (int z = -1; z < 2; z++) {
-					//範囲外ならスキップ
-					if (selectBlock_.x_ + x <   0)	continue;
-					if (selectBlock_.x_ + x >= 15)	continue;
-					if (selectBlock_.z_ + z <   0)	continue;
-					if (selectBlock_.z_ + z >= 15)	continue;
-					//0以下には下げられない
-					if (table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_ > 0)
-						table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_--;
-				}
-			}
-			break;
-		case brushL:
-			for (int x = -2; x < 3; x++) {
-				for (int z = -2; z < 3; z++) {
-					//範囲外ならスキップ
-					if (selectBlock_.x_ + x < 0)	continue;
-					if (selectBlock_.x_ + x >= 15)	continue;
-					if (selectBlock_.z_ + z < 0)	continue;
-					if (selectBlock_.z_ + z >= 15)	continue;
-					//0以下には下げられない
-					if (table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_ > 0)
-						table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_--;
-				}
-			}
-			break;
-		default:
-			break;
-		}
+		MoveDownBlock();
 		break;
 	case MODE::MODE_CHANGE:
-		switch (brushSize_) {
-		case brushS:
-			table_[selectBlock_.x_][selectBlock_.z_].type_ = (BOX_TYPE)select_;
-			break;
-		case brushM:
-			for (int x = -1; x < 2; x++) {
-				for (int z = -1; z < 2; z++) {
-					//範囲外ならスキップ
-					if (selectBlock_.x_ + x < 0)	continue;
-					if (selectBlock_.x_ + x >= 15)	continue;
-					if (selectBlock_.z_ + z < 0)	continue;
-					if (selectBlock_.z_ + z >= 15)	continue;
-					table_[selectBlock_.x_ + x][selectBlock_.z_ + z].type_ = (BOX_TYPE)select_;
-				}
-			}
-			break;
-		case brushL:
-			for (int x = -2; x < 3; x++) {
-				for (int z = -2; z < 3; z++) {
-					//範囲外ならスキップ
-					if (selectBlock_.x_ + x < 0)	continue;
-					if (selectBlock_.x_ + x >= 15)	continue;
-					if (selectBlock_.z_ + z < 0)	continue;
-					if (selectBlock_.z_ + z >= 15)	continue;
-					table_[selectBlock_.x_ + x][selectBlock_.z_ + z].type_ = (BOX_TYPE)select_;
-				}
-			}
-			break;
-		default:
-			break;
-		}
+		ChangeBlock();
 		break;
 	default:
 		break;
@@ -349,6 +253,114 @@ void Stage::CalcChoiceBlock() {
 				}
 			}
 		}
+	}
+}
+
+void Stage::MoveUpBlock() {
+	switch (brushSize_) {
+	case brushS:
+		table_[selectBlock_.x_][selectBlock_.z_].height_++;
+		break;
+	case brushM:
+		for (int x = -1; x < 2; x++) {
+			for (int z = -1; z < 2; z++) {
+				//範囲外ならスキップ
+				if (selectBlock_.x_ + x < 0)	continue;
+				if (selectBlock_.x_ + x >= 15)	continue;
+				if (selectBlock_.z_ + z < 0)	continue;
+				if (selectBlock_.z_ + z >= 15)	continue;
+				table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_++;
+			}
+		}
+		break;
+	case brushL:
+		for (int x = -2; x < 3; x++) {
+			for (int z = -2; z < 3; z++) {
+				//範囲外ならスキップ
+				if (selectBlock_.x_ + x < 0)	continue;
+				if (selectBlock_.x_ + x >= 15)	continue;
+				if (selectBlock_.z_ + z < 0)	continue;
+				if (selectBlock_.z_ + z >= 15)	continue;
+				table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_++;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void Stage::MoveDownBlock() {
+	switch (brushSize_) {
+	case brushS:
+		//0以下には下げられない
+		if (table_[selectBlock_.x_][selectBlock_.z_].height_ > 0)
+			table_[selectBlock_.x_][selectBlock_.z_].height_--;
+		break;
+	case brushM:
+		for (int x = -1; x < 2; x++) {
+			for (int z = -1; z < 2; z++) {
+				//範囲外ならスキップ
+				if (selectBlock_.x_ + x < 0)	continue;
+				if (selectBlock_.x_ + x >= 15)	continue;
+				if (selectBlock_.z_ + z < 0)	continue;
+				if (selectBlock_.z_ + z >= 15)	continue;
+				//0以下には下げられない
+				if (table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_ > 0)
+					table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_--;
+			}
+		}
+		break;
+	case brushL:
+		for (int x = -2; x < 3; x++) {
+			for (int z = -2; z < 3; z++) {
+				//範囲外ならスキップ
+				if (selectBlock_.x_ + x < 0)	continue;
+				if (selectBlock_.x_ + x >= 15)	continue;
+				if (selectBlock_.z_ + z < 0)	continue;
+				if (selectBlock_.z_ + z >= 15)	continue;
+				//0以下には下げられない
+				if (table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_ > 0)
+					table_[selectBlock_.x_ + x][selectBlock_.z_ + z].height_--;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void Stage::ChangeBlock() {
+	switch (brushSize_) {
+	case brushS:
+		table_[selectBlock_.x_][selectBlock_.z_].type_ = (BOX_TYPE)select_;
+		break;
+	case brushM:
+		for (int x = -1; x < 2; x++) {
+			for (int z = -1; z < 2; z++) {
+				//範囲外ならスキップ
+				if (selectBlock_.x_ + x < 0)	continue;
+				if (selectBlock_.x_ + x >= 15)	continue;
+				if (selectBlock_.z_ + z < 0)	continue;
+				if (selectBlock_.z_ + z >= 15)	continue;
+				table_[selectBlock_.x_ + x][selectBlock_.z_ + z].type_ = (BOX_TYPE)select_;
+			}
+		}
+		break;
+	case brushL:
+		for (int x = -2; x < 3; x++) {
+			for (int z = -2; z < 3; z++) {
+				//範囲外ならスキップ
+				if (selectBlock_.x_ + x < 0)	continue;
+				if (selectBlock_.x_ + x >= 15)	continue;
+				if (selectBlock_.z_ + z < 0)	continue;
+				if (selectBlock_.z_ + z >= 15)	continue;
+				table_[selectBlock_.x_ + x][selectBlock_.z_ + z].type_ = (BOX_TYPE)select_;
+			}
+		}
+		break;
+	default:
+		break;
 	}
 }
 
