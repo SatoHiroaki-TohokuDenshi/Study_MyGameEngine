@@ -9,6 +9,11 @@
 #include <Windows.h>
 #include <filesystem>
 
+#include "CommandManager.h"
+#include "CommandUp.h"
+#include "CommandDown.h"
+#include "CommandChange.h"
+
 using std::string;
 
 //コンストラクタ
@@ -166,6 +171,7 @@ BOOL Stage::DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp){
 		}
 		else {
 			switch (id) {
+				//ラジオボタン
 			case IDC_RADIO_UP:
 				mode_ = MODE::MODE_UP;
 				break;
@@ -174,6 +180,12 @@ BOOL Stage::DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp){
 				break;
 			case IDC_RADIO_CHANGE:
 				mode_ = MODE::MODE_CHANGE;
+				break;
+
+				//ボタン
+			case IDC_BUTTON_UNDO:
+				break;
+			case IDC_BUTTON_REDO:
 				break;
 			default:
 				break;

@@ -148,6 +148,7 @@
     <ClCompile Include="CommandBase.cpp" />
     <ClCompile Include="CommandChange.cpp" />
     <ClCompile Include="CommandDown.cpp" />
+    <ClCompile Include="CommandManager.cpp" />
     <ClCompile Include="CommandUp.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="CommandBase.h" />
     <ClInclude Include="CommandChange.h" />
     <ClInclude Include="CommandDown.h" />
+    <ClInclude Include="CommandManager.h" />
     <ClInclude Include="CommandUp.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Engine\Camera.h" />
