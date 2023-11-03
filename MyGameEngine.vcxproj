@@ -145,6 +145,10 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CommandBase.cpp" />
+    <ClCompile Include="CommandChange.cpp" />
+    <ClCompile Include="CommandDown.cpp" />
+    <ClCompile Include="CommandUp.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\Direct3D.cpp" />
@@ -185,6 +189,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommandBase.h" />
+    <ClInclude Include="CommandChange.h" />
+    <ClInclude Include="CommandDown.h" />
+    <ClInclude Include="CommandUp.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Engine\Camera.h" />
     <ClInclude Include="Engine\Direct3D.h" />

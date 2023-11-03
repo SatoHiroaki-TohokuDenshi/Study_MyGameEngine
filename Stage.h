@@ -16,8 +16,7 @@ namespace {
 		BOX_WATER,				//水
 		BOX_MAX,				//最大値
 	};
-	const int sizeX = 15;		//x座標の最大値
-	const int sizeZ = 15;		//z座標の最大値
+
 
 	//編集モード
 	enum MODE {
@@ -32,11 +31,14 @@ namespace {
 		BRUSH_MEDIUM,			//中
 		BRUSH_LARGE,			//大
 	};
-
-	const int brushS = 1;
-	const int brushM = 3;
-	const int brushL = 5;
 }
+
+const int sizeX = 15;		//x座標の最大値
+const int sizeZ = 15;		//z座標の最大値
+
+const int brushS = 1;
+const int brushM = 3;
+const int brushL = 5;
 
 //Stageを管理するクラス
 class Stage : public GameObject
@@ -82,6 +84,10 @@ public:
 	//セッター関数
 	void SetBlock(int _x, int _z, BOX_TYPE _type);
 	void SetBlockHeight(int _x, int _z, int _height);
+
+	//ゲッター関数
+	int GetBlockHeight(int x, int z);
+	int GetBlockType(int x, int z);
 
 	//ダイアログプロシージャ―
 	BOOL DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp);

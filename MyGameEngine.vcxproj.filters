@@ -17,6 +17,9 @@
     <Filter Include="01Engine\Inheritances">
       <UniqueIdentifier>{81d21e1b-6e1e-44af-a1d0-72747f8a3012}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{246b97c6-b55b-4ac5-bbba-dfcaf96691f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -61,6 +64,18 @@
     </ClCompile>
     <ClCompile Include="Engine\Input.cpp">
       <Filter>01Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandBase.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandUp.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandDown.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandChange.cpp">
+      <Filter>Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +135,18 @@
     </ClInclude>
     <ClInclude Include="Engine\Input.h">
       <Filter>01Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandBase.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandUp.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandDown.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandChange.h">
+      <Filter>Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

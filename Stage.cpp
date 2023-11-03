@@ -364,6 +364,14 @@ void Stage::ChangeBlock() {
 	}
 }
 
+int Stage::GetBlockHeight(int x, int z) {
+	return table_[x][z].height_;
+}
+
+int Stage::GetBlockType(int x, int z) {
+	return table_[x][z].type_;
+}
+
 void Stage::NewStage() {
 	for (int x = 0; x < sizeX; x++) {
 		for (int z = 0; z < sizeZ; z++) {
