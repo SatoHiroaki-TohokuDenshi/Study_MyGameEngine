@@ -6,9 +6,9 @@ class CommandUp
 private:
 
 public:
-	CommandUp(Stage* p, int x, int y, int size);
+	CommandUp(int x, int y, int size);
 	~CommandUp();
 
-	void UndoCommand() override;	//Undo
-	void RedoCommand() override;	//Redo
+	void UndoCommand(Stage* p) override;	//Undo
+	void RedoCommand(Stage* p) override;	//Redo
 };

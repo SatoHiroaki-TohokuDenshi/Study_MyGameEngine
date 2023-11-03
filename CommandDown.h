@@ -6,9 +6,9 @@ class CommandDown
 private:
 
 public:
-	CommandDown(Stage* p, int x, int y, int size);
+	CommandDown(int x, int y, int size);
 	~CommandDown();
 
-	void UndoCommand() override;	//Undo
-	void RedoCommand() override;	//Redo
+	void UndoCommand(Stage* p) override;	//Undo
+	void RedoCommand(Stage* p) override;	//Redo
 };

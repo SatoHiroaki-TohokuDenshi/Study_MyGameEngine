@@ -368,7 +368,7 @@ int Stage::GetBlockHeight(int x, int z) {
 	return table_[x][z].height_;
 }
 
-int Stage::GetBlockType(int x, int z) {
+BOX_TYPE Stage::GetBlockType(int x, int z) {
 	return table_[x][z].type_;
 }
 

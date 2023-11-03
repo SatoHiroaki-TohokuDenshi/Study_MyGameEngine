@@ -7,17 +7,6 @@
 using std::vector;
 
 namespace {
-	//ブロックの種類
-	enum BOX_TYPE {
-		BOX_DEFAULT = 0,		//通常
-		BOX_BRICK,				//石
-		BOX_GRASS,				//草
-		BOX_SAND,				//砂
-		BOX_WATER,				//水
-		BOX_MAX,				//最大値
-	};
-
-
 	//編集モード
 	enum MODE {
 		MODE_UP = 0,			//上げる
@@ -32,6 +21,16 @@ namespace {
 		BRUSH_LARGE,			//大
 	};
 }
+
+//ブロックの種類
+enum BOX_TYPE {
+	BOX_DEFAULT = 0,		//通常
+	BOX_BRICK,				//石
+	BOX_GRASS,				//草
+	BOX_SAND,				//砂
+	BOX_WATER,				//水
+	BOX_MAX,				//最大値
+};
 
 const int sizeX = 15;		//x座標の最大値
 const int sizeZ = 15;		//z座標の最大値
@@ -87,7 +86,7 @@ public:
 
 	//ゲッター関数
 	int GetBlockHeight(int x, int z);
-	int GetBlockType(int x, int z);
+	BOX_TYPE GetBlockType(int x, int z);
 
 	//ダイアログプロシージャ―
 	BOOL DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp);

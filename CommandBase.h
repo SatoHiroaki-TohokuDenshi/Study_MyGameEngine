@@ -16,13 +16,12 @@ namespace {
 
 class CommandBase {
 protected:
-	Stage* pStage_;
 	Block selectBlock_;	//選択されたブロック
 	int brushSize_;		//ブラシの大きさ
 public:
-	CommandBase(Stage* p, int x, int z, int size);
+	CommandBase(int x, int z, int size);
 	~CommandBase();
 
-	virtual void UndoCommand() = 0;	//Undo
-	virtual void RedoCommand() = 0;	//Redo
+	virtual void UndoCommand(Stage* p) = 0;	//Undo
+	virtual void RedoCommand(Stage* p) = 0;	//Redo
 };

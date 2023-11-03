@@ -1,20 +1,20 @@
 #include "CommandDown.h"
 #include "Stage.h"
 
-CommandDown::CommandDown(Stage* p, int x, int y, int size)
-	:CommandBase(p, x, y, size)
+CommandDown::CommandDown(int x, int y, int size)
+	:CommandBase(x, y, size)
 {
 }
 
 CommandDown::~CommandDown() {
 }
 
-void CommandDown::UndoCommand() {
+void CommandDown::UndoCommand(Stage* p) {
 	// 選んだブロックを上げる
 	switch (brushSize_) {
 	case brushS:
-		pStage_->SetBlockHeight(selectBlock_.x_, selectBlock_.z_,
-			pStage_->GetBlockHeight(selectBlock_.x_, selectBlock_.z_) + 1);
+		p->SetBlockHeight(selectBlock_.x_, selectBlock_.z_,
+			p->GetBlockHeight(selectBlock_.x_, selectBlock_.z_) + 1);
 		break;
 	case brushM:
 		for (int x = -1; x < 2; x++) {
@@ -23,8 +23,8 @@ void CommandDown::UndoCommand() {
 					selectBlock_.z_ + z < 0 || selectBlock_.z_ + z >= sizeZ) {
 					continue;
 				}
-				pStage_->SetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z,
-					pStage_->GetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z) + 1);
+				p->SetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z,
+					p->GetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z) + 1);
 			}
 		}
 		break;
@@ -35,8 +35,8 @@ void CommandDown::UndoCommand() {
 					selectBlock_.z_ + z < 0 || selectBlock_.z_ + z >= sizeZ) {
 					continue;
 				}
-				pStage_->SetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z,
-					pStage_->GetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z) + 1);
+				p->SetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z,
+					p->GetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z) + 1);
 			}
 		}
 		break;
@@ -45,12 +45,12 @@ void CommandDown::UndoCommand() {
 	}
 }
 
-void CommandDown::RedoCommand() {
+void CommandDown::RedoCommand(Stage* p) {
 	// 選んだブロックを下げる
 	switch (brushSize_) {
 	case brushS:
-		pStage_->SetBlockHeight(selectBlock_.x_, selectBlock_.z_,
-			pStage_->GetBlockHeight(selectBlock_.x_, selectBlock_.z_) - 1);
+		p->SetBlockHeight(selectBlock_.x_, selectBlock_.z_,
+			p->GetBlockHeight(selectBlock_.x_, selectBlock_.z_) - 1);
 		break;
 	case brushM:
 		for (int x = -1; x < 2; x++) {
@@ -59,8 +59,8 @@ void CommandDown::RedoCommand() {
 					selectBlock_.z_ + z < 0 || selectBlock_.z_ + z >= sizeZ) {
 					continue;
 				}
-				pStage_->SetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z,
-					pStage_->GetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z) - 1);
+				p->SetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z,
+					p->GetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z) - 1);
 			}
 		}
 		break;
@@ -71,8 +71,8 @@ void CommandDown::RedoCommand() {
 					selectBlock_.z_ + z < 0 || selectBlock_.z_ + z >= sizeZ) {
 					continue;
 				}
-				pStage_->SetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z,
-					pStage_->GetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z) - 1);
+				p->SetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z,
+					p->GetBlockHeight(selectBlock_.x_ + x, selectBlock_.z_ + z) - 1);
 			}
 		}
 		break;
