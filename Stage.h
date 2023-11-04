@@ -4,6 +4,9 @@
 #include <windows.h>
 #include "Engine/GameObject.h"
 
+// 前方宣言
+class CommandManager;
+
 using std::vector;
 
 namespace {
@@ -59,6 +62,8 @@ private:
 	int mode_;		//0:上げる  1:下げる  2:変える
 	int select_;	//種類
 	int brushSize_;	//ブラシの大きさ
+
+	CommandManager* pManager_;
 
 public:	//オーバーライド関数
 	//コンストラクタ

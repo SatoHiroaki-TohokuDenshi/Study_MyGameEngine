@@ -30,11 +30,14 @@ Stage::Stage(GameObject* parent)
 	selectBlock_.x_ = 0;
 	selectBlock_.z_ = 0;
 	selectBlock_.dist_ = -1.0f;
+
+	pManager_ = new CommandManager();
 }
 
 //デストラクタ
 Stage::~Stage()
 {
+	delete pManager_;
 }
 
 //初期化
@@ -66,12 +69,15 @@ void Stage::Update()
 
 	switch (mode_) {
 	case MODE::MODE_UP:
+		pManager_->RecordCommand(new CommandUp(selectBlock_.x_, selectBlock_.z_, brushSize_));
 		MoveUpBlock();
 		break;
 	case MODE::MODE_DOWN:
+		pManager_->RecordCommand(new CommandDown(selectBlock_.x_, selectBlock_.z_, brushSize_));
 		MoveDownBlock();
 		break;
 	case MODE::MODE_CHANGE:
+		pManager_->RecordCommand(new CommandChange(selectBlock_.x_, selectBlock_.z_, brushSize_, (BOX_TYPE)select_, this));
 		ChangeBlock();
 		break;
 	default:
@@ -184,8 +190,10 @@ BOOL Stage::DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp){
 
 				//ボタン
 			case IDC_BUTTON_UNDO:
+				pManager_->Undo(this);
 				break;
 			case IDC_BUTTON_REDO:
+				pManager_->Redo(this);
 				break;
 			default:
 				break;

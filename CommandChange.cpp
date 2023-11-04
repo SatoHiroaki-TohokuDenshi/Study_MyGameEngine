@@ -45,12 +45,12 @@ CommandChange::~CommandChange() {
 
 void CommandChange::UndoCommand(Stage* p) {
 	// 選んだブロックを戻す
+	int index = 0;
 	switch (brushSize_) {
 	case brushS:
 		p->SetBlock(selectBlock_.x_, selectBlock_.z_, beforeBlockType_[0]);
 		break;
 	case brushM:
-		int index = 0;
 		for (int x = -1; x < 2; x++) {
 			for (int z = -1; z < 2; z++) {
 				if (selectBlock_.x_ + x < 0 || selectBlock_.x_ + x >= sizeX ||
@@ -58,11 +58,11 @@ void CommandChange::UndoCommand(Stage* p) {
 					continue;
 				}
 				p->SetBlock(selectBlock_.x_ + x, selectBlock_.z_ + z, beforeBlockType_[index]);
+				index++;
 			}
 		}
 		break;
 	case brushL:
-		int index = 0;
 		for (int x = -2; x < 3; x++) {
 			for (int z = -2; z < 3; z++) {
 				if (selectBlock_.x_ + x < 0 || selectBlock_.x_ + x >= sizeX ||
@@ -70,6 +70,7 @@ void CommandChange::UndoCommand(Stage* p) {
 					continue;
 				}
 				p->SetBlock(selectBlock_.x_ + x, selectBlock_.z_ + z, beforeBlockType_[index]);
+				index++;
 			}
 		}
 		break;
@@ -85,7 +86,6 @@ void CommandChange::RedoCommand(Stage* p) {
 		p->SetBlock(selectBlock_.x_, selectBlock_.z_, beforeBlockType_[0]);
 		break;
 	case brushM:
-		int index = 0;
 		for (int x = -1; x < 2; x++) {
 			for (int z = -1; z < 2; z++) {
 				if (selectBlock_.x_ + x < 0 || selectBlock_.x_ + x >= sizeX ||
@@ -97,7 +97,6 @@ void CommandChange::RedoCommand(Stage* p) {
 		}
 		break;
 	case brushL:
-		int index = 0;
 		for (int x = -2; x < 3; x++) {
 			for (int z = -2; z < 3; z++) {
 				if (selectBlock_.x_ + x < 0 || selectBlock_.x_ + x >= sizeX ||

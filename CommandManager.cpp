@@ -5,6 +5,14 @@ CommandManager::CommandManager() {
 }
 
 CommandManager::~CommandManager() {
+	for (auto e : commandListUndo_) {
+		delete e;
+	}
+	commandListUndo_.clear();
+	for (auto e : commandListRedo_) {
+		delete e;
+	}
+	commandListRedo_.clear();
 }
 
 void CommandManager::RecordCommand(CommandBase* command) {
@@ -17,7 +25,13 @@ void CommandManager::RecordCommand(CommandBase* command) {
 }
 
 void CommandManager::ClearCommand() {
+	for (auto e : commandListUndo_) {
+		delete e;
+	}
 	commandListUndo_.clear();
+	for (auto e : commandListRedo_) {
+		delete e;
+	}
 	commandListRedo_.clear();
 }
 
